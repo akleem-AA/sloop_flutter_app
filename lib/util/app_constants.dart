@@ -261,8 +261,20 @@ class AppConstants {
         languageName: 'عربى',
         countryCode: 'SA',
         languageCode: 'ar'),
+
+    //germen and durkey
     // LanguageModel(imageUrl: Images.arabic, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
     // LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
+    LanguageModel(
+        imageUrl: Images.english,
+        languageName: 'German ',
+        countryCode: 'DE',
+        languageCode: 'de'),
+    LanguageModel(
+        imageUrl: Images.english,
+        languageName: 'Turkish',
+        countryCode: 'TR',
+        languageCode: 'tr'),
   ];
 
   static List<String> joinDropdown = [

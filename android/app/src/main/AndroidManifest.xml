@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sixamtech.sixam_mart_user">
+    package="de.app.sloop">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -108,9 +108,9 @@
             android:value="@string/facebook_app_id" />
 
         <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider[facebook_app_id]"
-            android:exported="false" />
+          android:name="com.facebook.FacebookContentProvider"
+          android:authorities="de.app.sloop.facebook.FacebookContentProvider"
+          android:exported="false" />
 
     </application>
 </manifest>

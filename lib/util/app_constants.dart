@@ -252,26 +252,26 @@ class AppConstants {
 
   static List<LanguageModel> languages = [
     LanguageModel(
-        imageUrl: Images.english,
-        languageName: 'English',
-        countryCode: 'US',
-        languageCode: 'en'),
-    LanguageModel(
-        imageUrl: Images.arabic,
-        languageName: 'عربى',
-        countryCode: 'SA',
-        languageCode: 'ar'),
-
-    //germen and durkey
-    // LanguageModel(imageUrl: Images.arabic, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
-    // LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
-    LanguageModel(
-        imageUrl: Images.english,
+        imageUrl: Images.german,
         languageName: 'German ',
         countryCode: 'DE',
         languageCode: 'de'),
     LanguageModel(
         imageUrl: Images.english,
+        languageName: 'English',
+        countryCode: 'US',
+        languageCode: 'en'),
+    // LanguageModel(
+    //     imageUrl: Images.arabic,
+    //     languageName: 'عربى',
+    //     countryCode: 'SA',
+    //     languageCode: 'ar'),
+
+    //germen and durkey
+    // LanguageModel(imageUrl: Images.arabic, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
+    // LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
+    LanguageModel(
+        imageUrl: Images.turkey,
         languageName: 'Turkish',
         countryCode: 'TR',
         languageCode: 'tr'),

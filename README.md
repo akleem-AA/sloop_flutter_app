@@ -1,5 +1,7 @@
 # sixam_mart
 
+The whole project documention 
+https://docs.6amtech.com/docs-six-am-mart/mobile-apps/mandatory-setup
 A new Flutter application.
 
 ## Getting Started

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,6 +63,30 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
   bool firstTime = true;
   TabController? _tabController;
   final List<Tab> _tabs = [];
+
+  List<PlatformFile> _selectedFiles = [];
+  List<String> selectedImagePaths = [];
+
+  Future<void> _selectFiles() async {
+    selectedImagePaths.clear();
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      // Optionally specify file types:
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedFiles = result.files;
+        for (PlatformFile file in _selectedFiles) {
+          selectedImagePaths.add(file.name);
+          log('Print $selectedImagePaths');
+          print('Print $selectedImagePaths');
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -390,6 +416,34 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                                         ]),
                                       ),
                                     ]),
+                                    const SizedBox(
+                                        height:
+                                            Dimensions.paddingSizeExtraLarge),
+                                    //TODO: For picking multiple files
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                      ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                                                                crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                                                                mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                                                                children: [
+                                          Text(_selectedFiles.isNotEmpty
+                                              ? "${_selectedFiles.length} Files Selected "
+                                              : "No files selected"),
+                                         const Spacer(),
+
+                                          ElevatedButton(
+                                            onPressed: _selectFiles,
+                                            child: const Text('Select Files'),
+                                          ),
+                                                                                ],
+                                                                              ),
+                                        )),
                                     const SizedBox(
                                         height:
                                             Dimensions.paddingSizeExtraLarge),
@@ -1224,6 +1278,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
             ? 'next'.tr
             : 'submit'.tr,
         onPressed: () {
+          //TODO: _selectedFiles
+
           bool defaultDataNull = false;
           for (int index = 0; index < _languageList!.length; index++) {
             if (_languageList![index].key == 'en') {
@@ -1264,7 +1320,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
               showCustomSnackBar('please_select_module_first'.tr);
             } else if (authController.selectedZoneIndex == -1) {
               showCustomSnackBar('please_select_zone'.tr);
-            } /*else if(address.isEmpty) {
+            }
+            /*else if(address.isEmpty) {
               showCustomSnackBar('enter_store_address'.tr);
             }*/
             else if (vat.isEmpty) {
@@ -1289,7 +1346,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
             if (ResponsiveHelper.isDesktop(context)) {
               if (defaultDataNull) {
                 showCustomSnackBar('enter_store_name'.tr);
-              } /*else if(address.isEmpty) {
+              }
+              /*else if(address.isEmpty) {
                 showCustomSnackBar('enter_store_address'.tr);
               }*/
               else if (vat.isEmpty) {
@@ -1366,7 +1424,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                 moduleId: authController
                     .moduleList![authController.selectedModuleIndex!].id
                     .toString(),
-                deliveryTimeType: authController.storeTimeUnit,
+                deliveryTimeType: authController.storeTimeUnit,selectedImagePaths: selectedImagePaths
               ));
             }
           }

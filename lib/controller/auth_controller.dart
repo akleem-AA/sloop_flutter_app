@@ -34,6 +34,7 @@ class AuthController extends GetxController implements GetxService {
   bool _acceptTerms = true;
   XFile? _pickedLogo;
   XFile? _pickedCover;
+  List<String>? multipleImages;
   List<ZoneModel>? _zoneList;
   int? _selectedZoneIndex = 0;
   LatLng? _restaurantLocation;
@@ -567,7 +568,7 @@ class AuthController extends GetxController implements GetxService {
   Future<void> registerStore(StoreBody storeBody) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registerStore(storeBody, _pickedLogo, _pickedCover);
+    Response response = await authRepo.registerStore(storeBody, _pickedLogo, _pickedCover,multipleImages);
     if(response.statusCode == 200) {
       if(ResponsiveHelper.isDesktop(Get.context)){
         Get.offAllNamed(RouteHelper.getInitialRoute());

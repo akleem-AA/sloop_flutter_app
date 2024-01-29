@@ -99,7 +99,7 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String>? headers}) async {
+  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody,List<String>? images, {Map<String, String>? headers}) async {
     try {
       if(kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
@@ -116,6 +116,11 @@ class ApiClient extends GetxService {
           ));
         }
       }
+      //TODO : For adding Multiple Files
+      // request.files.add(http.MultipartFile(
+      //   "multiple_images", images.readAsBytes().asStream(), list.length,
+      //   filename: '${DateTime.now().toString()}.png',
+      // ));
       request.fields.addAll(body);
       http.Response response = await http.Response.fromStream(await request.send());
       return handleResponse(response, uri);
@@ -191,4 +196,10 @@ class MultipartBody {
   XFile? file;
 
   MultipartBody(this.key, this.file);
+}
+class MultipartBodyList {
+  String key;
+  List<String> file;
+
+  MultipartBodyList(this.key, this.file);
 }

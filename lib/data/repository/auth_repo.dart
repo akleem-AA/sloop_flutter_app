@@ -229,14 +229,14 @@ class AuthRepo {
     return await apiClient.getData(AppConstants.zoneListUri);
   }
 
-  Future<Response> registerStore(StoreBody store, XFile? logo, XFile? cover) async {
+  Future<Response> registerStore(StoreBody store, XFile? logo, XFile? cover,List<String>? mulitpleImages) async {
     return apiClient.postMultipartData(
-      AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover)],
+      AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover),],mulitpleImages
     );
   }
 
-  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts) async {
-    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts);
+  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts,List<String>? images) async {
+    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts,images);
   }
 
   Future<Response> getModules(int? zoneId) async {

@@ -421,28 +421,28 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                                             Dimensions.paddingSizeExtraLarge),
                                     //TODO: For picking multiple files
                                     Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).cardColor,
-                                      ),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                                                                crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                                                                mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                                                                children: [
-                                          Text(_selectedFiles.isNotEmpty
-                                              ? "${_selectedFiles.length} Files Selected "
-                                              : "No files selected"),
-                                         const Spacer(),
-
-                                          ElevatedButton(
-                                            onPressed: _selectFiles,
-                                            child: const Text('Select Files'),
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(_selectedFiles.isNotEmpty
+                                                  ? "${_selectedFiles.length} Files Selected "
+                                                  : "No files selected"),
+                                              const Spacer(),
+                                              ElevatedButton(
+                                                onPressed: _selectFiles,
+                                                child:
+                                                    const Text('Select Files'),
+                                              ),
+                                            ],
                                           ),
-                                                                                ],
-                                                                              ),
                                         )),
                                     const SizedBox(
                                         height:
@@ -1407,25 +1407,25 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
               }
 
               authController.registerStore(StoreBody(
-                translation: jsonEncode(translation),
-                tax: vat,
-                minDeliveryTime: minTime,
-                maxDeliveryTime: maxTime,
-                lat: authController.restaurantLocation!.latitude.toString(),
-                email: email,
-                lng: authController.restaurantLocation!.longitude.toString(),
-                fName: fName,
-                lName: lName,
-                phone: _countryDialCode! + phone,
-                password: password,
-                zoneId: authController
-                    .zoneList![authController.selectedZoneIndex!].id
-                    .toString(),
-                moduleId: authController
-                    .moduleList![authController.selectedModuleIndex!].id
-                    .toString(),
-                deliveryTimeType: authController.storeTimeUnit,selectedImagePaths: selectedImagePaths
-              ));
+                  translation: jsonEncode(translation),
+                  tax: vat,
+                  minDeliveryTime: minTime,
+                  maxDeliveryTime: maxTime,
+                  lat: authController.restaurantLocation!.latitude.toString(),
+                  email: email,
+                  lng: authController.restaurantLocation!.longitude.toString(),
+                  fName: fName,
+                  lName: lName,
+                  phone: _countryDialCode! + phone,
+                  password: password,
+                  zoneId: authController
+                      .zoneList![authController.selectedZoneIndex!].id
+                      .toString(),
+                  moduleId: authController
+                      .moduleList![authController.selectedModuleIndex!].id
+                      .toString(),
+                  deliveryTimeType: authController.storeTimeUnit,
+                  selectedImagePaths: selectedImagePaths));
             }
           }
         },

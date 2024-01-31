@@ -108,6 +108,7 @@ class ApiClient extends GetxService {
       http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(appBaseUrl+uri));
       request.headers.addAll(headers ?? _mainHeaders);
       for(MultipartBody multipart in multipartBody) {
+
         if(multipart.file != null) {
           Uint8List list = await multipart.file!.readAsBytes();
           request.files.add(http.MultipartFile(
@@ -116,6 +117,7 @@ class ApiClient extends GetxService {
           ));
         }
       }
+
       request.fields.addAll(body);
       http.Response response = await http.Response.fromStream(await request.send());
       return handleResponse(response, uri);

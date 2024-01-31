@@ -229,7 +229,7 @@ class AuthRepo {
     return await apiClient.getData(AppConstants.zoneListUri);
   }
 
-  Future<Response> registerStore(StoreBody store, XFile? logo, XFile? cover) async {
+  Future<Response> registerStore(StoreBody store, XFile? logo, XFile? cover,) async {
     return apiClient.postMultipartData(
       AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover)],
     );

@@ -14,6 +14,7 @@ class StoreBody {
   String? zoneId;
   String? moduleId;
   String? deliveryTimeType;
+  // List<File>? images;
 
   StoreBody(
       { this.translation,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -62,7 +63,31 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
   TabController? _tabController;
   final List<Tab> _tabs = [];
 
-  @override
+  List<PlatformFile> _selectedFiles = [];
+  List<File> selectedImagePaths = [];
+
+  Future<void> _selectFiles() async {
+    print('button click ');
+    selectedImagePaths.clear();
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      // Optionally specify file types:
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedFiles = result.files;
+        for (PlatformFile file in _selectedFiles) {
+          selectedImagePaths.add(File(file.path!));
+          print('Print $selectedImagePaths');
+        }
+      });
+    }
+  }
+
+    @override
   void initState() {
     super.initState();
     _tabController = TabController(
@@ -393,6 +418,32 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                                     const SizedBox(
                                         height:
                                             Dimensions.paddingSizeExtraLarge),
+                                    // TODO: For picking multiple files
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Text(_selectedFiles.isNotEmpty
+                                                  ? "${_selectedFiles.length} Files Selected "
+                                                  : "No files selected"),
+                                              // Text("Files Selected"),
+                                              const Spacer(),
+                                              ElevatedButton(
+                                                onPressed: _selectFiles,
+                                                child:
+                                                const Text('Select Files'),
+                                              ),
+                                            ],
+                                          ),
+                                        )),
                                     ListView.builder(
                                         itemCount: _languageList!.length,
                                         shrinkWrap: true,

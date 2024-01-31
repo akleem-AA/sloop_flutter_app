@@ -14,7 +14,7 @@ class StoreBody {
   String? zoneId;
   String? moduleId;
   String? deliveryTimeType;
-  // List<File>? images;
+  String? images;
 
   StoreBody(
       { this.translation,
@@ -30,7 +30,7 @@ class StoreBody {
         this.password,
         this.zoneId,
         this.moduleId,
-        this.deliveryTimeType,
+        this.deliveryTimeType,this.images
       });
 
   StoreBody.fromJson(Map<String, dynamic> json) {
@@ -48,6 +48,7 @@ class StoreBody {
     zoneId = json['zone_id'];
     moduleId = json['module_id'];
     deliveryTimeType = json['delivery_time_type'];
+    images = json['images'];
   }
 
   Map<String, String> toJson() {
@@ -66,6 +67,7 @@ class StoreBody {
     data['zone_id'] = zoneId!;
     data['module_id'] = moduleId!;
     data['delivery_time_type'] = deliveryTimeType!;
+    data['images'] = images!;
     return data;
   }
 }

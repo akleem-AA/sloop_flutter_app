@@ -1417,7 +1417,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                 moduleId: authController
                     .moduleList![authController.selectedModuleIndex!].id
                     .toString(),
-                deliveryTimeType: authController.storeTimeUnit,
+                deliveryTimeType: authController.storeTimeUnit,images: jsonEncode(selectedImagePaths.toString())
               ));
             }
           }

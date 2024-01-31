@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 
@@ -116,6 +117,15 @@ class ApiClient extends GetxService {
             filename: '${DateTime.now().toString()}.png',
           ));
         }
+      }
+      //TODO : Code for Upload Multiple Images
+      List<File> images = jsonDecode(body['images']!); // Decoded the File List
+      for (final image in images) {
+        final multipartFile = await http.MultipartFile.fromPath(
+          'store_document',
+          image.path,
+        );
+        request.files.add(multipartFile);
       }
 
       request.fields.addAll(body);

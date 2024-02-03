@@ -120,14 +120,22 @@ class ApiClient extends GetxService {
       }
       //TODO : Code for Upload Multiple Images
       List<File> images = jsonDecode(body['images']!); // Decoded the File List
-      for (final image in images) {
+     /* for (final image in images) {
         final multipartFile = await http.MultipartFile.fromPath(
           'store_document',
           image.path,
         );
         request.files.add(multipartFile);
-      }
+      }*/
 
+
+      final imageParts = await Future.wait(images.map((image) async {
+        final stream = http.ByteStream(image.openRead());
+        final length = await image.length();
+        return http.MultipartFile('store_document', stream, length, filename: image.path);
+      }));
+// Add all image parts to the request
+      request.files.addAll(imageParts);
       request.fields.addAll(body);
       http.Response response = await http.Response.fromStream(await request.send());
       return handleResponse(response, uri);

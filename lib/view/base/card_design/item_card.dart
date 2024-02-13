@@ -158,11 +158,8 @@ class ItemCard extends StatelessWidget {
                         ),
                         textDirection: TextDirection.ltr, style: robotoMedium,
                       ),
-
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
                     ]),
-
                     isShop ? Positioned(
                       bottom: 0, right: 0,
                       child: CartCountView(

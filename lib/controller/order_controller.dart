@@ -969,6 +969,21 @@ class OrderController extends GetxController implements GetxService {
 
     }
   }
+   RxBool reorderLoading=false.obs;
+  Future<void> reorderProduct({required String orderID}) async {
+    reorderLoading.value = true;
+    Response response = await orderRepo.reorder(orderID);
+    if (response.statusCode == 200) {
+      reorderLoading.value = false;
+      print("------------------------------------------------$response");
+      Get.toNamed(RouteHelper.getCartRoute());
+      showCustomSnackBar(response.body['message'], isError: false);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    reorderLoading.value = false;
+
+  }
 
 
 

@@ -78,6 +78,11 @@ class OrderRepo {
     return await apiClient.postData(AppConstants.codSwitchUri, data);
   }
 
+
+  Future<Response> reorder(String? orderID) async {
+    return await apiClient.getData(AppConstants.reorder+orderID!);
+  }
+
   Future<Response> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng, bool isRiding) async {
     return await apiClient.getData('${AppConstants.distanceMatrixUri}'
         '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'

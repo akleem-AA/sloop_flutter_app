@@ -22,6 +22,7 @@ class CartController extends GetxController implements GetxService {
 
   List<CartModel> _cartList = [];
   List<OnlineCartModel> _onlineCartList = [];
+  RxList<Item> relatedItemList=<Item>[].obs;
 
   double _subTotal = 0;
   double _itemPrice = 0;
@@ -313,7 +314,7 @@ class CartController extends GetxController implements GetxService {
       update();
     }
   }
-
+//
   Future<bool> addToCartOnline(OnlineCart cart) async {
     _isLoading = true;
     bool success = false;
@@ -322,7 +323,11 @@ class CartController extends GetxController implements GetxService {
     if(response.statusCode == 200) {
       _onlineCartList = [];
       _cartList = [];
+      print("-------------------------");
+      print(response.body);
       response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+      //to store data from carts key
+     // response.body['carts'].forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
       _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
       calculationCart();
       success = true;
@@ -344,6 +349,8 @@ class CartController extends GetxController implements GetxService {
       _onlineCartList = [];
       _cartList = [];
       response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+      // ///to store data from carts key
+      // response.body['carts'].forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
       _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
       calculationCart();
       success = true;
@@ -379,8 +386,16 @@ class CartController extends GetxController implements GetxService {
       if(response.statusCode == 200) {
         _onlineCartList = [];
         _cartList = [];
-        response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
 
+        //response.body.forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+        ///to store data from carts key
+        print("------------------------------------------------------response is ${response.body['related_products']} ");
+        print(response.body);
+        response.body['carts'].forEach((cart) => _onlineCartList.add(OnlineCartModel.fromJson(cart)));
+        ///to store data from relatedItem key
+        relatedItemList.clear();
+        response.body['related_products'].forEach((item)=>relatedItemList?.add(Item.fromJson(item)));
+        //
         _cartList.addAll(CartHelper.formatOnlineCartToLocalCart(onlineCartModel: _onlineCartList));
         print('-------vvvvv->>>> $_cartList');
         calculationCart();

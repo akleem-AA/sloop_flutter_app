@@ -168,6 +168,10 @@ class AppConstants {
   static const String removeAllCartUri = '/api/v1/customer/cart/remove';
   static const String removeItemCartUri = '/api/v1/customer/cart/remove-item';
 
+  ///reorder api
+  static const String reorder = '/api/v1/customer/order/reorder?order_id=';
+
+
   /// Shared Key
   static const String theme = '6ammart_theme';
   static const String token = '6ammart_token';

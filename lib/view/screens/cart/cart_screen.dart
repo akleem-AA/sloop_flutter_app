@@ -30,6 +30,15 @@ import 'package:sixam_mart/view/screens/cart/widget/web_suggested_item_view.dart
 import 'package:sixam_mart/view/screens/home/home_screen.dart';
 import 'package:sixam_mart/view/screens/store/store_screen.dart';
 
+import '../../../controller/item_controller.dart';
+import '../../../controller/localization_controller.dart';
+import '../../base/card_design/item_card.dart';
+import '../../base/corner_banner/banner.dart';
+import '../../base/corner_banner/corner_discount_tag.dart';
+import '../../base/custom_image.dart';
+import '../../base/not_available_widget.dart';
+import '../../base/organic_tag.dart';
+import '../../base/rating_bar.dart';
 import 'widget/not_available_bottom_sheet.dart';
 
 class CartScreen extends StatefulWidget {
@@ -361,9 +370,41 @@ class _CartScreenState extends State<CartScreen> {
                   },
                 ),
               ),
+
             ],
           ) : const SizedBox();
         }),
+
+        ///related product list
+        Obx(()=> Get.find<CartController>(). relatedItemList.isEmpty ? SizedBox():
+            Container(
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10.0),
+                  child: Text("Related Products",style: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold),),
+                ),
+                SizedBox(
+                  height: 285, width: Get.width,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault),
+                    itemCount: Get.find<CartController>().relatedItemList.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault),
+                        child: ItemCard(item: Get.find<CartController>().relatedItemList[index], isPopularItem: false, isFood: false, isShop: false),
+                      );
+                    },
+                  ),
+                ),
+              ],
+                        ),
+            ),
+        ),
       ]),
     );
   }
@@ -416,11 +457,11 @@ class CheckoutButton extends StatelessWidget {
                   backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
                   value: percentage,
                 ),
+
               ]) : const SizedBox(),
 
               ResponsiveHelper.isDesktop(context) ? const Divider(height: 1) : const SizedBox(),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
               Padding(
                 padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
                 child: Row(
@@ -466,7 +507,6 @@ class CheckoutButton extends StatelessWidget {
                 ]),
               ) : const SizedBox(),
               ResponsiveHelper.isDesktop(context) ? const SizedBox(height: Dimensions.paddingSizeSmall) : const SizedBox(),
-
               !ResponsiveHelper.isDesktop(context) ? const SizedBox() :
               Container(
                 width: Dimensions.webMaxWidth,
@@ -508,7 +548,6 @@ class CheckoutButton extends StatelessWidget {
                 ),
               ),
               ResponsiveHelper.isDesktop(context) ? const SizedBox(height: Dimensions.paddingSizeSmall) : const SizedBox(),
-
               SafeArea(
                 child: CustomButton(
                   buttonText: 'proceed_to_checkout'.tr,

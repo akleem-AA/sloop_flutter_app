@@ -231,7 +231,7 @@ class AuthRepo {
 
   Future<Response> registerStore(StoreBody store, XFile? logo, XFile? cover,) async {
     return apiClient.postMultipartData(
-      AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover)],
+      AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover),MultipartBody('images[0]', logo),MultipartBody('images[1]', cover)],
     );
   }
 

@@ -566,6 +566,7 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> registerStore(StoreBody storeBody) async {
     _isLoading = true;
+    print(_pickedCover);
     update();
     Response response = await authRepo.registerStore(storeBody, _pickedLogo, _pickedCover);
     if(response.statusCode == 200) {

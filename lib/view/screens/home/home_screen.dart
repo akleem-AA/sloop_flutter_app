@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: !showMobileModule ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                       isGrocery ? const GroceryHomeScreen()
-                          : isPharmacy ? const PharmacyHomeScreen()
+                         : isPharmacy ? const PharmacyHomeScreen()
                           : isFood ? const FoodHomeScreen()
                           : isShop ? const ShopHomeScreen()
                           : const SizedBox(),

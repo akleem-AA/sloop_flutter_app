@@ -28,6 +28,9 @@ import 'package:sixam_mart/view/screens/review/rate_review_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/cart_controller.dart';
+import '../../base/cart_snackbar.dart';
+
 class OrderDetailsScreen extends StatefulWidget {
   final OrderModel? orderModel;
   final int? orderId;
@@ -101,7 +104,8 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
         endDrawer: const MenuDrawer(),
         endDrawerEnableOpenDragGesture: false,
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(child: GetBuilder<OrderController>(builder: (orderController) {
+        body: SafeArea(child:
+        GetBuilder<OrderController>(builder: (orderController) {
           double deliveryCharge = 0;
           double itemsPrice = 0;
           double discount = 0;
@@ -208,6 +212,69 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       discount: discount, couponDiscount: couponDiscount, tax: tax, addOns: addOns, dmTips: dmTips, taxIncluded: taxIncluded, subTotal: subTotal, total: total,
                       bottomView: _bottomView(orderController, order, parcel, total),
                   ),
+
+                  !Get.find<AuthController>().isGuestLoggedIn() && (order.orderStatus == 'delivered' && (parcel ? order.deliveryMan != null : (orderController.orderDetails!.isNotEmpty && orderController.orderDetails![0].itemCampaignId == null))) ? Center(
+                    child: Container(
+                      width: Dimensions.webMaxWidth,
+                      padding: ResponsiveHelper.isDesktop(context) ? null : const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                      child: MaterialButton(
+                        height: 40,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),side: BorderSide(color: Theme.of(context).primaryColor)),
+                        color: Colors.white,
+                        onPressed: (){
+                          if(Get.find<OrderController>().reorderLoading.value){
+                            return;
+                          }
+                          ///confirmation dialogue
+                          if (Get.find<CartController>().existAnotherStoreItem(widget.orderModel!.store!.id, Get.find<SplashController>().module != null
+                              ? Get.find<SplashController>().module!.id : Get.find<SplashController>().cacheModule!.id)) {
+                            Get.dialog(ConfirmationDialog(
+                              icon: Images.warning,
+                              title: 'are_you_sure_to_reset'.tr,
+                              description: Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
+                                  ? 'if_you_continue'.tr : 'if_you_continue_without_another_store'.tr,
+                              onYesPressed: () {
+                            Get.find<CartController>().clearCartOnline().then((success) async {
+                          if (success) {
+                         Get.find<OrderController>().reorderProduct(orderID:widget.orderId.toString());
+                           }});
+                                // Get.find<CartController>().clearCartOnline().then((success) async {
+                                //   if (success) {
+                                //     await Get.find<CartController>().addToCartOnline(onlineCart);
+                                //     Get.back();
+                                //     showCartSnackBar();
+                                //   }
+                                // });
+                              },
+                            ), barrierDismissible: false);
+                          } else {
+                            Get.find<OrderController>().reorderProduct(orderID:widget.orderId.toString());
+                           // showCartSnackBar();
+                          }
+
+                        },
+                        child: Obx(()=> Get.find<OrderController>().reorderLoading.value?const SizedBox(
+                            height: 25,width: 25,
+                            child: CircularProgressIndicator()): Text("Reorder".tr,style: TextStyle(color: Theme.of(context).primaryColor),)),
+                      )
+                     /* CustomButton(
+                        buttonText: 'review'.tr,
+                        onPressed: () {
+                          List<OrderDetailsModel> orderDetailsList = [];
+                          List<int?> orderDetailsIdList = [];
+                          for (var orderDetail in orderController.orderDetails!) {
+                            if(!orderDetailsIdList.contains(orderDetail.itemDetails!.id)) {
+                              orderDetailsList.add(orderDetail);
+                              orderDetailsIdList.add(orderDetail.itemDetails!.id);
+                            }
+                          }
+                          Get.toNamed(RouteHelper.getReviewRoute(), arguments: RateReviewScreen(
+                            orderDetailsList: orderDetailsList, deliveryMan: order.deliveryMan, orderID: order.id,
+                          ));
+                        },
+                      ),*/
+                    ),
+                  ) : const SizedBox(),
 
                 ],
               ))),
@@ -372,4 +439,5 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
       ) : const SizedBox(),
     ]);
   }
+
 }

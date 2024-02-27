@@ -1123,5 +1123,7 @@
   "please_maintain_the_hygine": "Lütfen hijyene dikkat edin",
   "sender_info": "Gönderen Bilgisi",
   "receiver_info": "Alıcı Bilgisi",
-  "pickup_location": "Teslim Alma Konumu"
+  "pickup_location": "Teslim Alma Konumu",
+  "upload_document": "Belgeleri Saklayın",
+  "related_product":"ilgili ürünler"
 }

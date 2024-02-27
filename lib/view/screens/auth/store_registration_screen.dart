@@ -87,7 +87,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(
@@ -427,9 +427,9 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             children: [
                                               Text(_selectedFiles.isNotEmpty
                                                   ? "${_selectedFiles.length} Files Selected "
@@ -438,8 +438,12 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen>
                                               const Spacer(),
                                               ElevatedButton(
                                                 onPressed: _selectFiles,
-                                                child:
-                                                const Text('Select Files'),
+                                                child: Text(
+                                                    'upload_document'.tr,
+                                                    style:
+                                                        robotoRegular.copyWith(
+                                                            fontSize: Dimensions
+                                                                .fontSizeLarge)),
                                               ),
                                             ],
                                           ),

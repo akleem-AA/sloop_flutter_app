@@ -1123,5 +1123,7 @@
   "please_maintain_the_hygine": "Bitte achten Sie auf die Hygiene",
   "sender_info": "Absenderinformationen",
   "receiver_info": "Empfängerinformationen",
-  "pickup_location": "Treffpunkt"
+  "pickup_location": "Treffpunkt",
+  "upload_document": "Dokumente speichern",
+  "related_product":"Verwandte Produkte"
 }

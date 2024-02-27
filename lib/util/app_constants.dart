@@ -10,10 +10,11 @@ class AppConstants {
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
   static const int balanceInputLen = 10;
-  static const String webHostedUrl = 'https://6ammart-web.6amtech.com';
+  static const String webHostedUrl = 'https://sloop-app.de/';
 
   // static const String baseUrl = 'https://6ammart-admin.6amtech.com';
   static const String baseUrl = 'https://sloop.shop-template.de';
+  // static const String baseUrl = 'https://sloop-app.de';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
   static const String storeItemUri = '/api/v1/items/latest';
@@ -170,7 +171,6 @@ class AppConstants {
 
   ///reorder api
   static const String reorder = '/api/v1/customer/order/reorder?order_id=';
-
 
   /// Shared Key
   static const String theme = '6ammart_theme';

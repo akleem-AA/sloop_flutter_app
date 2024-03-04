@@ -18,123 +18,154 @@ import 'package:sixam_mart/util/styles.dart';
 class CouponCard extends StatelessWidget {
   final CouponModel coupon;
   final int index;
-  const CouponCard({Key? key, required this.coupon, required this.index}) : super(key: key);
+  const CouponCard({Key? key, required this.coupon, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Stack(children: [
-
       ClipRRect(
         borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
         child: Transform.rotate(
           angle: Get.find<LocalizationController>().isLtr ? 0 : pi,
           child: Image.asset(
-            Get.find<ThemeController>().darkTheme ? Images.couponBgDark : Images.couponBgLight,
-            height: ResponsiveHelper.isMobilePhone() ? 120 : 140, width: size.width,
+            Get.find<ThemeController>().darkTheme
+                ? Images.couponBgDark
+                : Images.couponBgLight,
+            height: ResponsiveHelper.isMobilePhone() ? 120 : 140,
+            width: size.width,
             fit: BoxFit.cover,
           ),
         ),
       ),
-
       Container(
         height: ResponsiveHelper.isMobilePhone() ? 110 : 140,
         alignment: Alignment.center,
         child: Row(children: [
-
           SizedBox(
             width: ResponsiveHelper.isDesktop(context) ? 150 : size.width * 0.3,
-            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.asset(
-                coupon.discountType == 'percent' ? Images.percentCouponOffer : coupon.couponType
-                    == 'free_delivery' ? Images.freeDelivery : Images.money,
-                height: 25, width: 25,
+                coupon.discountType == 'percent'
+                    ? Images.percentCouponOffer
+                    : coupon.couponType == 'free_delivery'
+                        ? Images.freeDelivery
+                        : Images.money,
+                height: 25,
+                width: 25,
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
               Text(
                 '${coupon.discount}${coupon.discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} ${'off'.tr}',
-                style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault),
+                style:
+                    robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault),
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-              coupon.store == null ?  Flexible(child: Text(
-                coupon.couponType == 'store_wise' ? '${'on'.tr} ${coupon.data}' : 'on_all_store'.tr,
-                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                maxLines: 1, overflow: TextOverflow.ellipsis,
-              )) : Flexible(child: Text(
-                coupon.couponType == 'default' ? '${coupon.store!.name}' : '',
-                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeExtraSmall),
-                maxLines: 1, overflow: TextOverflow.ellipsis,
-              )),
+              coupon.store == null
+                  ? Flexible(
+                      child: Text(
+                      coupon.couponType == 'store_wise'
+                          ? '${'on'.tr} ${coupon.data}'
+                          : 'on_all_store'.tr,
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeExtraSmall),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ))
+                  : Flexible(
+                      child: Text(
+                      coupon.couponType == 'default'
+                          ? '${coupon.store!.name}'
+                          : '',
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeExtraSmall),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
             ]),
           ),
-
           const SizedBox(width: 40),
-
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-
-              Text(
-                '${coupon.title}',
-                style: robotoRegular, textDirection: TextDirection.ltr,
-                maxLines: 1, overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-              Text(
-                '${DateConverter.stringToReadableString(coupon.startDate!)} ${'to'.tr} ${DateConverter.stringToReadableString(coupon.expireDate!)}',
-                style: robotoMedium.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
-                maxLines: 2, overflow: TextOverflow.ellipsis,
-              ),
-
-              Row(children: [
-                Text(
-                  '*${'min_purchase'.tr} ',
-                  style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeExtraSmall),
-                  maxLines: 2, overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                Text(
-                  PriceConverter.convertPrice(coupon.minPurchase),
-                  style: robotoMedium.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeExtraSmall),
-                  maxLines: 1, overflow: TextOverflow.ellipsis, textDirection: TextDirection.ltr,
-                ),
-              ]),
-            ]),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${coupon.title}',
+                    style: robotoRegular,
+                    textDirection: TextDirection.ltr,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                  Text(
+                    '${DateConverter.stringToReadableString(coupon.startDate!)} ${'to'.tr} ${DateConverter.stringToReadableString(coupon.expireDate!)}',
+                    style: robotoMedium.copyWith(
+                        color: Theme.of(context).disabledColor,
+                        fontSize: Dimensions.fontSizeSmall),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(children: [
+                    Text(
+                      '*${'min_purchase'.tr} ',
+                      style: robotoRegular.copyWith(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: Dimensions.fontSizeExtraSmall),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                    Text(
+                      PriceConverter.convertPrice(coupon.minPurchase),
+                      style: robotoMedium.copyWith(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: Dimensions.fontSizeExtraSmall),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textDirection: TextDirection.ltr,
+                    ),
+                  ]),
+                ]),
           ),
         ]),
       ),
+      ResponsiveHelper.isDesktop(context)
+          ? Positioned(
+              top: Dimensions.paddingSizeSmall,
+              right: Dimensions.paddingSizeSmall,
+              child: JustTheTooltip(
+                backgroundColor: Theme.of(context).cardColor,
+                controller: coupon.toolTip,
+                preferredDirection: AxisDirection.up,
+                tailLength: 14,
+                tailBaseWidth: 20,
+                triggerMode: TooltipTriggerMode.manual,
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('code_copied'.tr,
+                      style: robotoRegular.copyWith(
+                          color: Theme.of(context).primaryColor)),
+                ),
+                child: InkWell(
+                  onTap: () async {
+                    coupon.toolTip?.showTooltip();
+                    print(">>>>>>copy text");
+                    Clipboard.setData(ClipboardData(text: coupon.code!));
 
+                    Future.delayed(const Duration(milliseconds: 750), () {
+                      coupon.toolTip?.hideTooltip();
+                    });
+                  },
+                  child: Image.asset(Images.copyCoupon, height: 20, width: 20),
 
-      ResponsiveHelper.isDesktop(context) ? Positioned(
-        top: Dimensions.paddingSizeSmall,
-        right: Dimensions.paddingSizeSmall,
-        child: JustTheTooltip(
-          backgroundColor: Theme.of(context).cardColor,
-          controller: coupon.toolTip,
-          preferredDirection: AxisDirection.up,
-          tailLength: 14,
-          tailBaseWidth: 20,
-          triggerMode: TooltipTriggerMode.manual,
-          content: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('code_copied'.tr,style: robotoRegular.copyWith(color: Theme.of(context).primaryColor)),
-          ),
-          child: InkWell(
-            onTap: () async {
-              coupon.toolTip?.showTooltip();
-              Clipboard.setData(ClipboardData(text: coupon.code!));
-
-              Future.delayed(const Duration(milliseconds: 750), () {
-                coupon.toolTip?.hideTooltip();
-              });
-            },
-            child: Image.asset(Images.copyCoupon, height: 20, width: 20),
-          ),
-        ),
-      ) : const SizedBox(),
-
+                  // child: Image.asset(Images.copyCoupon, height: 20, width: 20),
+                ),
+              ),
+            )
+          : const SizedBox(),
     ]);
   }
 }

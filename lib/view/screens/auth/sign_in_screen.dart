@@ -166,9 +166,18 @@ class SignInScreenState extends State<SignInScreen> {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(Images.logo, width: 125),
+                                Image.asset(
+                                  Images.logo,
+                                  width: 125,
+                                  height: 90,
+                                ),
+
                                 // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
+
+                                //logo name image
+                                Center(
+                                    child: Image.asset(Images.logoName,
+                                        width: 125)),
                                 const SizedBox(
                                     height: Dimensions.paddingSizeExtraLarge),
 

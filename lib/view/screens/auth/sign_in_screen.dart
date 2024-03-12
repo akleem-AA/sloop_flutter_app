@@ -352,7 +352,7 @@ class SignInScreenState extends State<SignInScreen> {
                                 const SocialLoginWidget(),
 
                                 //TUDO:- comment guset login feature
-                                // ResponsiveHelper.isDesktop(context) ? const SizedBox() : const GuestButton(),
+                                ResponsiveHelper.isDesktop(context) ? const SizedBox() : const GuestButton(),
 
                                 ResponsiveHelper.isDesktop(context)
                                     ? Row(

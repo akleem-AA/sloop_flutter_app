@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/auth/widget/social_login_widget.dart';
+import 'package:http/http.dart' as http;
 
 class SignInScreen extends StatefulWidget {
   final bool exitFromApp;
@@ -43,11 +44,12 @@ class SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String? _countryDialCode;
   bool _canExit = GetPlatform.isWeb ? true : false;
+  bool showGuestButton = false;
 
   @override
   void initState() {
     super.initState();
-
+    fetchGuestLoginStatus();
     _countryDialCode =
         Get.find<AuthController>().getUserCountryCode().isNotEmpty
             ? Get.find<AuthController>().getUserCountryCode()
@@ -58,6 +60,28 @@ class SignInScreenState extends State<SignInScreen> {
     _passwordController.text = Get.find<AuthController>().getUserPassword();
     if (Get.find<AuthController>().showPassView) {
       Get.find<AuthController>().showHidePass(isUpdate: false);
+    }
+  }
+
+  Future<void> fetchGuestLoginStatus() async {
+    try {
+      final response = await http
+          .get(Uri.parse('https://sloop-app.de/api/v1/config/checkGuestLogin'));
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        // Check the value of "guest_show_or_not" field
+        if (jsonResponse['guest_show_or_not'] == 1) {
+          // If value is 1, set showGuestButton to true
+          setState(() {
+            showGuestButton = true;
+          });
+        }
+      } else {
+        throw Exception('Failed to load guest login status');
+      }
+    } catch (error) {
+      print('Error: $error');
+      // Handle error
     }
   }
 
@@ -360,8 +384,14 @@ class SignInScreenState extends State<SignInScreen> {
 
                                 const SocialLoginWidget(),
 
+                                if (showGuestButton)
+                                  ResponsiveHelper.isDesktop(context)
+                                      ? const SizedBox()
+                                      : const GuestButton(),
                                 //TUDO:- comment guset login feature
-                                // ResponsiveHelper.isDesktop(context) ? const SizedBox() : const GuestButton(),
+                                // ResponsiveHelper.isDesktop(context)
+                                //     ? const SizedBox()
+                                //     : const GuestButton(),
 
                                 ResponsiveHelper.isDesktop(context)
                                     ? Row(

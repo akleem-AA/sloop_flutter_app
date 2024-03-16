@@ -20,6 +20,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
+  bool is_brotto = false;
   @override
   void initState() {
     super.initState();
@@ -69,7 +70,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
           height: 5,
           // width: 0,
           child: LiteRollingSwitch(
-              value: true,
+              value: is_brotto,
               width: 100,
               colorOff: Theme.of(context).primaryColor,
               iconOn: Icons.circle,
@@ -81,7 +82,10 @@ class DetailsAppBarState extends State<DetailsAppBar>
               onDoubleTap: () {},
               onSwipe: () {},
               onChanged: (bool postion) {
-                print("toggle buton $postion");
+                print("toggle buton detial screen$postion");
+                setState(() {
+                  is_brotto = postion;
+                });
               }),
         ),
         AnimatedBuilder(

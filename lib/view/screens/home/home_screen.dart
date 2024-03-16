@@ -112,7 +112,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-
+  // ignore: non_constant_identifier_names
+  bool is_brotto = false;
   @override
   void initState() {
     super.initState();
@@ -332,10 +333,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 30,
                                     // width: 0,
                                     child: LiteRollingSwitch(
-                                      value:true,
+                                        value: is_brotto,
                                         width: 90,
-                                        colorOff:  Theme.of(context)
-                                            .primaryColor,
+                                        colorOff:
+                                            Theme.of(context).primaryColor,
                                         iconOn: Icons.circle,
                                         iconOff: Icons.circle_outlined,
                                         textOn: "Brutto",
@@ -345,7 +346,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onDoubleTap: () {},
                                         onSwipe: () {},
                                         onChanged: (bool postion) {
-                                          print("toggle buton $postion");
+                                          print(
+                                              "toggle buton homescreen $postion");
+
+                                          setState(() {
+                                            is_brotto = postion;
+                                          });
                                         }),
                                   ),
                                   InkWell(
@@ -470,6 +476,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                             isGrocery
                                                 ? const GroceryHomeScreen()
+                                                // ? const Text(
+                                                //     "grocery Home screen")
                                                 : isPharmacy
                                                     ? const PharmacyHomeScreen()
                                                     : isFood

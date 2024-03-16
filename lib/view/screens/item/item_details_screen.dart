@@ -40,7 +40,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final Size size = Get.size;
   final GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarState> _key = GlobalKey();
-
+  bool is_brotto = false;
   @override
   void initState() {
     super.initState();

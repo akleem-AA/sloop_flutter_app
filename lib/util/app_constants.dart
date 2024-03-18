@@ -13,8 +13,8 @@ class AppConstants {
   static const String webHostedUrl = 'https://sloop-app.de/';
 
   // static const String baseUrl = 'https://6ammart-admin.6amtech.com';
-  // static const String baseUrl = 'https://sloop.shop-template.de';
-  static const String baseUrl = 'https://sloop-app.de';
+  static const String baseUrl = 'https://sloop.shop-template.de';
+  // static const String baseUrl = 'https://sloop-app.de';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
   static const String storeItemUri = '/api/v1/items/latest';

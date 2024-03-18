@@ -242,7 +242,7 @@ class ItemCard extends StatelessWidget {
 //diccount price
                           item.discount != null && item.discount! > 0
                               ? Text(
-                                  "0tes${PriceConverter.convertPrice(Get.find<ItemController>().getStartingPrice(item))}",
+                                  "${PriceConverter.convertPrice(Get.find<ItemController>().getStartingPrice(item))}",
                                   style: robotoMedium.copyWith(
                                     fontSize: Dimensions.fontSizeExtraSmall,
                                     color: Theme.of(context).disabledColor,
@@ -255,7 +255,7 @@ class ItemCard extends StatelessWidget {
 
 //price with discount
                           Text(
-                            "1tes${PriceConverter.convertPrice(
+                            "${PriceConverter.convertPrice(
                               Get.find<ItemController>().getStartingPrice(item),
                               discount: item.discount,
                               discountType: item.discountType,

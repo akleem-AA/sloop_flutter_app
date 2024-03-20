@@ -92,6 +92,7 @@ class Item {
   int? organic;
   int? quantityLimit;
   int? flashSale;
+  double? brutto_price;
 
   Item(
       {this.id,
@@ -125,7 +126,7 @@ class Item {
         this.stock,
         this.organic,
         this.quantityLimit,
-        this.flashSale,
+        this.flashSale,this.brutto_price
       });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -135,6 +136,7 @@ class Item {
     image = json['image'];
     images = json['images'] != null ? json['images'].cast<String>() : [];
     categoryId = json['category_id'];
+    brutto_price = json['brutto_price'];
     if (json['category_ids'] != null) {
       categoryIds = [];
       json['category_ids'].forEach((v) {
@@ -220,6 +222,7 @@ class Item {
           choiceOptions!.map((v) => v.toJson()).toList();
     }
     data['price'] = price;
+    data['brutto_price'] = brutto_price;
     data['tax'] = tax;
     data['discount'] = discount;
     data['discount_type'] = discountType;

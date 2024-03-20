@@ -73,7 +73,7 @@ class DashboardScreenState extends State<DashboardScreen> {
     _pageController = PageController(initialPage: widget.pageIndex);
 
     _screens = [
-      const HomeScreen(),
+       HomeScreen(),
       const FavouriteScreen(),
       const SizedBox(),
       const OrderScreen(),
@@ -166,7 +166,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                             bool isParcel = splashController.module != null && splashController.configModel!.moduleConfig!.module!.isParcel!;
 
                             _screens = [
-                              const HomeScreen(),
+                               HomeScreen(),
                               isParcel ? const AddressScreen(fromDashboard: true) : const FavouriteScreen(),
                               const SizedBox(),
                               const OrderScreen(),

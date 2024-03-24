@@ -336,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 30,
                                     // width: 0,
                                     child: LiteRollingSwitch(
-                                        value: true,
+                                        value: false,
                                         width: 90,
                                         colorOff:
                                             Theme.of(context).primaryColor,

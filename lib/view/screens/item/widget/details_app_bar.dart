@@ -6,6 +6,8 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
+import '../../../../myCustomController.dart';
+
 class DetailsAppBar extends StatefulWidget implements PreferredSizeWidget {
   const DetailsAppBar({Key? key}) : super(key: key);
 
@@ -78,7 +80,9 @@ class DetailsAppBarState extends State<DetailsAppBar>
               textOn: "Brutto",
               textOff: "Netto",
               // textSize: 10,
-              onTap: () {},
+              onTap: () {
+                Get.find<MyClassController>().showBrutto.value=!Get.find<MyClassController>().showBrutto.value;
+              },
               onDoubleTap: () {},
               onSwipe: () {},
               onChanged: (bool postion) {

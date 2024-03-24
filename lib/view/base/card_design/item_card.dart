@@ -259,12 +259,12 @@ class ItemCard extends StatelessWidget {
                           Obx(() =>
                               !Get.find<MyClassController>().showBrutto.value
                                   ? Text(
-                                      "Exclusive : ${PriceConverter.convertPrice(
-                                            Get.find<ItemController>()
-                                                .getStartingPrice(item),
-                                            discount: item.discount,
-                                            discountType: item.discountType,
-                                          )}",
+                                      PriceConverter.convertPrice(
+                                        Get.find<ItemController>()
+                                            .getStartingPrice(item),
+                                        discount: item.discount,
+                                        discountType: item.discountType,
+                                      ),
                                       textDirection: TextDirection.ltr,
                                       style: robotoMedium,
                                     )
@@ -272,23 +272,46 @@ class ItemCard extends StatelessWidget {
                           Obx(() =>
                               Get.find<MyClassController>().showBrutto.value
                                   ? Text(
-                                      "Inclusive : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                          " " +
-                                          item.brutto_price.toString(),
+                                      "${Get.find<SplashController>().configModel!.currencySymbol!} ${item.brutto_price}",
                                       textDirection: TextDirection.ltr,
                                       style: robotoMedium,
                                     )
                                   : const SizedBox()),
 
-                          Text(
-                            "Tax : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                " " +
-                                item.tax.toString(),
-                            textDirection: TextDirection.ltr,
-                            style: robotoMedium.copyWith(fontSize: 10),
-                          ),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraSmall),
+                          Obx(() => !Get.find<MyClassController>()
+                                  .showBrutto
+                                  .value
+                              ? Text(
+                                  "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                      " " +
+                                      item.tax.toString(),
+                                  textDirection: TextDirection.ltr,
+                                  style: robotoMedium.copyWith(fontSize: 10),
+                                )
+                              : const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall)),
+                          Obx(() => Get.find<MyClassController>()
+                                  .showBrutto
+                                  .value
+                              ? Text(
+                                  "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                      " " +
+                                      item.tax.toString(),
+                                  textDirection: TextDirection.ltr,
+                                  style: robotoMedium.copyWith(fontSize: 10),
+                                )
+                              : const SizedBox(
+                                  height: Dimensions.paddingSizeExtraSmall)),
+
+                          // Text(
+                          //   "Tax : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                          //       " " +
+                          //       item.tax.toString(),
+                          //   textDirection: TextDirection.ltr,
+                          //   style: robotoMedium.copyWith(fontSize: 10),
+                          // ),
+                          // const SizedBox(
+                          //     height: Dimensions.paddingSizeExtraSmall),
                         ]),
                     isShop
                         ? Positioned(

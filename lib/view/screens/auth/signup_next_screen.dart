@@ -1,33 +1,35 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:chips_choice/chips_choice.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
-import 'package:sixam_mart/controller/localization_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
-import 'package:sixam_mart/data/model/body/signup_body.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/helper/custom_validator.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
-import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:sixam_mart/view/base/custom_text_field.dart';
 import 'package:sixam_mart/view/base/menu_drawer.dart';
-import 'package:sixam_mart/view/screens/auth/sign_in_screen.dart';
-import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile hide FormData;
+import 'package:dio/dio.dart';
 
 class SignUpNextScreen extends StatefulWidget {
-  const SignUpNextScreen({Key? key}) : super(key: key);
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String phone;
+  final String password;
+  final String confirmPassword;
+  final String referCode;
+
+  const SignUpNextScreen({Key? key, required this.firstName,required this.lastName,
+    required this.email, required this.phone, required this.password, required this.confirmPassword, required this.referCode}) : super(key: key);
 
   @override
   SignUpNextScreenState createState() => SignUpNextScreenState();
@@ -40,20 +42,16 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _storeAddressController = TextEditingController();
-  final TextEditingController _businessCategoryController = TextEditingController();
 
-  final TextEditingController _referCodeController = TextEditingController();
   String? _countryDialCode;
 
   @override
   void initState() {
     super.initState();
+
     _countryDialCode = CountryCode.fromCountryCode(
-            Get.find<SplashController>().configModel!.country!)
+        Get.find<SplashController>().configModel!.country!)
         .dialCode;
-    if (Get.find<AuthController>().showPassView) {
-      Get.find<AuthController>().showHidePass(isUpdate: false);
-    }
   }
 
   @override
@@ -128,10 +126,8 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     : 0),
                             CustomTextField(
                               titleText: 'Store Address',
-                              hintText: 'Enter your store address',
+                              hintText: 'Store address',
                               controller: _storeAddressController,
-                              focusNode: _storeAddressFocus,
-                              nextFocus: _businessCategoryFocus,
                               inputType: TextInputType.name,
                               prefixIcon: Icons.location_on,
                             ),
@@ -140,6 +136,24 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
 
+                            InkWell(
+                              onTap: () {
+                                authController.pickDocument();
+                              },
+                              child: CustomTextField(
+                                titleText: authController.file ==null?'Upload Document':authController.file!.path.toString(),
+                                focusNode: _storeAddressFocus,
+                                nextFocus: _businessCategoryFocus,
+                                inputType: TextInputType.name,
+                                isEnabled: false,
+                                prefixIcon: Icons.file_copy,
+                              ),
+                            ),
+
+                            SizedBox(
+                                height: !ResponsiveHelper.isDesktop(context)
+                                    ? Dimensions.paddingSizeLarge
+                                    : 0),
                             TypeAheadField<CategoryModel>(
                               textFieldConfiguration: TextFieldConfiguration(
                                 decoration: InputDecoration(
@@ -213,16 +227,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               ),
                             ),
 
-                            InkWell(
-                                onTap: () async {
-                                  authController.pickDocument();
-                                },
-                                child: Text("Upload Document")),
-
-                            SizedBox(
-                                height: !ResponsiveHelper.isDesktop(context)
-                                    ? Dimensions.paddingSizeLarge
-                                    : 0),
                             SizedBox(
                                 height: !ResponsiveHelper.isDesktop(context)
                                     ? Dimensions.paddingSizeLarge
@@ -248,39 +252,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                       authController, _countryDialCode!)
                                   : null,
                             ),
-                            const SizedBox(
-                                height: Dimensions.paddingSizeExtraLarge),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      if (ResponsiveHelper.isDesktop(context)) {
-                                        Get.back();
-                                        Get.dialog(const SignInScreen(
-                                            exitFromApp: false,
-                                            backFromThis: false));
-                                      } else {
-                                        if (Get.currentRoute ==
-                                            RouteHelper.signUp) {
-                                          Get.back();
-                                        } else {
-                                          Get.toNamed(
-                                              RouteHelper.getSignInRoute(
-                                                  RouteHelper.signUp));
-                                        }
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(
-                                          Dimensions.paddingSizeExtraSmall),
-                                      child: Text('<< Go Back',
-                                          style: robotoMedium.copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
-                                    ),
-                                  ),
-                                ]),
+
                           ]),
                     ),
                   ],
@@ -300,14 +272,15 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
   }
 
   void _register(AuthController authController, String countryCode) async {
-    /*
-    String firstName = _firstNameController.text.trim();
-    String lastName = _lastNameController.text.trim();
-    String email = _emailController.text.trim();
-    String number = _phoneController.text.trim();
-    String password = _passwordController.text.trim();
-    String confirmPassword = _confirmPasswordController.text.trim();
-    String referCode = _referCodeController.text.trim();
+    String firstName = widget.firstName.trim();
+    String lastName = widget.lastName.trim();
+    String email = widget.email.trim();
+    String number = widget.phone.trim();
+    String password = widget.password.trim();
+    String confirmPassword = widget.confirmPassword.trim();
+    String referCode = widget.referCode.trim();
+    String storeName = _storeNameController.text.trim();
+    String stroreAddress = _storeAddressController.text.trim();
 
     String numberWithCountryCode = countryCode + number;
     PhoneValid phoneValid =
@@ -332,16 +305,65 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('password_should_be'.tr);
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    } else {
-      SignUpBody signUpBody = SignUpBody(
+    } else if(storeName.isEmpty) {
+      showCustomSnackBar('Store name should not empty');
+    } else if(stroreAddress.isEmpty){
+      showCustomSnackBar('Store address should not empty');
+    }else if(authController.file == null){
+      showCustomSnackBar('Please upload documents');
+    }else if(authController.selectedCategories.length <=0){
+      showCustomSnackBar('Please select category');
+    }else{
+      String? _fileName = authController.file!.path;
+
+      /*SignUpBody signUpBody = SignUpBody(
         fName: firstName,
         lName: lastName,
         email: email,
         phone: numberWithCountryCode,
         password: password,
         refCode: referCode,
-      );
-      authController.registration(signUpBody).then((status) async {
+        store_name: storeName,
+        store_address: stroreAddress,
+        new_category: authController.selectedCategories[0].name ,
+        exist_category: authController.selectedCategories[0].id.toString(),
+        images: authController.file!.path,
+        file: authController.file!
+      );*/
+
+     /* dio.FormData formData = dio.FormData.fromMap({
+        "f_name": firstName,
+        "l_name": lastName,
+        "phone": numberWithCountryCode,
+        "email": email,
+        "password": password,
+        "ref_code": '',
+        "exist_category": authController.selectedCategories[0].id.toString(),
+        "store_name": storeName,
+        "store_address": stroreAddress,
+        "new_category": authController.selectedCategories[0].name,
+        "images[]": await dio.MultipartFile.fromFile(_fileName),
+        _fileName: authController.file
+      });*/
+
+      final formData = FormData.fromMap({
+        "f_name": firstName,
+        "l_name": lastName,
+        "phone": numberWithCountryCode,
+        "email": email,
+        "password": password,
+        "ref_code": '',
+        "exist_category": authController.selectedCategories[0].id,
+        "store_name": storeName,
+        "store_address": stroreAddress,
+        "new_category": authController.selectedCategories[0].name,
+        "images[]":  await MultipartFile.fromFile(_fileName),
+        _fileName: authController.file
+      });
+
+
+
+      authController.registration(formData).then((status) async {
         if (status.isSuccess) {
           if (Get.find<SplashController>().configModel!.customerVerification!) {
             List<int> encoded = utf8.encode(password);
@@ -357,7 +379,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
         }
       });
     }
- */
   }
 }
 

@@ -386,13 +386,15 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   : null,
                               buttonText: 'next'.tr,
                               isLoading: authController.isLoading,
-                              onPressed: authController.acceptTerms
+                              /*onPressed: authController.acceptTerms
                                   ? () => Get.toNamed(RouteHelper
                                   .getSignUpNextRoute())
-                                  : null,/*onPressed: authController.acceptTerms
+                                  : null,*/
+
+                              onPressed: authController.acceptTerms
                                   ? () => _register(
                                       authController, _countryDialCode!)
-                                  : null,*/
+                                  : null,
                             ),
 
                             const SizedBox(
@@ -477,29 +479,10 @@ class SignUpScreenState extends State<SignUpScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else {
-      SignUpBody signUpBody = SignUpBody(
-        fName: firstName,
-        lName: lastName,
-        email: email,
-        phone: numberWithCountryCode,
-        password: password,
-        refCode: referCode,
-      );
-      authController.registration(signUpBody).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel!.customerVerification!) {
-            List<int> encoded = utf8.encode(password);
-            String data = base64Encode(encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode,
-                status.message, RouteHelper.signUp, data));
-          } else {
-            Get.find<LocationController>()
-                .navigateToLocationScreen(RouteHelper.signUp);
-          }
-        } else {
-          showCustomSnackBar(status.message);
-        }
-      });
+
+      Get.toNamed(RouteHelper.getSignUpNextRoute(firstName: firstName,lastName: lastName, email: email,
+      phone: number,password: password,confirmPassword: confirmPassword,referCode: referCode));
+
     }
   }
 }

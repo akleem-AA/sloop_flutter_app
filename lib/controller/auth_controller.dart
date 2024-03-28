@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:dio/dio.dart' hide Response;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,7 +23,7 @@ import 'package:sixam_mart/data/repository/auth_repo.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
 
 import '../data/model/response/category_model.dart';
 
@@ -205,10 +208,10 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-  Future<ResponseModel> registration(SignUpBody signUpBody) async {
+  Future<ResponseModel> registration(FormData formData) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registration(signUpBody);
+    Response response = await authRepo.registration(formData);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       if(!Get.find<SplashController>().configModel!.customerVerification!) {
@@ -734,14 +737,14 @@ class AuthController extends GetxController implements GetxService {
   String getGuestNumber() {
     return authRepo.getGuestContactNumber();
   }
-
-  void pickDocument() async {/*
+  File? file;
+  void pickDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-
     if (result != null) {
-      File file = File(result.files.single.path!);
+      file = File(result.files.single.path!);
     } else {
-      // User canceled the picker
+      file = null;
     }
-  */}
+    update();
+  }
 }

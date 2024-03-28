@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
@@ -13,16 +12,19 @@ import 'package:sixam_mart/data/model/body/social_log_in_body.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/dio.dart' hide Response;
+
 
 class AuthRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
-  Future<Response> registration(SignUpBody signUpBody) async {
-    return await apiClient.postData(AppConstants.registerUri, signUpBody.toJson());
+  Future<Response> registration(FormData signUpBody) async {
+
+    return await apiClient.postSignUpData(AppConstants.registerUri, signUpBody);
   }
 
   Future<Response> login({String? phone, String? password}) async {

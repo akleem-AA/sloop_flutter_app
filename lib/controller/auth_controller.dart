@@ -22,6 +22,8 @@ import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 
+import '../data/model/response/category_model.dart';
+
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   AuthController({required this.authRepo}) {
@@ -32,6 +34,8 @@ class AuthController extends GetxController implements GetxService {
   bool _guestLoading = false;
   bool _notification = true;
   bool _acceptTerms = true;
+  //File? _file;
+  List<CategoryModel> _selectedCategories = [];
   XFile? _pickedLogo;
   XFile? _pickedCover;
   List<ZoneModel>? _zoneList;
@@ -66,6 +70,8 @@ class AuthController extends GetxController implements GetxService {
   bool get guestLoading => _guestLoading;
   bool get notification => _notification;
   bool get acceptTerms => _acceptTerms;
+  //File? get file => _file;
+  List<CategoryModel> get selectedCategories => _selectedCategories;
   XFile? get pickedLogo => _pickedLogo;
   XFile? get pickedCover => _pickedCover;
   List<ZoneModel>? get zoneList => _zoneList;
@@ -422,6 +428,7 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+
   void toggleRememberMe() {
     _isActiveRememberMe = !_isActiveRememberMe;
     update();
@@ -727,4 +734,14 @@ class AuthController extends GetxController implements GetxService {
   String getGuestNumber() {
     return authRepo.getGuestContactNumber();
   }
+
+  void pickDocument() async {/*
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+    } else {
+      // User canceled the picker
+    }
+  */}
 }

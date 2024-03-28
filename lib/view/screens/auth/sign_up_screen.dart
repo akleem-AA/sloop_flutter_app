@@ -21,6 +21,8 @@ import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/category_controller.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -50,6 +52,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<CategoryController>().getCategoryList(true, allCategory: true);
 
     _countryDialCode = CountryCode.fromCountryCode(
             Get.find<SplashController>().configModel!.country!)
@@ -86,14 +89,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                   )
                 : null,
             child: GetBuilder<AuthController>(builder: (authController) {
-              // ResponsiveHelper.isDesktop(context) ? Align(
-              //   alignment: Alignment.topRight,
-              //   child: IconButton(
-              //     onPressed: () => Get.back(),
-              //     icon: const Icon(Icons.clear),
-              //   ),
-              // ) : const SizedBox(),
-
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -389,12 +384,15 @@ class SignUpScreenState extends State<SignUpScreen> {
                               fontSize: ResponsiveHelper.isDesktop(context)
                                   ? Dimensions.fontSizeExtraSmall
                                   : null,
-                              buttonText: 'sign_up'.tr,
+                              buttonText: 'next'.tr,
                               isLoading: authController.isLoading,
                               onPressed: authController.acceptTerms
+                                  ? () => Get.toNamed(RouteHelper
+                                  .getSignUpNextRoute())
+                                  : null,/*onPressed: authController.acceptTerms
                                   ? () => _register(
                                       authController, _countryDialCode!)
-                                  : null,
+                                  : null,*/
                             ),
 
                             const SizedBox(

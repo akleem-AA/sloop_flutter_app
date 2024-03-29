@@ -39,6 +39,9 @@ class ItemCard extends StatelessWidget {
     String? discountType =
         item.storeDiscount == 0 ? item.discountType : 'percent';
 
+    double? startingBruttoPrice =
+        Get.find<ItemController>().getStartingBruttoPrice(item);
+
     return OnHover(
       isItem: true,
       child: Stack(children: [
@@ -272,7 +275,9 @@ class ItemCard extends StatelessWidget {
                           Obx(() =>
                               Get.find<MyClassController>().showBrutto.value
                                   ? Text(
-                                      "${Get.find<SplashController>().configModel!.currencySymbol!} ${item.brutto_price}",
+                                      PriceConverter.convertPrice(
+                                        startingBruttoPrice,
+                                      ),
                                       textDirection: TextDirection.ltr,
                                       style: robotoMedium,
                                     )

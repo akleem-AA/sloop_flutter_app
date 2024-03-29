@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:get/get.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/basic_medicine_model.dart';
@@ -9,18 +11,26 @@ class ItemModel {
   List<Item>? items;
   List<Categories>? categories;
 
-  ItemModel({this.totalSize, this.limit, this.offset, this.items, this.categories});
+  ItemModel(
+      {this.totalSize, this.limit, this.offset, this.items, this.categories});
 
   ItemModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'].toString();
-    offset = (json['offset'] != null && json['offset'].toString().trim().isNotEmpty) ? int.parse(json['offset'].toString()) : null;
+    offset =
+        (json['offset'] != null && json['offset'].toString().trim().isNotEmpty)
+            ? int.parse(json['offset'].toString())
+            : null;
     if (json['products'] != null) {
       items = [];
       json['products'].forEach((v) {
-        if(v['module_type'] == null || !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation!
-            || v['variations'] == null || v['variations'].isEmpty
-            || (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+        if (v['module_type'] == null ||
+            !Get.find<SplashController>()
+                .getModuleConfig(v['module_type'])
+                .newVariation! ||
+            v['variations'] == null ||
+            v['variations'].isEmpty ||
+            (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
           items!.add(Item.fromJson(v));
         }
       });
@@ -28,9 +38,13 @@ class ItemModel {
     if (json['items'] != null) {
       items = [];
       json['items'].forEach((v) {
-        if(v['module_type'] == null || !Get.find<SplashController>().getModuleConfig(v['module_type']).newVariation!
-            || v['variations'] == null || v['variations'].isEmpty
-            || (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
+        if (v['module_type'] == null ||
+            !Get.find<SplashController>()
+                .getModuleConfig(v['module_type'])
+                .newVariation! ||
+            v['variations'] == null ||
+            v['variations'].isEmpty ||
+            (v['food_variations'] != null && v['food_variations'].isNotEmpty)) {
           items!.add(Item.fromJson(v));
         }
       });
@@ -96,38 +110,38 @@ class Item {
 
   Item(
       {this.id,
-        this.name,
-        this.description,
-        this.image,
-        this.images,
-        this.categoryId,
-        this.categoryIds,
-        this.variations,
-        this.foodVariations,
-        this.addOns,
-        this.choiceOptions,
-        this.price,
-        this.tax,
-        this.discount,
-        this.discountType,
-        this.availableTimeStarts,
-        this.availableTimeEnds,
-        this.storeId,
-        this.storeName,
-        this.zoneId,
-        this.storeDiscount,
-        this.scheduleOrder,
-        this.avgRating,
-        this.ratingCount,
-        this.veg,
-        this.moduleId,
-        this.moduleType,
-        this.unitType,
-        this.stock,
-        this.organic,
-        this.quantityLimit,
-        this.flashSale,this.brutto_price
-      });
+      this.name,
+      this.description,
+      this.image,
+      this.images,
+      this.categoryId,
+      this.categoryIds,
+      this.variations,
+      this.foodVariations,
+      this.addOns,
+      this.choiceOptions,
+      this.price,
+      this.tax,
+      this.discount,
+      this.discountType,
+      this.availableTimeStarts,
+      this.availableTimeEnds,
+      this.storeId,
+      this.storeName,
+      this.zoneId,
+      this.storeDiscount,
+      this.scheduleOrder,
+      this.avgRating,
+      this.ratingCount,
+      this.veg,
+      this.moduleId,
+      this.moduleType,
+      this.unitType,
+      this.stock,
+      this.organic,
+      this.quantityLimit,
+      this.flashSale,
+      this.brutto_price});
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -136,7 +150,7 @@ class Item {
     image = json['image'];
     images = json['images'] != null ? json['images'].cast<String>() : [];
     categoryId = json['category_id'];
-    brutto_price = json['brutto_price'];
+    brutto_price = json['brutto_price']?.toDouble(); // Parse as double
     if (json['category_ids'] != null) {
       categoryIds = [];
       json['category_ids'].forEach((v) {
@@ -161,7 +175,7 @@ class Item {
         json['add_ons'].forEach((v) {
           addOns!.add(AddOns.fromJson(v));
         });
-      } else if(json['addons'] != null){
+      } else if (json['addons'] != null) {
         json['addons'].forEach((v) {
           addOns!.add(AddOns.fromJson(v));
         });
@@ -218,8 +232,7 @@ class Item {
       data['add_ons'] = addOns!.map((v) => v.toJson()).toList();
     }
     if (choiceOptions != null) {
-      data['choice_options'] =
-          choiceOptions!.map((v) => v.toJson()).toList();
+      data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
     data['price'] = price;
     data['brutto_price'] = brutto_price;
@@ -268,13 +281,16 @@ class Variation {
   String? type;
   double? price;
   int? stock;
+  double? brutto_price;
 
-  Variation({this.type, this.price, this.stock});
+  Variation({this.type, this.price, this.stock, this.brutto_price});
 
   Variation.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     price = json['price']?.toDouble();
     stock = int.parse(json['stock'] != null ? json['stock'].toString() : '0');
+    brutto_price =
+        json['brutto_price']?.toDouble(); // Add brutto_price assignment
   }
 
   Map<String, dynamic> toJson() {
@@ -282,6 +298,8 @@ class Variation {
     data['type'] = type;
     data['price'] = price;
     data['stock'] = stock;
+    data['brutto_price'] =
+        brutto_price; // Include brutto_price in serialization
     return data;
   }
 }
@@ -291,10 +309,7 @@ class AddOns {
   String? name;
   double? price;
 
-  AddOns(
-      {this.id,
-        this.name,
-        this.price});
+  AddOns({this.id, this.name, this.price});
 
   AddOns.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -341,13 +356,19 @@ class FoodVariation {
   bool? required;
   List<VariationValue>? variationValues;
 
-  FoodVariation({this.name, this.multiSelect, this.min, this.max, this.required, this.variationValues});
+  FoodVariation(
+      {this.name,
+      this.multiSelect,
+      this.min,
+      this.max,
+      this.required,
+      this.variationValues});
 
   FoodVariation.fromJson(Map<String, dynamic> json) {
-    if(json['max'] != null) {
+    if (json['max'] != null) {
       name = json['name'];
       multiSelect = json['type'] == 'multi';
-      min =  multiSelect! ? int.parse(json['min'].toString()) : 0;
+      min = multiSelect! ? int.parse(json['min'].toString()) : 0;
       max = multiSelect! ? int.parse(json['max'].toString()) : 0;
       required = json['required'] == 'on';
       if (json['values'] != null) {

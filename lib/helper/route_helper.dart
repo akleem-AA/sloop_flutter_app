@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:meta_seo/meta_seo.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
@@ -87,6 +86,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 
+import '../view/screens/auth/signup_next_screen.dart';
+
 class RouteHelper {
   static const String initial = '/';
   static const String splash = '/splash';
@@ -94,6 +95,7 @@ class RouteHelper {
   static const String onBoarding = '/on-boarding';
   static const String signIn = '/sign-in';
   static const String signUp = '/sign-up';
+  static const String signUpNext = '/sign-up-next';
   static const String verification = '/verification';
   static const String accessLocation = '/access-location';
   static const String pickMap = '/pick-map';
@@ -170,6 +172,11 @@ class RouteHelper {
   static String getOnBoardingRoute() => onBoarding;
   static String getSignInRoute(String page) => '$signIn?page=$page';
   static String getSignUpRoute() => signUp;
+
+  static String getSignUpNextRoute({String? firstName,String? lastName,
+  String? email, String? phone, String? password, String? confirmPassword, String? referCode }){
+    return '$signUpNext?firstName=$firstName&lastName=$lastName&email=$email&phone=$phone&password=$password&confirmPassword=$confirmPassword&referCode=$referCode';
+  }
   static String getVerificationRoute(String? number, String? token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
   }
@@ -340,6 +347,11 @@ class RouteHelper {
       backFromThis: Get.parameters['page'] != splash && Get.parameters['page'] != onBoarding,
     )),
     GetPage(name: signUp, page: () => const SignUpScreen()),
+    GetPage(name: signUpNext, page: () => SignUpNextScreen(
+      firstName: Get.parameters['firstName']!,lastName: Get.parameters['lastName']!, email: Get.parameters['email']!,
+    phone: Get.parameters['phone']!, password: Get.parameters['password']!, confirmPassword: Get.parameters['confirmPassword']!,
+   referCode: Get.parameters['referCode']!
+    )),
     GetPage(name: verification, page: () {
       List<int> decode = base64Decode(Get.parameters['pass']!.replaceAll(' ', '+'));
       String data = utf8.decode(decode);

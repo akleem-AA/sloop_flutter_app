@@ -21,6 +21,8 @@ import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/category_controller.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -50,6 +52,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<CategoryController>().getCategoryList(true, allCategory: true);
 
     _countryDialCode = CountryCode.fromCountryCode(
             Get.find<SplashController>().configModel!.country!)
@@ -86,14 +89,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                   )
                 : null,
             child: GetBuilder<AuthController>(builder: (authController) {
-              // ResponsiveHelper.isDesktop(context) ? Align(
-              //   alignment: Alignment.topRight,
-              //   child: IconButton(
-              //     onPressed: () => Get.back(),
-              //     icon: const Icon(Icons.clear),
-              //   ),
-              // ) : const SizedBox(),
-
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -389,8 +384,13 @@ class SignUpScreenState extends State<SignUpScreen> {
                               fontSize: ResponsiveHelper.isDesktop(context)
                                   ? Dimensions.fontSizeExtraSmall
                                   : null,
-                              buttonText: 'sign_up'.tr,
+                              buttonText: 'next'.tr,
                               isLoading: authController.isLoading,
+                              /*onPressed: authController.acceptTerms
+                                  ? () => Get.toNamed(RouteHelper
+                                  .getSignUpNextRoute())
+                                  : null,*/
+
                               onPressed: authController.acceptTerms
                                   ? () => _register(
                                       authController, _countryDialCode!)
@@ -479,29 +479,10 @@ class SignUpScreenState extends State<SignUpScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else {
-      SignUpBody signUpBody = SignUpBody(
-        fName: firstName,
-        lName: lastName,
-        email: email,
-        phone: numberWithCountryCode,
-        password: password,
-        refCode: referCode,
-      );
-      authController.registration(signUpBody).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel!.customerVerification!) {
-            List<int> encoded = utf8.encode(password);
-            String data = base64Encode(encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode,
-                status.message, RouteHelper.signUp, data));
-          } else {
-            Get.find<LocationController>()
-                .navigateToLocationScreen(RouteHelper.signUp);
-          }
-        } else {
-          showCustomSnackBar(status.message);
-        }
-      });
+
+      Get.toNamed(RouteHelper.getSignUpNextRoute(firstName: firstName,lastName: lastName, email: email,
+      phone: number,password: password,confirmPassword: confirmPassword,referCode: referCode));
+
     }
   }
 }

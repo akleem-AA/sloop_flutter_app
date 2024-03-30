@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-
+import 'package:dio/dio.dart' hide Response;
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/error_response.dart';
 import 'package:sixam_mart/data/model/response/module_model.dart';
@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient extends GetxService {
+  final dio = Dio();
   final String appBaseUrl;
   final SharedPreferences sharedPreferences;
   static final String noInternetMessage = 'connection_to_api_server_failed'.tr;
@@ -95,6 +96,29 @@ class ApiClient extends GetxService {
       ).timeout(Duration(seconds: timeout ?? timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
+      return Response(statusCode: 1, statusText: noInternetMessage);
+    }
+  }
+
+  Map<String, String> headers = {
+    'Content-Type': 'multipart/form-data', // Usually required for FormData
+    'Authorization': 'Bearer', // If using token-based authentication
+    'Accept' : '*/*',
+    'Accept-Encoding' : 'gzip, deflate, br',
+    'Connection': 'keep-alive'
+  };
+
+  Future<Response> postSignUpData(String uri, dynamic formdata, {Map<String, String>? headers, int? timeout}) async {
+    try {
+      if(kDebugMode) {
+        print('====> API Call: $appBaseUrl $uri\nHeader: $_mainHeaders');
+        print('====> API Body: ${formdata.fields.toString()}');
+      }
+      final response = await dio.post(appBaseUrl + uri,
+          data: formdata,options: Options(headers: headers));
+      return handleResponse(response as http.Response, uri);
+    } catch (e) {
+      print("====================e :"+e.toString());
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }

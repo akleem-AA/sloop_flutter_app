@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:dio/dio.dart' hide Response;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,7 +23,9 @@ import 'package:sixam_mart/data/repository/auth_repo.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide FormData;
+
+import '../data/model/response/category_model.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
@@ -32,6 +37,8 @@ class AuthController extends GetxController implements GetxService {
   bool _guestLoading = false;
   bool _notification = true;
   bool _acceptTerms = true;
+  //File? _file;
+  List<CategoryModel> _selectedCategories = [];
   XFile? _pickedLogo;
   XFile? _pickedCover;
   List<ZoneModel>? _zoneList;
@@ -66,6 +73,8 @@ class AuthController extends GetxController implements GetxService {
   bool get guestLoading => _guestLoading;
   bool get notification => _notification;
   bool get acceptTerms => _acceptTerms;
+  //File? get file => _file;
+  List<CategoryModel> get selectedCategories => _selectedCategories;
   XFile? get pickedLogo => _pickedLogo;
   XFile? get pickedCover => _pickedCover;
   List<ZoneModel>? get zoneList => _zoneList;
@@ -199,10 +208,10 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-  Future<ResponseModel> registration(SignUpBody signUpBody) async {
+  Future<ResponseModel> registration(FormData formData) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registration(signUpBody);
+    Response response = await authRepo.registration(formData);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       if(!Get.find<SplashController>().configModel!.customerVerification!) {
@@ -421,6 +430,7 @@ class AuthController extends GetxController implements GetxService {
     _acceptTerms = !_acceptTerms;
     update();
   }
+
 
   void toggleRememberMe() {
     _isActiveRememberMe = !_isActiveRememberMe;
@@ -726,5 +736,15 @@ class AuthController extends GetxController implements GetxService {
 
   String getGuestNumber() {
     return authRepo.getGuestContactNumber();
+  }
+  File? file;
+  void pickDocument() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      file = File(result.files.single.path!);
+    } else {
+      file = null;
+    }
+    update();
   }
 }

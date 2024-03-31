@@ -100,7 +100,7 @@ class ApiClient extends GetxService {
     }
   }
 
-  Map<String, String> headers = {
+  Map<String, String> headerss = {
     'Content-Type': 'multipart/form-data', // Usually required for FormData
     'Authorization': 'Bearer', // If using token-based authentication
     'Accept' : '*/*',
@@ -115,7 +115,7 @@ class ApiClient extends GetxService {
         print('====> API Body: ${formdata.fields.toString()}');
       }
       final response = await dio.post(appBaseUrl + uri,
-          data: formdata,options: Options(headers: headers));
+          data: formdata,options: Options(headers: headerss));
       return handleResponse(response as http.Response, uri);
     } catch (e) {
       print("====================e :"+e.toString());

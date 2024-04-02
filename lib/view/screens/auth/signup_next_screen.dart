@@ -10,6 +10,7 @@ import 'package:sixam_mart/helper/custom_validator.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
+import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
@@ -103,6 +104,16 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Image.asset(Images.logo, width: 125),
+                            // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                            // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
+                            Center(
+                                child:
+                                Image.asset(Images.logoName, width: 125)),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+
+
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text('My Store',
@@ -136,24 +147,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
 
-                            InkWell(
-                              onTap: () {
-                                authController.pickDocument();
-                              },
-                              child: CustomTextField(
-                                titleText: authController.file ==null?'Upload Document':authController.file!.path.toString(),
-                                focusNode: _storeAddressFocus,
-                                nextFocus: _businessCategoryFocus,
-                                inputType: TextInputType.name,
-                                isEnabled: false,
-                                prefixIcon: Icons.file_copy,
-                              ),
-                            ),
-
-                            SizedBox(
-                                height: !ResponsiveHelper.isDesktop(context)
-                                    ? Dimensions.paddingSizeLarge
-                                    : 0),
                             TypeAheadField<CategoryModel>(
                               textFieldConfiguration: TextFieldConfiguration(
                                 decoration: InputDecoration(
@@ -226,6 +219,29 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                 },
                               ),
                             ),
+
+                            SizedBox(
+                                height: !ResponsiveHelper.isDesktop(context)
+                                    ? Dimensions.paddingSizeLarge
+                                    : 0),
+
+
+
+                            InkWell(
+                              onTap: () {
+                                authController.pickDocument();
+                              },
+                              child: CustomTextField(
+                                titleText: authController.file ==null?'Upload Document':authController.file!.path.toString(),
+                                focusNode: _storeAddressFocus,
+                                nextFocus: _businessCategoryFocus,
+                                inputType: TextInputType.name,
+                                isEnabled: false,
+                                prefixIcon: Icons.file_copy,
+                              ),
+                            ),
+
+
 
                             SizedBox(
                                 height: !ResponsiveHelper.isDesktop(context)

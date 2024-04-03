@@ -42,7 +42,6 @@ class AuthController extends GetxController implements GetxService {
   //File? _file;
   List<CategoryModel> _selectedCategories = [];
   XFile? _pickedLogo;
-  XFile? _pickedImages;
   XFile? _pickedCover;
   List<ZoneModel>? _zoneList;
   int? _selectedZoneIndex = 0;
@@ -79,7 +78,6 @@ class AuthController extends GetxController implements GetxService {
   //File? get file => _file;
   List<CategoryModel> get selectedCategories => _selectedCategories;
   XFile? get pickedLogo => _pickedLogo;
-  XFile? get pickedImages => _pickedImages;
   XFile? get pickedCover => _pickedCover;
   List<ZoneModel>? get zoneList => _zoneList;
   int? get selectedZoneIndex => _selectedZoneIndex;
@@ -212,11 +210,39 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+  Future<void> registerDeliveryMan(DeliveryManBody deliveryManBody) async {
+    _isLoading = true;
+    update();
+    List<MultipartBody> multiParts = [];
+    multiParts.add(MultipartBody('image', _pickedImage));
+    for (XFile file in _pickedIdentities) {
+      multiParts.add(MultipartBody('identity_image[]', file));
+    }
+    Response response =
+    await authRepo.registerDeliveryMan(deliveryManBody, multiParts);
+    if (response.statusCode == 200) {
+      Get.offAllNamed(RouteHelper.getInitialRoute());
+      showCustomSnackBar('delivery_man_registration_successful'.tr,
+          isError: false);
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    _isLoading = false;
+    update();
+  }
+
+
   Future<ResponseModel> registration(
       SignUpBody signUpBody, BuildContext context) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registration(signUpBody, _pickedImages!);
+
+    List<MultipartBody> multiParts = [];
+    for (XFile file in _pickedIdentities) {
+      multiParts.add(MultipartBody('images[]', file));
+    }
+
+    Response response = await authRepo.registration(signUpBody, multiParts);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       if (ResponsiveHelper.isDesktop(context)) {
@@ -547,15 +573,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-  void pickRegisterImage(bool isRemove) async {
-    if (isRemove) {
-      _pickedImages = null;
-    } else {
-      _pickedImages =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      update();
-    }
-  }
 
   Future<void> getZoneList() async {
     _pickedLogo = null;
@@ -715,8 +732,7 @@ class AuthController extends GetxController implements GetxService {
         _pickedImage =
             await ImagePicker().pickImage(source: ImageSource.gallery);
       } else {
-        XFile? xFile =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
+        XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
         if (xFile != null) {
           _pickedIdentities.add(xFile);
         }
@@ -725,6 +741,7 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+
   void removeDmImage() {
     _pickedImage = null;
     update();
@@ -732,27 +749,6 @@ class AuthController extends GetxController implements GetxService {
 
   void removeIdentityImage(int index) {
     _pickedIdentities.removeAt(index);
-    update();
-  }
-
-  Future<void> registerDeliveryMan(DeliveryManBody deliveryManBody) async {
-    _isLoading = true;
-    update();
-    List<MultipartBody> multiParts = [];
-    multiParts.add(MultipartBody('image', _pickedImage));
-    for (XFile file in _pickedIdentities) {
-      multiParts.add(MultipartBody('identity_image[]', file));
-    }
-    Response response =
-        await authRepo.registerDeliveryMan(deliveryManBody, multiParts);
-    if (response.statusCode == 200) {
-      Get.offAllNamed(RouteHelper.getInitialRoute());
-      showCustomSnackBar('delivery_man_registration_successful'.tr,
-          isError: false);
-    } else {
-      ApiChecker.checkApi(response);
-    }
-    _isLoading = false;
     update();
   }
 

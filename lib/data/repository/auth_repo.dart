@@ -20,8 +20,13 @@ class AuthRepo {
   final SharedPreferences sharedPreferences;
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
-  Future<Response> registration(SignUpBody signUpBody, XFile file) async {
-    return await apiClient.postMultipartData(AppConstants.registerUri, signUpBody.toJson(),[MultipartBody('images[]', file)]);
+  //[MultipartBody('images[]', file)]
+  Future<Response> registration(SignUpBody signUpBody, List<MultipartBody> multiParts) async {
+    return await apiClient.postMultipartData(AppConstants.registerUri, signUpBody.toJson(), multiParts);
+  }
+
+  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts) async {
+    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts);
   }
 
   Future<Response> login({String? phone, String? password}) async {
@@ -232,10 +237,6 @@ class AuthRepo {
     return apiClient.postMultipartData(
       AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover),MultipartBody('images[0]', logo),MultipartBody('images[1]', cover)],
     );
-  }
-
-  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts) async {
-    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts);
   }
 
   Future<Response> getModules(int? zoneId) async {

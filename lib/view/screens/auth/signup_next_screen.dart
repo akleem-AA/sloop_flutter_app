@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
@@ -199,30 +202,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                   filled: true,
                                 ),
                               ),
-                              /*suggestionsCallback: (pattern) {
-                                final suggestions = searchCategories(
-                                    pattern,
-                                    Get.find<CategoryController>()
-                                        .categoryList!);
-
-                                if (suggestions.isEmpty) {
-                                  suggestions.add(CategoryModel(
-                                      name: pattern
-                                          .trim())); // Custom suggestion with trimmed pattern
-                                }
-                                return suggestions;
-                              },
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(
-                                    suggestion.name!,
-                                    style: true
-                                        ? TextStyle(fontStyle: FontStyle.italic)
-                                        : null, // Optional style for custom entries
-                                  ),
-                                );
-                              },*/
-
                               suggestionsCallback: (pattern) {
                                 final suggestions = searchCategories(
                                     pattern, Get.find<CategoryController>().categoryList!);
@@ -296,20 +275,66 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
 
-                            InkWell(
-                              onTap: () {
-                                authController.pickRegisterImage(false);
-                              },
-                              child: CustomTextField(
-                                titleText: authController.pickedImages == null
-                                    ? 'Upload Document'
-                                    : authController.pickedImages!.path
-                                        .toString(),
-                                focusNode: _storeAddressFocus,
-                                nextFocus: _businessCategoryFocus,
-                                inputType: TextInputType.name,
-                                isEnabled: false,
-                                prefixIcon: Icons.file_copy,
+                            SizedBox(
+                              height: 120,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: authController.pickedIdentities.length+1,
+                                itemBuilder: (context, index) {
+                                  XFile? file = index == authController.pickedIdentities.length ? null : authController.pickedIdentities[index];
+                                  if(index == authController.pickedIdentities.length) {
+                                    return InkWell(
+                                      onTap: () => authController.pickDmImage(false, false),
+                                      child: DottedBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        strokeWidth: 1,
+                                        strokeCap: StrokeCap.butt,
+                                        dashPattern: const [5, 5],
+                                        padding: const EdgeInsets.all(5),
+                                        borderType: BorderType.RRect,
+                                        radius: const Radius.circular(Dimensions.radiusDefault),
+                                        child: Container(
+                                          height: 120, width: 150, alignment: Alignment.center,
+                                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                                          child: Column(
+                                            children: [
+                                              Icon(Icons.camera_alt, color: Theme.of(context).disabledColor),
+                                              Text('upload_identity_image'.tr, style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+                                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                    ),
+                                    child: Stack(children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                        child: GetPlatform.isWeb ? Image.network(
+                                          file!.path, width: 150, height: 120, fit: BoxFit.cover,
+                                        ) : Image.file(
+                                          File(file!.path), width: 150, height: 120, fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0, top: 0,
+                                        child: InkWell(
+                                          onTap: () => authController.removeIdentityImage(index),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                            child: Icon(Icons.delete_forever, color: Colors.red),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
+                                  );
+                                },
                               ),
                             ),
 
@@ -394,7 +419,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('Store name should not empty');
     } else if (stroreAddress.isEmpty) {
       showCustomSnackBar('Store address should not empty');
-    } else if (authController.pickedImages == null) {
+    } else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('Please upload documents');
     } else if (authController.selectedCategories.length <= 0) {
       showCustomSnackBar('Please select category');

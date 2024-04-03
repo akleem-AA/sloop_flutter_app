@@ -5,6 +5,7 @@ import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/data/model/body/signup_body.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/helper/custom_validator.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
@@ -29,8 +30,16 @@ class SignUpNextScreen extends StatefulWidget {
   final String confirmPassword;
   final String referCode;
 
-  const SignUpNextScreen({Key? key, required this.firstName,required this.lastName,
-    required this.email, required this.phone, required this.password, required this.confirmPassword, required this.referCode}) : super(key: key);
+  const SignUpNextScreen(
+      {Key? key,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phone,
+      required this.password,
+      required this.confirmPassword,
+      required this.referCode})
+      : super(key: key);
 
   @override
   SignUpNextScreenState createState() => SignUpNextScreenState();
@@ -43,6 +52,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _storeAddressController = TextEditingController();
+  final TextEditingController inputController = TextEditingController();
 
   String? _countryDialCode;
 
@@ -51,7 +61,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     super.initState();
 
     _countryDialCode = CountryCode.fromCountryCode(
-        Get.find<SplashController>().configModel!.country!)
+            Get.find<SplashController>().configModel!.country!)
         .dialCode;
   }
 
@@ -109,10 +119,9 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                             // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
                             Center(
                                 child:
-                                Image.asset(Images.logoName, width: 125)),
+                                    Image.asset(Images.logoName, width: 125)),
                             const SizedBox(
                                 height: Dimensions.paddingSizeExtraLarge),
-
 
                             Align(
                               alignment: Alignment.topLeft,
@@ -149,31 +158,57 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
                             TypeAheadField<CategoryModel>(
                               textFieldConfiguration: TextFieldConfiguration(
+                                controller: inputController,
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 0.3, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 0.3,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 1, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 1,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 0.3, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 0.3,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   isDense: true,
                                   hintText: "Select Categories",
                                   fillColor: Theme.of(context).cardColor,
-                                  hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
+                                  hintStyle: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeLarge,
+                                      color: Theme.of(context).hintColor),
                                   filled: true,
                                 ),
                               ),
-                              suggestionsCallback: (pattern) {
-                                final suggestions = searchCategories(pattern, Get.find<CategoryController>().categoryList!);
+                              /*suggestionsCallback: (pattern) {
+                                final suggestions = searchCategories(
+                                    pattern,
+                                    Get.find<CategoryController>()
+                                        .categoryList!);
 
                                 if (suggestions.isEmpty) {
-                                  suggestions.add(CategoryModel(name: pattern.trim())); // Custom suggestion with trimmed pattern
+                                  suggestions.add(CategoryModel(
+                                      name: pattern
+                                          .trim())); // Custom suggestion with trimmed pattern
                                 }
                                 return suggestions;
                               },
@@ -181,19 +216,54 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                 return ListTile(
                                   title: Text(
                                     suggestion.name!,
-                                    style: true ? TextStyle(fontStyle: FontStyle.italic) : null, // Optional style for custom entries
+                                    style: true
+                                        ? TextStyle(fontStyle: FontStyle.italic)
+                                        : null, // Optional style for custom entries
+                                  ),
+                                );
+                              },*/
+
+                              suggestionsCallback: (pattern) {
+                                final suggestions = searchCategories(
+                                    pattern, Get.find<CategoryController>().categoryList!);
+
+                                if (suggestions.isEmpty) {
+                                  suggestions.add(CategoryModel(
+                                      name: pattern.trim(),
+                                      isNew: true // Flag for new category
+                                  ));
+                                }
+                                return suggestions;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  leading: suggestion.isNew!
+                                      ? Icon(Icons.add_circle, color: Theme.of(context).primaryColor) // Icon for new category
+                                      : null,
+                                  title: Text(
+                                    suggestion.name!,
+                                    style: suggestion.isNew!
+                                        ? TextStyle(fontStyle: FontStyle.italic) // Optional style for new entries
+                                        : null,
                                   ),
                                 );
                               },
+
                               onSuggestionSelected: (selection) {
                                 if (selection != null) {
                                   setState(() {
-                                    if (!authController.selectedCategories.contains(selection)) {
-                                      authController.selectedCategories.add(selection);
+
+                                    inputController.text = '';
+                                    if (!authController.selectedCategories
+                                        .contains(selection)) {
+                                      authController.selectedCategories
+                                          .add(selection);
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
-                                          content: Text("Category already selected"), // Customize message as needed
+                                          content: Text(
+                                              "Category already selected"), // Customize message as needed
                                         ),
                                       );
                                     }
@@ -207,12 +277,13 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               runSpacing: 4.0,
                               children: List.generate(
                                 authController.selectedCategories.length,
-                                    (index) {
-                                  final category = authController.selectedCategories[index];
+                                (index) {
+                                  final category =
+                                      authController.selectedCategories[index];
                                   return Chip(
                                     label: Text(category.name!),
                                     backgroundColor: Colors.grey.shade200,
-                                    onDeleted: (){
+                                    onDeleted: () {
                                       removeItem(index, authController);
                                     },
                                   );
@@ -225,14 +296,15 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
 
-
-
                             InkWell(
                               onTap: () {
-                                authController.pickDocument();
+                                authController.pickRegisterImage(false);
                               },
                               child: CustomTextField(
-                                titleText: authController.file ==null?'Upload Document':authController.file!.path.toString(),
+                                titleText: authController.pickedImages == null
+                                    ? 'Upload Document'
+                                    : authController.pickedImages!.path
+                                        .toString(),
                                 focusNode: _storeAddressFocus,
                                 nextFocus: _businessCategoryFocus,
                                 inputType: TextInputType.name,
@@ -240,8 +312,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                 prefixIcon: Icons.file_copy,
                               ),
                             ),
-
-
 
                             SizedBox(
                                 height: !ResponsiveHelper.isDesktop(context)
@@ -268,7 +338,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                       authController, _countryDialCode!)
                                   : null,
                             ),
-
                           ]),
                     ),
                   ],
@@ -300,7 +369,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
     String numberWithCountryCode = countryCode + number;
     PhoneValid phoneValid =
-    await CustomValidator.isPhoneValid(numberWithCountryCode);
+        await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
 
     if (firstName.isEmpty) {
@@ -321,18 +390,17 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('password_should_be'.tr);
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    } else if(storeName.isEmpty) {
+    } else if (storeName.isEmpty) {
       showCustomSnackBar('Store name should not empty');
-    } else if(stroreAddress.isEmpty){
+    } else if (stroreAddress.isEmpty) {
       showCustomSnackBar('Store address should not empty');
-    }else if(authController.file == null){
+    } else if (authController.pickedImages == null) {
       showCustomSnackBar('Please upload documents');
-    }else if(authController.selectedCategories.length <=0){
+    } else if (authController.selectedCategories.length <= 0) {
       showCustomSnackBar('Please select category');
-    }else{
-      String? _fileName = authController.file!.path;
+    } else {
 
-      /*SignUpBody signUpBody = SignUpBody(
+      SignUpBody signUpBody = SignUpBody(
         fName: firstName,
         lName: lastName,
         email: email,
@@ -341,58 +409,18 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
         refCode: referCode,
         store_name: storeName,
         store_address: stroreAddress,
-        new_category: authController.selectedCategories[0].name ,
-        exist_category: authController.selectedCategories[0].id.toString(),
-        images: authController.file!.path,
-        file: authController.file!
-      );*/
+        new_category: authController.selectedCategories
+            .where((category) => category.isNew!)
+            .map((category) => category.name)
+            .join(','),
+        exist_category: authController.selectedCategories
+            .where((category) => !category.isNew!)
+            .map((category) => category.id.toString())
+            .join(','),
+      );
 
-     /* dio.FormData formData = dio.FormData.fromMap({
-        "f_name": firstName,
-        "l_name": lastName,
-        "phone": numberWithCountryCode,
-        "email": email,
-        "password": password,
-        "ref_code": '',
-        "exist_category": authController.selectedCategories[0].id.toString(),
-        "store_name": storeName,
-        "store_address": stroreAddress,
-        "new_category": authController.selectedCategories[0].name,
-        "images[]": await dio.MultipartFile.fromFile(_fileName),
-        _fileName: authController.file
-      });*/
-
-      final formData = FormData.fromMap({
-        "f_name": firstName,
-        "l_name": lastName,
-        "phone": numberWithCountryCode,
-        "email": email,
-        "password": password,
-        "ref_code": '',
-        "exist_category": authController.selectedCategories[0].id,
-        "store_name": storeName,
-        "store_address": stroreAddress,
-        "new_category": authController.selectedCategories[0].name,
-        "images[]":  await MultipartFile.fromFile(_fileName),
-        _fileName: authController.file
-      });
-
-
-
-      authController.registration(formData).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel!.customerVerification!) {
-            List<int> encoded = utf8.encode(password);
-            String data = base64Encode(encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode,
-                status.message, RouteHelper.signUp, data));
-          } else {
-            Get.find<LocationController>()
-                .navigateToLocationScreen(RouteHelper.signUp);
-          }
-        } else {
-          showCustomSnackBar(status.message);
-        }
+      authController.registration(signUpBody, context).then((status) async {
+        showCustomSnackBar(status.message);
       });
     }
   }

@@ -14,17 +14,19 @@ import 'package:sixam_mart/util/app_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dio/dio.dart' hide Response;
-
 
 class AuthRepo {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
-  Future<Response> registration(FormData signUpBody) async {
+  //[MultipartBody('images[]', file)]
+  Future<Response> registration(SignUpBody signUpBody, List<MultipartBody> multiParts) async {
+    return await apiClient.postMultipartData(AppConstants.registerUri, signUpBody.toJson(), multiParts);
+  }
 
-    return await apiClient.postSignUpData(AppConstants.registerUri, signUpBody);
+  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts) async {
+    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts);
   }
 
   Future<Response> login({String? phone, String? password}) async {
@@ -235,10 +237,6 @@ class AuthRepo {
     return apiClient.postMultipartData(
       AppConstants.storeRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover),MultipartBody('images[0]', logo),MultipartBody('images[1]', cover)],
     );
-  }
-
-  Future<Response> registerDeliveryMan(DeliveryManBody deliveryManBody, List<MultipartBody> multiParts) async {
-    return apiClient.postMultipartData(AppConstants.dmRegisterUri, deliveryManBody.toJson(), multiParts);
   }
 
   Future<Response> getModules(int? zoneId) async {

@@ -100,29 +100,6 @@ class ApiClient extends GetxService {
     }
   }
 
-  Map<String, String> headers = {
-    'Content-Type': 'multipart/form-data', // Usually required for FormData
-    'Authorization': 'Bearer', // If using token-based authentication
-    'Accept' : '*/*',
-    'Accept-Encoding' : 'gzip, deflate, br',
-    'Connection': 'keep-alive'
-  };
-
-  Future<Response> postSignUpData(String uri, dynamic formdata, {Map<String, String>? headers, int? timeout}) async {
-    try {
-      if(kDebugMode) {
-        print('====> API Call: $appBaseUrl $uri\nHeader: $_mainHeaders');
-        print('====> API Body: ${formdata.fields.toString()}');
-      }
-      final response = await dio.post(appBaseUrl + uri,
-          data: formdata,options: Options(headers: headers));
-      return handleResponse(response as http.Response, uri);
-    } catch (e) {
-      print("====================e :"+e.toString());
-      return Response(statusCode: 1, statusText: noInternetMessage);
-    }
-  }
-
   Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String>? headers}) async {
     try {
       if(kDebugMode) {

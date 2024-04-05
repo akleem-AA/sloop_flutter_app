@@ -1,15 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_compression_flutter/image_compression_flutter.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/location_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
+import 'package:sixam_mart/data/model/body/signup_body.dart';
 import 'package:sixam_mart/data/model/response/category_model.dart';
 import 'package:sixam_mart/helper/custom_validator.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
+import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
@@ -28,8 +33,16 @@ class SignUpNextScreen extends StatefulWidget {
   final String confirmPassword;
   final String referCode;
 
-  const SignUpNextScreen({Key? key, required this.firstName,required this.lastName,
-    required this.email, required this.phone, required this.password, required this.confirmPassword, required this.referCode}) : super(key: key);
+  const SignUpNextScreen(
+      {Key? key,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phone,
+      required this.password,
+      required this.confirmPassword,
+      required this.referCode})
+      : super(key: key);
 
   @override
   SignUpNextScreenState createState() => SignUpNextScreenState();
@@ -42,6 +55,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
   final TextEditingController _storeNameController = TextEditingController();
   final TextEditingController _storeAddressController = TextEditingController();
+  final TextEditingController inputController = TextEditingController();
 
   String? _countryDialCode;
 
@@ -50,7 +64,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     super.initState();
 
     _countryDialCode = CountryCode.fromCountryCode(
-        Get.find<SplashController>().configModel!.country!)
+            Get.find<SplashController>().configModel!.country!)
         .dialCode;
   }
 
@@ -103,6 +117,15 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Image.asset(Images.logo, width: 125),
+                            // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                            // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
+                            Center(
+                                child:
+                                    Image.asset(Images.logoName, width: 125)),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text('My Store',
@@ -136,71 +159,90 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
 
-                            InkWell(
-                              onTap: () {
-                                authController.pickDocument();
-                              },
-                              child: CustomTextField(
-                                titleText: authController.file ==null?'Upload Document':authController.file!.path.toString(),
-                                focusNode: _storeAddressFocus,
-                                nextFocus: _businessCategoryFocus,
-                                inputType: TextInputType.name,
-                                isEnabled: false,
-                                prefixIcon: Icons.file_copy,
-                              ),
-                            ),
-
-                            SizedBox(
-                                height: !ResponsiveHelper.isDesktop(context)
-                                    ? Dimensions.paddingSizeLarge
-                                    : 0),
                             TypeAheadField<CategoryModel>(
                               textFieldConfiguration: TextFieldConfiguration(
+                                controller: inputController,
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 0.3, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 0.3,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 1, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 1,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                                    borderSide: BorderSide(style: true ? BorderStyle.solid : BorderStyle.none, width: 0.3, color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    borderSide: BorderSide(
+                                        style: true
+                                            ? BorderStyle.solid
+                                            : BorderStyle.none,
+                                        width: 0.3,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                   isDense: true,
                                   hintText: "Select Categories",
                                   fillColor: Theme.of(context).cardColor,
-                                  hintStyle: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
+                                  hintStyle: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeLarge,
+                                      color: Theme.of(context).hintColor),
                                   filled: true,
                                 ),
                               ),
                               suggestionsCallback: (pattern) {
-                                final suggestions = searchCategories(pattern, Get.find<CategoryController>().categoryList!);
+                                final suggestions = searchCategories(
+                                    pattern, Get.find<CategoryController>().categoryList!);
 
                                 if (suggestions.isEmpty) {
-                                  suggestions.add(CategoryModel(name: pattern.trim())); // Custom suggestion with trimmed pattern
+                                  suggestions.add(CategoryModel(
+                                      name: pattern.trim(),
+                                      isNew: true // Flag for new category
+                                  ));
                                 }
                                 return suggestions;
                               },
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
+                                  leading: suggestion.isNew!
+                                      ? Icon(Icons.add_circle, color: Theme.of(context).primaryColor) // Icon for new category
+                                      : null,
                                   title: Text(
                                     suggestion.name!,
-                                    style: true ? TextStyle(fontStyle: FontStyle.italic) : null, // Optional style for custom entries
+                                    style: suggestion.isNew!
+                                        ? TextStyle(fontStyle: FontStyle.italic) // Optional style for new entries
+                                        : null,
                                   ),
                                 );
                               },
+
                               onSuggestionSelected: (selection) {
                                 if (selection != null) {
                                   setState(() {
-                                    if (!authController.selectedCategories.contains(selection)) {
-                                      authController.selectedCategories.add(selection);
+
+                                    inputController.text = '';
+                                    if (!authController.selectedCategories
+                                        .contains(selection)) {
+                                      authController.selectedCategories
+                                          .add(selection);
                                     } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
                                         SnackBar(
-                                          content: Text("Category already selected"), // Customize message as needed
+                                          content: Text(
+                                              "Category already selected"), // Customize message as needed
                                         ),
                                       );
                                     }
@@ -214,14 +256,83 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               runSpacing: 4.0,
                               children: List.generate(
                                 authController.selectedCategories.length,
-                                    (index) {
-                                  final category = authController.selectedCategories[index];
+                                (index) {
+                                  final category =
+                                      authController.selectedCategories[index];
                                   return Chip(
                                     label: Text(category.name!),
                                     backgroundColor: Colors.grey.shade200,
-                                    onDeleted: (){
+                                    onDeleted: () {
                                       removeItem(index, authController);
                                     },
+                                  );
+                                },
+                              ),
+                            ),
+
+                            SizedBox(
+                                height: !ResponsiveHelper.isDesktop(context)
+                                    ? Dimensions.paddingSizeLarge
+                                    : 0),
+
+                            SizedBox(
+                              height: 120,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: authController.pickedIdentities.length+1,
+                                itemBuilder: (context, index) {
+                                  XFile? file = index == authController.pickedIdentities.length ? null : authController.pickedIdentities[index];
+                                  if(index == authController.pickedIdentities.length) {
+                                    return InkWell(
+                                      onTap: () => authController.pickDmImage(false, false),
+                                      child: DottedBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        strokeWidth: 1,
+                                        strokeCap: StrokeCap.butt,
+                                        dashPattern: const [5, 5],
+                                        padding: const EdgeInsets.all(5),
+                                        borderType: BorderType.RRect,
+                                        radius: const Radius.circular(Dimensions.radiusDefault),
+                                        child: Container(
+                                          height: 120, width: 150, alignment: Alignment.center,
+                                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                                          child: Column(
+                                            children: [
+                                              Icon(Icons.camera_alt, color: Theme.of(context).disabledColor),
+                                              Text('upload_identity_image'.tr, style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+                                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                    ),
+                                    child: Stack(children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                        child: GetPlatform.isWeb ? Image.network(
+                                          file!.path, width: 150, height: 120, fit: BoxFit.cover,
+                                        ) : Image.file(
+                                          File(file!.path), width: 150, height: 120, fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0, top: 0,
+                                        child: InkWell(
+                                          onTap: () => authController.removeIdentityImage(index),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
+                                            child: Icon(Icons.delete_forever, color: Colors.red),
+                                          ),
+                                        ),
+                                      ),
+                                    ]),
                                   );
                                 },
                               ),
@@ -252,7 +363,6 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                       authController, _countryDialCode!)
                                   : null,
                             ),
-
                           ]),
                     ),
                   ],
@@ -284,7 +394,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
     String numberWithCountryCode = countryCode + number;
     PhoneValid phoneValid =
-    await CustomValidator.isPhoneValid(numberWithCountryCode);
+        await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
 
     if (firstName.isEmpty) {
@@ -305,18 +415,17 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('password_should_be'.tr);
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
-    } else if(storeName.isEmpty) {
+    } else if (storeName.isEmpty) {
       showCustomSnackBar('Store name should not empty');
-    } else if(stroreAddress.isEmpty){
+    } else if (stroreAddress.isEmpty) {
       showCustomSnackBar('Store address should not empty');
-    }else if(authController.file == null){
+    } else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('Please upload documents');
-    }else if(authController.selectedCategories.length <=0){
+    } else if (authController.selectedCategories.length <= 0) {
       showCustomSnackBar('Please select category');
-    }else{
-      String? _fileName = authController.file!.path;
+    } else {
 
-      /*SignUpBody signUpBody = SignUpBody(
+      SignUpBody signUpBody = SignUpBody(
         fName: firstName,
         lName: lastName,
         email: email,
@@ -325,58 +434,18 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
         refCode: referCode,
         store_name: storeName,
         store_address: stroreAddress,
-        new_category: authController.selectedCategories[0].name ,
-        exist_category: authController.selectedCategories[0].id.toString(),
-        images: authController.file!.path,
-        file: authController.file!
-      );*/
+        new_category: authController.selectedCategories
+            .where((category) => category.isNew!)
+            .map((category) => category.name)
+            .join(','),
+        exist_category: authController.selectedCategories
+            .where((category) => !category.isNew!)
+            .map((category) => category.id.toString())
+            .join(','),
+      );
 
-     /* dio.FormData formData = dio.FormData.fromMap({
-        "f_name": firstName,
-        "l_name": lastName,
-        "phone": numberWithCountryCode,
-        "email": email,
-        "password": password,
-        "ref_code": '',
-        "exist_category": authController.selectedCategories[0].id.toString(),
-        "store_name": storeName,
-        "store_address": stroreAddress,
-        "new_category": authController.selectedCategories[0].name,
-        "images[]": await dio.MultipartFile.fromFile(_fileName),
-        _fileName: authController.file
-      });*/
-
-      final formData = FormData.fromMap({
-        "f_name": firstName,
-        "l_name": lastName,
-        "phone": numberWithCountryCode,
-        "email": email,
-        "password": password,
-        "ref_code": '',
-        "exist_category": authController.selectedCategories[0].id,
-        "store_name": storeName,
-        "store_address": stroreAddress,
-        "new_category": authController.selectedCategories[0].name,
-        "images[]":  await MultipartFile.fromFile(_fileName),
-        _fileName: authController.file
-      });
-
-
-
-      authController.registration(formData).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel!.customerVerification!) {
-            List<int> encoded = utf8.encode(password);
-            String data = base64Encode(encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode,
-                status.message, RouteHelper.signUp, data));
-          } else {
-            Get.find<LocationController>()
-                .navigateToLocationScreen(RouteHelper.signUp);
-          }
-        } else {
-          showCustomSnackBar(status.message);
-        }
+      authController.registration(signUpBody, context).then((status) async {
+        showCustomSnackBar(status.message);
       });
     }
   }

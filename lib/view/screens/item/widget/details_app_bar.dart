@@ -68,29 +68,33 @@ class DetailsAppBarState extends State<DetailsAppBar>
       ),
       centerTitle: true,
       actions: [
-        Container(
-          height: 5,
-          // width: 0,
+        SizedBox(
+          height: 5, // Set your desired height here
+          // width: 20,
           child: LiteRollingSwitch(
-              value: is_brotto,
-              width: 100,
-              colorOff: Theme.of(context).primaryColor,
-              iconOn: Icons.circle,
-              iconOff: Icons.circle_outlined,
-              textOn: "Brutto",
-              textOff: "Netto",
-              // textSize: 10,
-              onTap: () {
-                Get.find<MyClassController>().showBrutto.value=!Get.find<MyClassController>().showBrutto.value;
-              },
-              onDoubleTap: () {},
-              onSwipe: () {},
-              onChanged: (bool postion) {
-                print("toggle buton detial screen$postion");
-                setState(() {
-                  is_brotto = postion;
-                });
-              }),
+            value: is_brotto,
+            width:
+                120, // Adjust the width to reduce the size of the toggle button
+            colorOff: Theme.of(context).primaryColor,
+            iconOn: Icons.circle,
+            iconOff: Icons.circle_outlined,
+            textOn: "Brutto",
+            textOff: "Netto",
+            onTap: () {
+              Get.find<MyClassController>().showBrutto.value =
+                  !Get.find<MyClassController>().showBrutto.value;
+            },
+            onDoubleTap: () {},
+            onSwipe: () {},
+            onChanged: (bool postion) {
+              Get.find<MyClassController>().showBrutto.value =
+                  !Get.find<MyClassController>().showBrutto.value;
+              print("toggle buton detail screen$postion");
+              setState(() {
+                is_brotto = postion;
+              });
+            },
+          ),
         ),
         AnimatedBuilder(
           animation: offsetAnimation,

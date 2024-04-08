@@ -192,16 +192,16 @@ class SignInScreenState extends State<SignInScreen> {
                               children: [
                                 Image.asset(
                                   Images.logo,
-                                  width: 125,
-                                  height: 90,
+                                  width: 145,
+                                  height: 110,
                                 ),
 
                                 // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
                                 //logo name image
-                                Center(
-                                    child: Image.asset(Images.logoName,
-                                        width: 125)),
+                                // Center(
+                                //     child: Image.asset(Images.logoName,
+                                //         width: 125)),
                                 const SizedBox(
                                     height: Dimensions.paddingSizeExtraLarge),
 

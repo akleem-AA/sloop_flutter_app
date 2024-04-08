@@ -112,12 +112,12 @@ class SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(Images.logo, width: 125),
+                            Image.asset(Images.logo, width: 145),
                             // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
-                            Center(
-                                child:
-                                    Image.asset(Images.logoName, width: 125)),
+                            // Center(
+                            //     child:
+                            //         Image.asset(Images.logoName, width: 125)),
                             const SizedBox(
                                 height: Dimensions.paddingSizeExtraLarge),
 
@@ -479,10 +479,14 @@ class SignUpScreenState extends State<SignUpScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else {
-
-      Get.toNamed(RouteHelper.getSignUpNextRoute(firstName: firstName,lastName: lastName, email: email,
-      phone: number,password: password,confirmPassword: confirmPassword,referCode: referCode));
-
+      Get.toNamed(RouteHelper.getSignUpNextRoute(
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: number,
+          password: password,
+          confirmPassword: confirmPassword,
+          referCode: referCode));
     }
   }
 }

@@ -117,12 +117,12 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(Images.logo, width: 125),
+                            Image.asset(Images.logo, width: 135),
                             // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
-                            Center(
-                                child:
-                                    Image.asset(Images.logoName, width: 125)),
+                            // Center(
+                            //     child:
+                            //         Image.asset(Images.logoName, width: 125)),
                             const SizedBox(
                                 height: Dimensions.paddingSizeExtraLarge),
 
@@ -204,34 +204,38 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               ),
                               suggestionsCallback: (pattern) {
                                 final suggestions = searchCategories(
-                                    pattern, Get.find<CategoryController>().categoryList!);
+                                    pattern,
+                                    Get.find<CategoryController>()
+                                        .categoryList!);
 
                                 if (suggestions.isEmpty) {
                                   suggestions.add(CategoryModel(
                                       name: pattern.trim(),
                                       isNew: true // Flag for new category
-                                  ));
+                                      ));
                                 }
                                 return suggestions;
                               },
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
                                   leading: suggestion.isNew!
-                                      ? Icon(Icons.add_circle, color: Theme.of(context).primaryColor) // Icon for new category
+                                      ? Icon(Icons.add_circle,
+                                          color: Theme.of(context)
+                                              .primaryColor) // Icon for new category
                                       : null,
                                   title: Text(
                                     suggestion.name!,
                                     style: suggestion.isNew!
-                                        ? TextStyle(fontStyle: FontStyle.italic) // Optional style for new entries
+                                        ? TextStyle(
+                                            fontStyle: FontStyle
+                                                .italic) // Optional style for new entries
                                         : null,
                                   ),
                                 );
                               },
-
                               onSuggestionSelected: (selection) {
                                 if (selection != null) {
                                   setState(() {
-
                                     inputController.text = '';
                                     if (!authController.selectedCategories
                                         .contains(selection)) {
@@ -280,12 +284,18 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 physics: const BouncingScrollPhysics(),
-                                itemCount: authController.pickedIdentities.length+1,
+                                itemCount:
+                                    authController.pickedIdentities.length + 1,
                                 itemBuilder: (context, index) {
-                                  XFile? file = index == authController.pickedIdentities.length ? null : authController.pickedIdentities[index];
-                                  if(index == authController.pickedIdentities.length) {
+                                  XFile? file = index ==
+                                          authController.pickedIdentities.length
+                                      ? null
+                                      : authController.pickedIdentities[index];
+                                  if (index ==
+                                      authController.pickedIdentities.length) {
                                     return InkWell(
-                                      onTap: () => authController.pickDmImage(false, false),
+                                      onTap: () => authController.pickDmImage(
+                                          false, false),
                                       child: DottedBorder(
                                         color: Theme.of(context).primaryColor,
                                         strokeWidth: 1,
@@ -293,14 +303,24 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                         dashPattern: const [5, 5],
                                         padding: const EdgeInsets.all(5),
                                         borderType: BorderType.RRect,
-                                        radius: const Radius.circular(Dimensions.radiusDefault),
+                                        radius: const Radius.circular(
+                                            Dimensions.radiusDefault),
                                         child: Container(
-                                          height: 120, width: 150, alignment: Alignment.center,
-                                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                                          height: 120,
+                                          width: 150,
+                                          alignment: Alignment.center,
+                                          padding: const EdgeInsets.all(
+                                              Dimensions.paddingSizeDefault),
                                           child: Column(
                                             children: [
-                                              Icon(Icons.camera_alt, color: Theme.of(context).disabledColor),
-                                              Text('upload_identity_image'.tr, style: robotoMedium.copyWith(color: Theme.of(context).disabledColor), textAlign: TextAlign.center),
+                                              Icon(Icons.camera_alt,
+                                                  color: Theme.of(context)
+                                                      .disabledColor),
+                                              Text('upload_identity_image'.tr,
+                                                  style: robotoMedium.copyWith(
+                                                      color: Theme.of(context)
+                                                          .disabledColor),
+                                                  textAlign: TextAlign.center),
                                             ],
                                           ),
                                         ),
@@ -308,27 +328,44 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     );
                                   }
                                   return Container(
-                                    margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                                    margin: const EdgeInsets.only(
+                                        right: Dimensions.paddingSizeSmall),
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Theme.of(context).primaryColor, width: 2),
-                                      borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                                      border: Border.all(
+                                          color: Theme.of(context).primaryColor,
+                                          width: 2),
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radiusSmall),
                                     ),
                                     child: Stack(children: [
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                                        child: GetPlatform.isWeb ? Image.network(
-                                          file!.path, width: 150, height: 120, fit: BoxFit.cover,
-                                        ) : Image.file(
-                                          File(file!.path), width: 150, height: 120, fit: BoxFit.cover,
-                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radiusSmall),
+                                        child: GetPlatform.isWeb
+                                            ? Image.network(
+                                                file!.path,
+                                                width: 150,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.file(
+                                                File(file!.path),
+                                                width: 150,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
                                       Positioned(
-                                        right: 0, top: 0,
+                                        right: 0,
+                                        top: 0,
                                         child: InkWell(
-                                          onTap: () => authController.removeIdentityImage(index),
+                                          onTap: () => authController
+                                              .removeIdentityImage(index),
                                           child: const Padding(
-                                            padding: EdgeInsets.all(Dimensions.paddingSizeSmall),
-                                            child: Icon(Icons.delete_forever, color: Colors.red),
+                                            padding: EdgeInsets.all(
+                                                Dimensions.paddingSizeSmall),
+                                            child: Icon(Icons.delete_forever,
+                                                color: Colors.red),
                                           ),
                                         ),
                                       ),
@@ -417,14 +454,11 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (storeName.isEmpty) {
       showCustomSnackBar('Store name should not empty');
-    } else if (stroreAddress.isEmpty) {
-      showCustomSnackBar('Store address should not empty');
     } else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('Please upload documents');
     } else if (authController.selectedCategories.length <= 0) {
       showCustomSnackBar('Please select category');
     } else {
-
       SignUpBody signUpBody = SignUpBody(
         fName: firstName,
         lName: lastName,

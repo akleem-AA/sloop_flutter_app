@@ -481,7 +481,7 @@ class SignUpScreenState extends State<SignUpScreen> {
     } else {
 
       Get.toNamed(RouteHelper.getSignUpNextRoute(firstName: firstName,lastName: lastName, email: email,
-      phone: number,password: password,confirmPassword: confirmPassword,referCode: referCode));
+      phone: number,password: password,confirmPassword: confirmPassword,referCode: referCode,countryCode: countryCode));
 
     }
   }

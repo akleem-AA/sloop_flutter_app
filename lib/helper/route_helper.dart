@@ -174,8 +174,8 @@ class RouteHelper {
   static String getSignUpRoute() => signUp;
 
   static String getSignUpNextRoute({String? firstName,String? lastName,
-  String? email, String? phone, String? password, String? confirmPassword, String? referCode }){
-    return '$signUpNext?firstName=$firstName&lastName=$lastName&email=$email&phone=$phone&password=$password&confirmPassword=$confirmPassword&referCode=$referCode';
+  String? email, String? phone, String? password, String? confirmPassword, String? referCode,required String? countryCode }){
+    return '$signUpNext?firstName=$firstName&lastName=$lastName&email=$email&phone=$phone&password=$password&confirmPassword=$confirmPassword&referCode=$referCode&countryCode=$countryCode';
   }
   static String getVerificationRoute(String? number, String? token, String page, String pass) {
     return '$verification?page=$page&number=$number&token=$token&pass=$pass';
@@ -348,7 +348,7 @@ class RouteHelper {
     )),
     GetPage(name: signUp, page: () => const SignUpScreen()),
     GetPage(name: signUpNext, page: () => SignUpNextScreen(
-      firstName: Get.parameters['firstName']!,lastName: Get.parameters['lastName']!, email: Get.parameters['email']!,
+      firstName: Get.parameters['firstName']!,countryCode: Get.parameters['countryCode']! ,lastName: Get.parameters['lastName']!, email: Get.parameters['email']!,
     phone: Get.parameters['phone']!, password: Get.parameters['password']!, confirmPassword: Get.parameters['confirmPassword']!,
    referCode: Get.parameters['referCode']!
     )),

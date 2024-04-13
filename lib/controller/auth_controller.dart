@@ -732,10 +732,19 @@ class AuthController extends GetxController implements GetxService {
         _pickedImage =
             await ImagePicker().pickImage(source: ImageSource.gallery);
       } else {
-        XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+        FilePickerResult? result = await FilePicker.platform.pickFiles();
+        if (result != null) {
+          //file = File(result.files.single.path!);
+          _pickedIdentities.add(XFile(result.files.single.path!));
+        } else {
+          //file = null;
+        }
+        
+        
+        /*XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
         if (xFile != null) {
           _pickedIdentities.add(xFile);
-        }
+        }*/
       }
       update();
     }

@@ -112,12 +112,12 @@ class SignUpScreenState extends State<SignUpScreen> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(Images.logo, width: 145),
+                            Image.asset(Images.logo, width: 125),
                             // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
-                            // Center(
-                            //     child:
-                            //         Image.asset(Images.logoName, width: 125)),
+                            Center(
+                                child:
+                                    Image.asset(Images.logoName, width: 125)),
                             const SizedBox(
                                 height: Dimensions.paddingSizeExtraLarge),
 
@@ -454,7 +454,7 @@ class SignUpScreenState extends State<SignUpScreen> {
     String password = _passwordController.text.trim();
     String confirmPassword = _confirmPasswordController.text.trim();
     String referCode = _referCodeController.text.trim();
-
+    print('phone number$number');
     String numberWithCountryCode = countryCode + number;
     PhoneValid phoneValid =
         await CustomValidator.isPhoneValid(numberWithCountryCode);
@@ -486,7 +486,8 @@ class SignUpScreenState extends State<SignUpScreen> {
           phone: number,
           password: password,
           confirmPassword: confirmPassword,
-          referCode: referCode));
+          referCode: referCode,
+          countryCode: countryCode));
     }
   }
 }

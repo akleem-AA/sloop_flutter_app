@@ -32,6 +32,7 @@ class SignUpNextScreen extends StatefulWidget {
   final String password;
   final String confirmPassword;
   final String referCode;
+  final String countryCode;
 
   const SignUpNextScreen(
       {Key? key,
@@ -41,7 +42,8 @@ class SignUpNextScreen extends StatefulWidget {
       required this.phone,
       required this.password,
       required this.confirmPassword,
-      required this.referCode})
+      required this.referCode,
+      required this.countryCode})
       : super(key: key);
 
   @override
@@ -57,15 +59,11 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
   final TextEditingController _storeAddressController = TextEditingController();
   final TextEditingController inputController = TextEditingController();
 
-  String? _countryDialCode;
+  //String? _countryDialCode;
 
   @override
   void initState() {
     super.initState();
-
-    _countryDialCode = CountryCode.fromCountryCode(
-            Get.find<SplashController>().configModel!.country!)
-        .dialCode;
   }
 
   @override
@@ -348,12 +346,20 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                                 height: 120,
                                                 fit: BoxFit.cover,
                                               )
-                                            : Image.file(
-                                                File(file!.path),
-                                                width: 150,
-                                                height: 120,
-                                                fit: BoxFit.cover,
-                                              ),
+                                            : (file!.path.endsWith('.pdf') ||
+                                                    file.path
+                                                        .endsWith('.docx') ||
+                                                    file.path.endsWith('.xls'))
+                                                ? Container(
+                                                    width: Get.width / 2.5,
+                                                    child: Text(
+                                                        "${file.path.toString()}"))
+                                                : Image.file(
+                                                    File(file.path),
+                                                    width: 150,
+                                                    height: 120,
+                                                    fit: BoxFit.cover,
+                                                  ),
                                       ),
                                       Positioned(
                                         right: 0,
@@ -397,7 +403,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               isLoading: authController.isLoading,
                               onPressed: authController.acceptTerms
                                   ? () => _register(
-                                      authController, _countryDialCode!)
+                                      authController, widget.countryCode)
                                   : null,
                             ),
                           ]),
@@ -479,7 +485,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       );
 
       authController.registration(signUpBody, context).then((status) async {
-        showCustomSnackBar(status.message);
+        showCustomSnackBar("Registration Success", isError: false);
       });
     }
   }

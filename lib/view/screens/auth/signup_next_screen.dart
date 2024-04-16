@@ -435,11 +435,10 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     String storeName = _storeNameController.text.trim();
     String stroreAddress = _storeAddressController.text.trim();
 
-    String numberWithCountryCode = countryCode + number;
+    String numberWithCountryCode = '+$countryCode$number';
     PhoneValid phoneValid =
         await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
-
     if (firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
     } else if (lastName.isEmpty) {
@@ -485,7 +484,9 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       );
 
       authController.registration(signUpBody, context).then((status) async {
-        showCustomSnackBar("Registration Success", isError: false);
+        showCustomSnackBar(
+            "Successfully registering! Please await admin approval before logging in",
+            isError: false);
       });
     }
   }

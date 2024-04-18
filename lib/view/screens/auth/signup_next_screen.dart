@@ -56,7 +56,10 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
   final FocusNode _businessCategoryFocus = FocusNode();
 
   final TextEditingController _storeNameController = TextEditingController();
+  // _storeTexIdController
   final TextEditingController _storeAddressController = TextEditingController();
+  final TextEditingController _storeTexIdController = TextEditingController();
+
   final TextEditingController inputController = TextEditingController();
 
   //String? _countryDialCode;
@@ -151,6 +154,19 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                               controller: _storeAddressController,
                               inputType: TextInputType.name,
                               prefixIcon: Icons.location_on,
+                            ),
+                            SizedBox(
+                                height: !ResponsiveHelper.isDesktop(context)
+                                    ? Dimensions.paddingSizeLarge
+                                    : 0),
+
+                            //tex id input
+                            CustomTextField(
+                              titleText: 'Tex ID',
+                              hintText: 'Tex Id',
+                              controller: _storeTexIdController,
+                              inputType: TextInputType.name,
+                              // prefixIcon: Icons.location_on,
                             ),
                             SizedBox(
                                 height: !ResponsiveHelper.isDesktop(context)
@@ -434,6 +450,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     String referCode = widget.referCode.trim();
     String storeName = _storeNameController.text.trim();
     String stroreAddress = _storeAddressController.text.trim();
+    String storeTexId = _storeTexIdController.text.trim();
 
     String numberWithCountryCode = '+$countryCode$number';
     PhoneValid phoneValid =
@@ -459,6 +476,8 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (storeName.isEmpty) {
       showCustomSnackBar('Store name should not empty');
+    } else if (storeTexId.isEmpty) {
+      showCustomSnackBar('Store Tex id should not empty');
     } else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('Please upload documents');
     } else if (authController.selectedCategories.length <= 0) {
@@ -473,6 +492,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
         refCode: referCode,
         store_name: storeName,
         store_address: stroreAddress,
+        tex_id: storeTexId,
         new_category: authController.selectedCategories
             .where((category) => category.isNew!)
             .map((category) => category.name)
@@ -483,6 +503,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
             .join(','),
       );
 
+      // ignore: use_build_context_synchronously
       authController.registration(signUpBody, context).then((status) async {
         showCustomSnackBar(
             "Successfully registering! Please await admin approval before logging in",

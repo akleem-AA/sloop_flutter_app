@@ -1,4 +1,3 @@
-
 class SignUpBody {
   String? fName;
   String? lName;
@@ -10,10 +9,21 @@ class SignUpBody {
   String? store_name;
   String? store_address;
   String? new_category;
+  String? tex_id;
 
-
-  SignUpBody({this.fName, this.lName, this.phone, this.email='', this.password, this.refCode = '', this.exist_category,
-  this.store_name, this.store_address, this.new_category});
+  SignUpBody(
+      {this.fName,
+      this.lName,
+      this.phone,
+      this.email = '',
+      this.password,
+      this.refCode = '',
+      this.exist_category,
+      this.store_name,
+      this.store_address,
+      this.new_category,
+      this.tex_id,
+      });
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     fName = json['f_name'];
@@ -26,6 +36,7 @@ class SignUpBody {
     store_name = json['store_name'];
     store_address = json['store_address'];
     new_category = json['new_category'];
+    tex_id = json['tex_id'];
   }
 
   Map<String, String> toJson() {
@@ -40,6 +51,7 @@ class SignUpBody {
     data['store_name'] = store_name!;
     data['store_address'] = store_address!;
     data['new_category'] = new_category!;
+    data['tex_id'] = tex_id!;
     return data;
   }
 }

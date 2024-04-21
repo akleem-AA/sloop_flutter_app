@@ -340,7 +340,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                         borderRadius: BorderRadius.circular(
                                             Dimensions.radiusSmall),
                                         child: GetPlatform.isWeb
-                                            ? Image.network(
+                                            ? Image.network( ////TODO
                                                 file!.path,
                                                 width: 150,
                                                 height: 120,
@@ -350,10 +350,12 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                                     file.path
                                                         .endsWith('.docx') ||
                                                     file.path.endsWith('.xls'))
-                                                ? Container(
+                                               ? Container(
                                                     width: Get.width / 2.5,
-                                                    child: Text(
-                                                        "${file.path.toString()}"))
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(16.0),
+                                                      child: Image.asset(Images.docc, width: 135),
+                                                    ))
                                                 : Image.file(
                                                     File(file.path),
                                                     width: 150,

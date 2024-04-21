@@ -69,31 +69,32 @@ class DetailsAppBarState extends State<DetailsAppBar>
       centerTitle: true,
       actions: [
         SizedBox(
-          height: 5, // Set your desired height here
-          // width: 20,
-          child: LiteRollingSwitch(
-            value: is_brotto,
-            width:
-                120, // Adjust the width to reduce the size of the toggle button
-            colorOff: Theme.of(context).primaryColor,
-            iconOn: Icons.circle,
-            iconOff: Icons.circle_outlined,
-            textOn: "Brutto",
-            textOff: "Netto",
-            onTap: () {
-              Get.find<MyClassController>().showBrutto.value =
-                  !Get.find<MyClassController>().showBrutto.value;
-            },
-            onDoubleTap: () {},
-            onSwipe: () {},
-            onChanged: (bool postion) {
-              Get.find<MyClassController>().showBrutto.value =
-                  !Get.find<MyClassController>().showBrutto.value;
-              print("toggle buton detail screen$postion");
-              setState(() {
-                is_brotto = postion;
-              });
-            },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: LiteRollingSwitch(
+              value: is_brotto,
+              width:
+                  100, // Adjust the width to reduce the size of the toggle button
+              colorOff: Theme.of(context).primaryColor,
+              iconOn: Icons.circle,
+              iconOff: Icons.circle_outlined,
+              textOn: "Brutto",
+              textOff: "Netto",
+              onTap: () {
+                Get.find<MyClassController>().showBrutto.value =
+                    !Get.find<MyClassController>().showBrutto.value;
+              },
+              onDoubleTap: () {},
+              onSwipe: () {},
+              onChanged: (bool postion) {
+                Get.find<MyClassController>().showBrutto.value =
+                    !Get.find<MyClassController>().showBrutto.value;
+                print("toggle buton detail screen$postion");
+                setState(() {
+                  is_brotto = postion;
+                });
+              },
+            ),
           ),
         ),
         AnimatedBuilder(

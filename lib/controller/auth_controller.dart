@@ -247,12 +247,14 @@ class AuthController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       if (ResponsiveHelper.isDesktop(context)) {
         Get.back();
+        Get.back();
         Get.dialog(const SignInScreen(exitFromApp: false, backFromThis: false));
       } else {
         if (Get.currentRoute == RouteHelper.signUp) {
           Get.back();
         } else {
-          Get.toNamed(RouteHelper.getSignInRoute(RouteHelper.signUp));
+          Get.back();
+          Get.back();
         }
       }
       responseModel = ResponseModel(false, response.statusText);

@@ -89,6 +89,24 @@ import 'package:sixam_mart/view/screens/wallet/wallet_screen.dart';
 import '../view/screens/auth/signup_next_screen.dart';
 
 class RouteHelper {
+  static const String map = '/map';
+  static const String address = '/address';
+  static const String orderSuccess = '/order-successful';
+  static const String payment = '/payment';
+  static const String checkout = '/checkout';
+  static const String orderTracking = '/track-order';
+  static const String basicCampaign = '/basic-campaign';
+  static const String html = '/html';
+  static const String categories = '/categories';
+  static const String categoryItem = '/category-item';
+  static const String popularItems = '/popular-items';
+  static const String itemCampaign = '/item-campaign';
+  static const String support = '/help-and-support';
+  static const String rateReview = '/rate-and-review';
+  static const String update = '/update';
+  static const String cart = '/cart';
+  static const String addAddress = '/add-address';
+  static const String editAddress = '/edit-address';
   static const String initial = '/';
   static const String splash = '/splash';
   static const String language = '/language';
@@ -110,24 +128,6 @@ class RouteHelper {
   static const String updateProfile = '/update-profile';
   static const String coupon = '/coupon';
   static const String notification = '/notification';
-  static const String map = '/map';
-  static const String address = '/address';
-  static const String orderSuccess = '/order-successful';
-  static const String payment = '/payment';
-  static const String checkout = '/checkout';
-  static const String orderTracking = '/track-order';
-  static const String basicCampaign = '/basic-campaign';
-  static const String html = '/html';
-  static const String categories = '/categories';
-  static const String categoryItem = '/category-item';
-  static const String popularItems = '/popular-items';
-  static const String itemCampaign = '/item-campaign';
-  static const String support = '/help-and-support';
-  static const String rateReview = '/rate-and-review';
-  static const String update = '/update';
-  static const String cart = '/cart';
-  static const String addAddress = '/add-address';
-  static const String editAddress = '/edit-address';
   static const String storeReview = '/store-review';
   static const String allStores = '/stores';
   static const String itemImages = '/item-images';
@@ -465,6 +465,11 @@ class RouteHelper {
       String data = utf8.decode(decode);
       return getRoute(CategoryItemScreen(categoryID: Get.parameters['id'], categoryName: data));
     }),
+    GetPage(name: rateReview, page: () => getRoute(Get.arguments ?? const NotFound())),
+    GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
+    GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
+      isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured', isNearbyStore: Get.parameters['nearby'] == 'true',
+    ))),
     GetPage(name: popularItems, page: () => getRoute(PopularItemScreen(isPopular: Get.parameters['page'] == 'popular', isSpecial: Get.parameters['special'] == 'true'))),
     GetPage(name: itemCampaign, page: () => getRoute(ItemCampaignScreen(isJustForYou: Get.parameters['just-for-you'] == 'true'))),
     GetPage(name: support, page: () => getRoute(const SupportScreen())),
@@ -484,11 +489,7 @@ class RouteHelper {
         address: data, forGuest: Get.parameters['from-guest'] == 'true',
       ));
     }),
-    GetPage(name: rateReview, page: () => getRoute(Get.arguments ?? const NotFound())),
-    GetPage(name: storeReview, page: () => getRoute(ReviewScreen(storeID: Get.parameters['id']))),
-    GetPage(name: allStores, page: () => getRoute(AllStoreScreen(
-      isPopular: Get.parameters['page'] == 'popular', isFeatured: Get.parameters['page'] == 'featured', isNearbyStore: Get.parameters['nearby'] == 'true',
-    ))),
+
     GetPage(name: itemImages, page: () => getRoute(ImageViewerScreen(
       item: Item.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['item']!.replaceAll(' ', '+'))))),
     ))),
@@ -526,26 +527,27 @@ class RouteHelper {
         conversationID: (Get.parameters['conversation_id'] != null && Get.parameters['conversation_id'] != 'null') ? int.parse(Get.parameters['conversation_id']!) : null,
       ));
     }),
+    GetPage(name: selectRideMapLocation, page: () {
+      AddressModel? addressModel;
+      Vehicles? vehicle;
+      if(Get.parameters['address'] != 'null') {
+        addressModel = AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['address']!.replaceAll(' ', '+')))));
+      }
+      if(Get.parameters['vehicle'] != 'null') {
+        vehicle = Vehicles.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['vehicle']!.replaceAll(' ', '+')))));
+      }
+      return getRoute(SelectMapLocation(
+        riderType: jsonDecode(utf8.decode(base64Url.decode(Get.parameters['rider_type']!.replaceAll(' ', '+')))),
+        address: addressModel, vehicle: vehicle,
+      ),
+      );
+    }),
     GetPage(name: conversation, page: () => const ConversationScreen()),
     GetPage(name: restaurantRegistration, page: () => const StoreRegistrationScreen()),
     GetPage(name: deliveryManRegistration, page: () => const DeliveryManRegistrationScreen()),
     GetPage(name: refund, page: () => RefundRequestScreen(orderId: Get.parameters['id'])),
 
-    GetPage(name: selectRideMapLocation, page: () {
-    AddressModel? addressModel;
-    Vehicles? vehicle;
-    if(Get.parameters['address'] != 'null') {
-      addressModel = AddressModel.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['address']!.replaceAll(' ', '+')))));
-    }
-    if(Get.parameters['vehicle'] != 'null') {
-      vehicle = Vehicles.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['vehicle']!.replaceAll(' ', '+')))));
-    }
-    return getRoute(SelectMapLocation(
-        riderType: jsonDecode(utf8.decode(base64Url.decode(Get.parameters['rider_type']!.replaceAll(' ', '+')))),
-        address: addressModel, vehicle: vehicle,
-      ),
-    );
-    }),
+
     GetPage(name: selectCarScreen, page: () => SelectCarScreen(
         filterBody: UserInformationBody.fromJson(jsonDecode(utf8.decode(base64Url.decode(Get.parameters['body']!.replaceAll(' ', '+')))))),
     ),

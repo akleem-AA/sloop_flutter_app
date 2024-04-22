@@ -129,14 +129,14 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text('My Store',
+                              child: Text('my_store'.tr,
                                   style: robotoBold.copyWith(
                                       fontSize: Dimensions.fontSizeExtraLarge)),
                             ),
                             const SizedBox(
                                 height: Dimensions.paddingSizeDefault),
                             CustomTextField(
-                              titleText: 'Store Name',
+                              titleText: 'store_name'.tr,
                               hintText: 'Enter your store name',
                               controller: _storeNameController,
                               focusNode: _storeNameFocus,
@@ -149,7 +149,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
                             CustomTextField(
-                              titleText: 'Store Address',
+                              titleText: 'store_address'.tr,
                               hintText: 'Store address',
                               controller: _storeAddressController,
                               inputType: TextInputType.name,
@@ -162,7 +162,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
                             //tex id input
                             CustomTextField(
-                              titleText: 'Tex ID',
+                              titleText: 'tex_id'.tr,
                               hintText: 'Tex Id',
                               controller: _storeTexIdController,
                               inputType: TextInputType.name,
@@ -208,7 +208,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                         color: Theme.of(context).primaryColor),
                                   ),
                                   isDense: true,
-                                  hintText: "Select Categories",
+                                  hintText: 'select_categories'.tr,
                                   fillColor: Theme.of(context).cardColor,
                                   hintStyle: robotoRegular.copyWith(
                                       fontSize: Dimensions.fontSizeLarge,
@@ -240,7 +240,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                   title: Text(
                                     suggestion.name!,
                                     style: suggestion.isNew!
-                                        ? TextStyle(
+                                        ? const TextStyle(
                                             fontStyle: FontStyle
                                                 .italic) // Optional style for new entries
                                         : null,
@@ -259,8 +259,8 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                          content: Text(
-                                              "Category already selected"), // Customize message as needed
+                                          content: Text('category_already_selected'
+                                              .tr), // Customize message as needed
                                         ),
                                       );
                                     }
@@ -356,7 +356,8 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                         borderRadius: BorderRadius.circular(
                                             Dimensions.radiusSmall),
                                         child: GetPlatform.isWeb
-                                            ? Image.network( ////TODO
+                                            ? Image.network(
+                                                ////TODO
                                                 file!.path,
                                                 width: 150,
                                                 height: 120,
@@ -366,11 +367,15 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                                     file.path
                                                         .endsWith('.docx') ||
                                                     file.path.endsWith('.xls'))
-                                               ? Container(
+                                                ? Container(
                                                     width: Get.width / 2.5,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(16.0),
-                                                      child: Image.asset(Images.docc, width: 135),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Image.asset(
+                                                          Images.docc,
+                                                          width: 135),
                                                     ))
                                                 : Image.file(
                                                     File(file.path),
@@ -507,9 +512,23 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
       // ignore: use_build_context_synchronously
       authController.registration(signUpBody, context).then((status) async {
-        showCustomSnackBar(
+        // Check if status is not null and if the API call was successful
+        if (status.isSuccess) {
+          // Success callback
+          showCustomSnackBar(
             "Successfully registering! Please await admin approval before logging in",
-            isError: false);
+            isError: false,
+          );
+        } else {
+          // Display the error message from the response
+          if (status != null && status.message != null) {
+            showCustomSnackBar(status.message, isError: true);
+          } else {
+            // If status or message is null, display a generic error message
+            showCustomSnackBar("An error occurred. Please try again later.",
+                isError: true);
+          }
+        }
       });
     }
   }

@@ -1125,5 +1125,13 @@
   "receiver_info": "Alıcı Bilgisi",
   "pickup_location": "Teslim Alma Konumu",
   "upload_document": "Belgeleri Saklayın",
-  "related_product":"ilgili ürünler"
+  "related_product":"ilgili ürünler",
+  "my_store": "Mağazam",
+  "tex_id": "Vergi Kimliği",
+  "select_categories": "Kategorileri Seç",
+  "store_name_validation": "Mağaza adı boş olmamalıdır",
+  "store_texId_validation": "Mağaza Tex kimliği boş olmamalıdır",
+  "documents_validation": "Lütfen belgeleri yükleyin",
+  "category_validation": "Lütfen kategori seçin",
+  "category_already_selected": "Kategori zaten seçildi"
 }

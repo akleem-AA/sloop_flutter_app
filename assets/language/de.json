@@ -1125,5 +1125,14 @@
   "receiver_info": "Empfängerinformationen",
   "pickup_location": "Treffpunkt",
   "upload_document": "Dokumente speichern",
-  "related_product":"Verwandte Produkte"
+  "related_product":"Verwandte Produkte",
+  "my_store": "Mein Geschäft",
+  "tex_id": "Steuer ID",
+  "select_categories": "Kategorien auswählen",
+  "store_name_validation": "Geschäftsname darf nicht leer sein",
+  "store_texId_validation": "Geschäfts-Tex-ID darf nicht leer sein",
+  "documents_validation": "Bitte Dokumente hochladen",
+  "category_validation": "Bitte Kategorie auswählen",
+  "category_already_selected": "Kategorie bereits ausgewählt"
+
 }

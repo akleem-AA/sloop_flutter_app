@@ -1125,5 +1125,13 @@
   "receiver_info": "Receiver Info",
   "pickup_location": "Pickup Location",
   "upload_document": "Store Document",
-  "related_product": "Related Products"
+  "related_product": "Related Products",
+  "my_store":"My Store",
+  "tex_id":"Tax ID",
+  "select_categories":"Select Categories",
+  "store_name_validation":"Store name should not empty",
+  "store_texId_validation":"Store Tex id should not empty",
+  "documents_validation":"Please upload documents",
+  "category_validation":"Please select category",
+  "category_already_selected":"Category already selected"
 }

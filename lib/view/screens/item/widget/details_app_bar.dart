@@ -81,8 +81,8 @@ class DetailsAppBarState extends State<DetailsAppBar>
               textOn: "Brutto",
               textOff: "Netto",
               onTap: () {
-                Get.find<MyClassController>().showBrutto.value =
-                    !Get.find<MyClassController>().showBrutto.value;
+                // Get.find<MyClassController>().showBrutto.value =
+                //     !Get.find<MyClassController>().showBrutto.value;
               },
               onDoubleTap: () {},
               onSwipe: () {},

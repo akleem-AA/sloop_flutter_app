@@ -43,6 +43,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarState> _key = GlobalKey();
   bool is_brotto = false;
+  
+  get brutto_price => null;
   @override
   void initState() {
     super.initState();
@@ -489,54 +491,84 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                 const SizedBox(
                                                     width: Dimensions
                                                         .paddingSizeExtraSmall),
-                                                Obx(()=>!Get.find<MyClassController>().showBrutto.value?    Text(
-                                                  PriceConverter.convertPrice(
+
+                                                //total price section
+                                                Obx(() => !Get.find<
+                                                    MyClassController>()
+                                                    .showBrutto
+                                                    .value
+                                                    ? Text(
+                                                  PriceConverter.convertPrice(itemController
+                                                      .cartIndex !=
+                                                      -1
+                                                      ? CartHelper.getItemDetailsDiscountPrice(
+                                                      cart: Get.find<
+                                                          CartController>()
+                                                          .cartList[
                                                       itemController
-                                                          .cartIndex !=
-                                                          -1
-                                                          ? CartHelper.getItemDetailsDiscountPrice(
-                                                          cart: Get.find<
-                                                              CartController>()
-                                                              .cartList[
-                                                          itemController
-                                                              .cartIndex])
-                                                          : priceWithAddons ),
+                                                          .cartIndex])
+                                                      : priceWithAddons),
                                                   textDirection:
                                                   TextDirection.ltr,
                                                   style: robotoBold.copyWith(
-                                                      color: Theme.of(context)
+                                                      color: Theme.of(
+                                                          context)
                                                           .primaryColor,
                                                       fontSize: Dimensions
                                                           .fontSizeLarge),
-                                                ):Text(
-                                                  "${Get.find<SplashController>().configModel!.currencySymbol!} ${widget.item!.tax.toString()}",
+                                                )
+                                                    : Text(
+                                                  PriceConverter.convertPrice(itemController
+                                                      .cartIndex !=
+                                                      -1
+                                                      ? CartHelper.getItemDetailsDiscountBruttoPrice(
+                                                      cart: Get.find<
+                                                          CartController>()
+                                                          .cartList[
+                                                      itemController
+                                                          .cartIndex])
+                                                      : priceWithAddons),
                                                   textDirection:
                                                   TextDirection.ltr,
                                                   style: robotoBold.copyWith(
-                                                      color: Theme.of(context)
+                                                      color: Theme.of(
+                                                          context)
                                                           .primaryColor,
                                                       fontSize: Dimensions
-                                                          .fontSizeLarge),
+                                                          .fontSizeLarge,
+                                                      decoration:
+                                                      TextDecoration
+                                                          .lineThrough),
                                                 )),
-                                                Obx(()=>!Get.find<MyClassController>().showBrutto.value?   Text(
-                                                  " ( Excl: ${widget.item!.tax.toString()})",
-                                                  textDirection:
-                                                  TextDirection.ltr,
-                                                  style: robotoBold.copyWith(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge),
-                                                ):Text(
-                                                  " ( Incl:${widget.item!.tax.toString()} )",
-                                                  textDirection:
-                                                  TextDirection.ltr,
-                                                  style: robotoBold.copyWith(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge),
-                                                )),
+
+
+                                                //tex section
+                                                Obx(() => !Get.find<
+                                                            MyClassController>()
+                                                        .showBrutto
+                                                        .value
+                                                    ? Text(
+                                                        " ( Excl: ${widget.item!.tax.toString()})",
+                                                        textDirection:
+                                                            TextDirection.ltr,
+                                                        style: robotoBold.copyWith(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: Dimensions
+                                                                .fontSizeLarge),
+                                                      )
+                                                    : Text(
+                                                        " ( Incl:${widget.item!.tax.toString()} )",
+                                                        textDirection:
+                                                            TextDirection.ltr,
+                                                        style: robotoBold.copyWith(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: Dimensions
+                                                                .fontSizeLarge),
+                                                      )),
                                               ]),
                                               const SizedBox(
                                                   height: Dimensions

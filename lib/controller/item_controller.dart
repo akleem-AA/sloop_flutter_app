@@ -637,20 +637,19 @@ class ItemController extends GetxController implements GetxService {
     }
     return startingPrice;
   }
-
   double? getStartingBruttoPrice(Item item) {
-    double? startingPrice = 0;
+    double? startingBruttoPrice = 0;
     if (item.choiceOptions != null && item.choiceOptions!.isNotEmpty) {
       List<double?> priceList = [];
       for (var variation in item.variations!) {
         priceList.add(variation.brutto_price);
       }
       priceList.sort((a, b) => a!.compareTo(b!));
-      startingPrice = priceList[0];
+      startingBruttoPrice = priceList[0];
     } else {
-      startingPrice = item.brutto_price;
+      startingBruttoPrice = item.brutto_price;
     }
-    return startingPrice;
+    return startingBruttoPrice;
   }
 
   bool isAvailable(Item item) {

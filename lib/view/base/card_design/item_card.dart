@@ -158,10 +158,10 @@ class ItemCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           (isFood || isShop)
-                              ? Text(item.storeName ?? '',
+                              ? Text("${item.storeName}" ?? '',
                                   style: robotoRegular.copyWith(
                                       color: Theme.of(context).disabledColor))
-                              : Text(item.name ?? '',
+                              : Text("${item.name}" ?? '',
                                   style: robotoBold,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis),
@@ -243,22 +243,63 @@ class ItemCard extends StatelessWidget {
                                           color: Theme.of(context).hintColor),
                                     )
                                   : const SizedBox(),
-
+                          // discount section
                           item.discount != null && item.discount! > 0
-                              ? Text(
-                                  PriceConverter.convertPrice(
-                                      Get.find<ItemController>()
-                                          .getStartingPrice(item)),
-                                  style: robotoMedium.copyWith(
-                                    fontSize: Dimensions.fontSizeExtraSmall,
-                                    color: Theme.of(context).disabledColor,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                  textDirection: TextDirection.ltr,
+                              ? Obx(
+                                  () => !Get.find<MyClassController>()
+                                          .showBrutto
+                                          .value
+                                      ? Text(
+                                          PriceConverter.convertPrice(
+                                            Get.find<ItemController>()
+                                                .getStartingPrice(item),
+                                          ),
+                                          style: robotoMedium.copyWith(
+                                            fontSize:
+                                                Dimensions.fontSizeExtraSmall,
+                                            color:
+                                                Theme.of(context).disabledColor,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                          textDirection: TextDirection.ltr,
+                                        )
+                                      : const SizedBox(),
                                 )
                               : const SizedBox(),
+                          Obx(
+                            () => Get.find<MyClassController>().showBrutto.value
+                                ? Text(
+                                    PriceConverter.convertPrice(
+                                      startingBruttoPrice,
+                                    ),
+                                    style: robotoMedium.copyWith(
+                                      fontSize: Dimensions.fontSizeExtraSmall,
+                                      color: Theme.of(context).disabledColor,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          ),
+
+                          //discount section
+                          // item.discount != null && item.discount! > 0
+                          //     // ? Text(
+                          //     //     PriceConverter.convertPrice(
+                          //     //         Get.find<ItemController>()
+                          //     //             .getStartingPrice(item)),
+                          //     //     style: robotoMedium.copyWith(
+                          //     //       fontSize: Dimensions.fontSizeExtraSmall,
+                          //     //       color: Theme.of(context).disabledColor,
+                          //     //       decoration: TextDecoration.lineThrough,
+                          //     //     ),
+                          //     //     textDirection: TextDirection.ltr,
+                          //     //   )
+                          //     // : const SizedBox(),
+
                           // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
+                        // main price section
                           Obx(() =>
                               !Get.find<MyClassController>().showBrutto.value
                                   ? Text(
@@ -275,9 +316,12 @@ class ItemCard extends StatelessWidget {
                           Obx(() =>
                               Get.find<MyClassController>().showBrutto.value
                                   ? Text(
-                                      PriceConverter.convertPrice(
-                                        startingBruttoPrice,
-                                      ),
+                                PriceConverter.convertPrice(
+                                  Get.find<ItemController>()
+                                      .getStartingBruttoPrice(item),
+                                  discount: item.discount,
+                                  discountType: item.discountType,
+                                ),
                                       textDirection: TextDirection.ltr,
                                       style: robotoMedium,
                                     )

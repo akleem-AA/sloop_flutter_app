@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:sixam_mart/controller/category_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/data/model/response/store_model.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
+import 'package:sixam_mart/myCustomController.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/cart_widget.dart';
@@ -29,6 +31,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen> with TickerProvi
   final ScrollController storeScrollController = ScrollController();
   TabController? _tabController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final controller = Get.put(MyClassController());
 
   @override
   void initState() {
@@ -77,6 +80,8 @@ class CategoryItemScreenState extends State<CategoryItemScreen> with TickerProvi
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CategoryController>(builder: (catController) {
+      print('39-->> ${catController.isStore}');
+
       List<Item>? item;
       List<Store>? stores;
       if(catController.isSearching ? catController.searchItemList != null : catController.categoryItemList != null) {
@@ -152,6 +157,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen> with TickerProvi
                 icon: CartWidget(color: Theme.of(context).textTheme.bodyLarge!.color, size: 25),
               ),
 
+
               VegFilterWidget(type: catController.type, fromAppBar: true, onSelected: (String type) {
                 if(catController.isSearching) {
                   catController.searchData(
@@ -178,37 +184,78 @@ class CategoryItemScreenState extends State<CategoryItemScreen> with TickerProvi
           body: Center(child: SizedBox(
             width: Dimensions.webMaxWidth,
             child: Column(children: [
+              (catController.isStore || item?.length == 0) ? SizedBox() :
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Container(
+                  height: 33,
+                  decoration: const BoxDecoration(
+                    color: Colors.white
+                  ),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      LiteRollingSwitch(
+                          value: false,
+                          width: 90,
+                          colorOff:
+                          Theme.of(context).primaryColor,
+                          iconOn: Icons.circle,
+                          iconOff: Icons.circle_outlined,
+                          textOn: "Brutto",
+                          textOff: "Netto",
+                          // textSize: 10,
+                          onTap: () {},
+                          onDoubleTap: () {},
+                          onSwipe: () {},
+                          onChanged: (bool postion) {
+                            controller.showBrutto.value =
+                            !controller.showBrutto.value;
+                            print("toggle buton 209   ${item?.length}");
+                          }),
+                    ],
+                  ),
+                ),
+              ),
 
               (catController.subCategoryList != null && !catController.isSearching) ? Center(child: Container(
                 height: 40, width: Dimensions.webMaxWidth, color: Theme.of(context).cardColor,
                 padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                child: ListView.builder(
-                  key: scaffoldKey,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: catController.subCategoryList!.length,
-                  padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () => catController.setSubCategoryIndex(index, widget.categoryID),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
-                        margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                          color: index == catController.subCategoryIndex ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
-                        ),
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Text(
-                            catController.subCategoryList![index].name!,
-                            style: index == catController.subCategoryIndex
-                                ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
-                                : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                child: Row(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      key: scaffoldKey,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: catController.subCategoryList!.length,
+                      padding: const EdgeInsets.only(left: Dimensions.paddingSizeSmall),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => catController.setSubCategoryIndex(index, widget.categoryID),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeExtraSmall),
+                            margin: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                              color: index == catController.subCategoryIndex ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
+                            ),
+                            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                              Text(
+                                catController.subCategoryList![index].name!,
+                                style: index == catController.subCategoryIndex
+                                    ? robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor)
+                                    : robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
+                              ),
+
+                            ]),
+
                           ),
-                        ]),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+
+                  ],
                 ),
               )) : const SizedBox(),
 

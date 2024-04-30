@@ -87,8 +87,10 @@ class DetailsAppBarState extends State<DetailsAppBar>
               onDoubleTap: () {},
               onSwipe: () {},
               onChanged: (bool postion) {
-                Get.find<MyClassController>().showBrutto.value =
-                    !Get.find<MyClassController>().showBrutto.value;
+                Get.find<MyClassController>().showBrutto.value = postion;
+
+                // Get.find<MyClassController>().showBrutto.value =
+                //     !Get.find<MyClassController>().showBrutto.value;
                 print("toggle buton detail screen$postion");
                 setState(() {
                   is_brotto = postion;

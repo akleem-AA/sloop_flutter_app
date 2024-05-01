@@ -22,7 +22,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
-  bool is_brotto = false;
+ // bool is_brotto = false;
   @override
   void initState() {
     super.initState();
@@ -40,7 +40,10 @@ class DetailsAppBarState extends State<DetailsAppBar>
   void shake() {
     controller.forward(from: 0.0);
   }
+  final MyClassController myClassController =
+  Get.find<MyClassController>();
 
+  final myCustomController = Get.put(MyClassController());
   @override
   Widget build(BuildContext context) {
     final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 15.0)
@@ -72,7 +75,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: LiteRollingSwitch(
-              value: is_brotto,
+              value: myClassController.showBrutto.value,
               width:
                   100, // Adjust the width to reduce the size of the toggle button
               colorOff: Theme.of(context).primaryColor,
@@ -81,20 +84,23 @@ class DetailsAppBarState extends State<DetailsAppBar>
               textOn: "Brutto",
               textOff: "Netto",
               onTap: () {
+                // myClassController.showBrutto.value =
+                // !myClassController.showBrutto.value;
                 // Get.find<MyClassController>().showBrutto.value =
                 //     !Get.find<MyClassController>().showBrutto.value;
               },
               onDoubleTap: () {},
               onSwipe: () {},
               onChanged: (bool postion) {
-                Get.find<MyClassController>().showBrutto.value = postion;
-
+               // Get.find<MyClassController>().showBrutto.value = postion;
+                myClassController.showBrutto.value =
+                !myClassController.showBrutto.value;
                 // Get.find<MyClassController>().showBrutto.value =
                 //     !Get.find<MyClassController>().showBrutto.value;
-                print("toggle buton detail screen$postion");
-                setState(() {
-                  is_brotto = postion;
-                });
+                print("toggle buton etail screen${myClassController.showBrutto.value}");
+                // setState(() {
+                //   is_brotto = postion;
+                // });
               },
             ),
           ),

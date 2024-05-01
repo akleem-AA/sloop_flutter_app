@@ -543,7 +543,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 
 
                                                 //tex section
-                                                Obx(() => !Get.find<
+                                                Obx(() => Get.find<
                                                             MyClassController>()
                                                         .showBrutto
                                                         .value

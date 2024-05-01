@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +23,7 @@ class ItemTitleView extends StatelessWidget {
   final bool inStorePage;
   final bool isCampaign;
   final bool inStock;
-  const ItemTitleView(
+   ItemTitleView(
       {Key? key,
       required this.item,
       this.inStorePage = false,
@@ -29,10 +31,12 @@ class ItemTitleView extends StatelessWidget {
       required this.inStock})
       : super(key: key);
 
+  final MyClassController myClassController =
+  Get.find<MyClassController>();
+
   @override
   Widget build(BuildContext context) {
-    final MyClassController myClassController =
-        Get.find<MyClassController>(); // Get the instance of MyClassController
+  log("adss ${myClassController.showBrutto.value}");
     final bool showBrutto = myClassController
         .showBrutto.value; // Get the value of showBrutto from the controller
     if (kDebugMode) {
@@ -70,7 +74,9 @@ class ItemTitleView extends StatelessWidget {
             : 'percent';
 
     return ResponsiveHelper.isDesktop(context)
-        ? GetBuilder<ItemController>(builder: (itemController) {
+        ?
+    GetBuilder<ItemController>(builder: (itemController) {
+      log("adsds ${myClassController.showBrutto.value}");
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -242,6 +248,7 @@ class ItemTitleView extends StatelessWidget {
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             child: GetBuilder<ItemController>(
               builder: (itemController) {
+                log("adsds1 ${myClassController.showBrutto.value}");
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -258,6 +265,8 @@ class ItemTitleView extends StatelessWidget {
                             ? const SizedBox()
                             : GetBuilder<WishListController>(
                                 builder: (wishController) {
+                                 print('123');
+                                  print(myClassController.showBrutto.value);
                                 return Row(
                                   children: [
                                     // Text(
@@ -328,15 +337,51 @@ class ItemTitleView extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                  Text(
-                                    'test${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
-                                    '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                                    style: robotoMedium.copyWith(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: Dimensions.fontSizeLarge),
-                                    textDirection: TextDirection.ltr,
-                                  ),
+
+                                      Obx(() => myClassController.showBrutto.value ?
+                                      Text(
+                                        'test${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
+                                            '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                                        style: robotoMedium.copyWith(
+                                            color: Theme.of(context).primaryColor,
+                                            fontSize: Dimensions.fontSizeLarge),
+                                        textDirection: TextDirection.ltr,
+                                      ) :
+                                      Text(
+                                        '123'
+                                            '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                                        style: robotoMedium.copyWith(
+                                            color: Theme.of(context).primaryColor,
+                                            fontSize: Dimensions.fontSizeLarge),
+                                        textDirection: TextDirection.ltr,
+                                      )
+                                      )
+                                  ,
                                   const SizedBox(height: 5),
+
+                                        Row(children: [
+                Obx(() => !myClassController.showBrutto.value ?
+
+                                        Text(
+                                          "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                              " " +
+
+                                         item!.tax.toString(),
+                                          textDirection: TextDirection.ltr,
+                                          style: robotoMedium.copyWith(fontSize: 10),
+                                        ):
+                                        Text(
+                                          "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                              " " +
+                                              item!.tax.toString(),
+                                          textDirection: TextDirection.ltr,
+                                          style: robotoMedium.copyWith(fontSize: 10),
+                                        )
+                ),
+                                        SizedBox(width: discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
+
+
+                                      ]),
                                   discount! > 0
                                       ? Text(
                                           'price${PriceConverter.convertPrice(startingPrice)}'

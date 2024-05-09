@@ -43,7 +43,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarState> _key = GlobalKey();
   bool is_brotto = false;
-  
+
   get brutto_price => null;
   @override
   void initState() {
@@ -52,6 +52,35 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
     Get.find<ItemController>().getProductDetails(widget.item!);
   }
 
+  String calculateBruttoPrice(double? bruttoPrice, {double? discount}) {
+    if (discount != null && bruttoPrice != null) {
+      double amountToSubtract = (bruttoPrice * discount) / 100;
+      double result = bruttoPrice - amountToSubtract;
+      return '$result';
+    } else {
+      return '$bruttoPrice';
+    }
+  }
+
+  String calculateNetPrice(double? price, {double? tax}) {
+    if (tax != null) {
+      double result = price! + tax;
+      return '$result';
+    } else {
+      return '';
+    }
+  }
+
+  // String calculateNonNetPrice(double ? price, {double? tax}) {
+  //   if(tax !=null) {
+  //   double result = price! - tax;
+  //   return '$result';
+  //   }
+  //   else {
+  //     return '';
+  //   }
+  //
+  // }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartController>(builder: (cartController) {
@@ -482,7 +511,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeLarge),
-
+                                              //total amount section
                                               Row(children: [
                                                 Text('${'total_amount'.tr}:',
                                                     style: robotoMedium.copyWith(
@@ -491,85 +520,159 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                 const SizedBox(
                                                     width: Dimensions
                                                         .paddingSizeExtraSmall),
-
-                                                //total price section
-                                                Obx(() => !Get.find<
-                                                    MyClassController>()
-                                                    .showBrutto
-                                                    .value
-                                                    ? Text(
-                                                  PriceConverter.convertPrice(itemController
-                                                      .cartIndex !=
-                                                      -1
-                                                      ? CartHelper.getItemDetailsDiscountPrice(
-                                                      cart: Get.find<
-                                                          CartController>()
-                                                          .cartList[
+                                                Text(
+                                                  PriceConverter.convertPrice(
                                                       itemController
-                                                          .cartIndex])
-                                                      : priceWithAddons),
+                                                                  .cartIndex !=
+                                                              -1
+                                                          ? CartHelper.getItemDetailsDiscountPrice(
+                                                              cart: Get.find<
+                                                                          CartController>()
+                                                                      .cartList[
+                                                                  itemController
+                                                                      .cartIndex])
+                                                          : priceWithAddons),
                                                   textDirection:
-                                                  TextDirection.ltr,
+                                                      TextDirection.ltr,
                                                   style: robotoBold.copyWith(
-                                                      color: Theme.of(
-                                                          context)
+                                                      color: Theme.of(context)
                                                           .primaryColor,
                                                       fontSize: Dimensions
                                                           .fontSizeLarge),
-                                                )
-                                                    : Text(
-                                                  PriceConverter.convertPrice(itemController
-                                                      .cartIndex !=
-                                                      -1
-                                                      ? CartHelper.getItemDetailsDiscountBruttoPrice(
-                                                      cart: Get.find<
-                                                          CartController>()
-                                                          .cartList[
-                                                      itemController
-                                                          .cartIndex])
-                                                      : priceWithAddons),
-                                                  textDirection:
-                                                  TextDirection.ltr,
-                                                  style: robotoBold.copyWith(
-                                                      color: Theme.of(
-                                                          context)
-                                                          .primaryColor,
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge,
-                                                      decoration:
-                                                      TextDecoration
-                                                          .lineThrough),
-                                                )),
-
-
-                                                //tex section
-                                                Obx(() => Get.find<
-                                                            MyClassController>()
-                                                        .showBrutto
-                                                        .value
-                                                    ? Text(
-                                                        " ( Excl: ${widget.item!.tax.toString()})",
-                                                        textDirection:
-                                                            TextDirection.ltr,
-                                                        style: robotoBold.copyWith(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            fontSize: Dimensions
-                                                                .fontSizeLarge),
-                                                      )
-                                                    : Text(
-                                                        " ( Incl:${widget.item!.tax.toString()} )",
-                                                        textDirection:
-                                                            TextDirection.ltr,
-                                                        style: robotoBold.copyWith(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            fontSize: Dimensions
-                                                                .fontSizeLarge),
-                                                      )),
+                                                ),
                                               ]),
+
+                                              // Row(children: [
+                                              //   Text('${'total_amount'.tr}:',
+                                              //       style: robotoMedium.copyWith(
+                                              //           fontSize: Dimensions
+                                              //               .fontSizeLarge)),
+                                              //   const SizedBox(
+                                              //       width: Dimensions
+                                              //           .paddingSizeExtraSmall),
+                                              //   Obx(() =>
+                                              //   !Get.find<
+                                              //       MyClassController>()
+                                              //       .showBrutto
+                                              //       .value
+                                              //       ?
+                                              //   Text(
+                                              //     Get.find<SplashController>().configModel!.currencySymbol! +
+                                              //         (widget.item?.brutto_price).toString(),
+                                              //     //calculateNetPrice(widget.item?.price ,tax:widget.item?.tax),
+                                              //     textDirection:
+                                              //     TextDirection.ltr,
+                                              //     style: robotoRegular.copyWith(
+                                              //         color:
+                                              //         Theme.of(context).hintColor,
+                                              //         decoration:
+                                              //         TextDecoration.lineThrough),
+                                              //   )
+                                              //   :
+                                              //   Text(Get.find<SplashController>().configModel!.currencySymbol! +(widget.item?.price).toString(),
+                                              //     textDirection:
+                                              //     TextDirection.ltr,
+                                              //     style: robotoRegular.copyWith(
+                                              //         color:
+                                              //         Theme.of(context).hintColor,
+                                              //         decoration:
+                                              //         TextDecoration.lineThrough),
+                                              //   )),
+
+                                              //   //total price section
+                                              //   /*Obx(() =>*/
+                                              //   // (widget.item?.discount != null) && (widget.item!.discount! > 0)
+                                              //   //     ? Text(widget.item!.price.toString(),
+                                              //   //     textDirection:
+                                              //   //     TextDirection.ltr,
+                                              //   //   style: robotoRegular.copyWith(
+                                              //   //       color:
+                                              //   //       Theme.of(context).hintColor,
+                                              //   //       decoration:
+                                              //   //       TextDecoration.lineThrough),
+                                              //   // ):SizedBox(),
+                                              //   Obx(() =>
+                                              //   Get.find<
+                                              //       MyClassController>()
+                                              //       .showBrutto
+                                              //       .value
+                                              //       ? Text(
+                                              //       Get.find<SplashController>().configModel!.currencySymbol! +
+                                              //           calculateBruttoPrice(widget.item?.price,discount: widget.item?.discount),
+
+                                              //     // PriceConverter.convertPrice(itemController
+                                              //     //     .cartIndex !=
+                                              //     //     -1
+                                              //     //     ? CartHelper.getItemDetailsDiscountPrice(
+                                              //     //     cart: Get.find<
+                                              //     //         CartController>()
+                                              //     //         .cartList[
+                                              //     //     itemController
+                                              //     //         .cartIndex])
+                                              //     //     : priceWithAddons),
+                                              //     textDirection:
+                                              //     TextDirection.ltr,
+                                              //     style: robotoBold.copyWith(
+                                              //         color: Theme.of(
+                                              //             context)
+                                              //             .primaryColor,
+                                              //         fontSize: Dimensions
+                                              //             .fontSizeLarge),
+                                              //   )
+                                              //       : Text(
+                                              //     Get.find<SplashController>().configModel!.currencySymbol! +
+                                              //         calculateBruttoPrice(widget.item?.brutto_price,discount: widget.item?.discount),
+                                              //     // PriceConverter.convertPrice(itemController
+                                              //     //     .cartIndex !=
+                                              //     //     -1
+                                              //     //     ? CartHelper.getItemDetailsDiscountBruttoPrice(
+                                              //     //     cart: Get.find<
+                                              //     //         CartController>()
+                                              //     //         .cartList[
+                                              //     //     itemController
+                                              //     //         .cartIndex])
+                                              //     //     : priceWithAddons),
+                                              //     textDirection:
+                                              //     TextDirection.ltr,
+                                              //     style: robotoBold.copyWith(
+                                              //         color: Theme.of(
+                                              //             context)
+                                              //             .primaryColor,
+                                              //         fontSize: Dimensions
+                                              //             .fontSizeLarge,
+                                              //        /* decoration:
+                                              //         TextDecoration
+                                              //             .lineThrough*/),
+                                              //   )),
+
+                                              //   //tex section
+                                              //   Obx(() => Get.find<
+                                              //               MyClassController>()
+                                              //           .showBrutto
+                                              //           .value
+                                              //       ? Text(
+                                              //           " ( Excl: ${widget.item!.tax.toString()})",
+                                              //           textDirection:
+                                              //               TextDirection.ltr,
+                                              //           style: robotoBold.copyWith(
+                                              //               color: Theme.of(
+                                              //                       context)
+                                              //                   .primaryColor,
+                                              //               fontSize: Dimensions
+                                              //                   .fontSizeLarge),
+                                              //         )
+                                              //       : Text(
+                                              //           " ( Incl:${widget.item!.tax.toString()} )",
+                                              //           textDirection:
+                                              //               TextDirection.ltr,
+                                              //           style: robotoBold.copyWith(
+                                              //               color: Theme.of(
+                                              //                       context)
+                                              //                   .primaryColor,
+                                              //               fontSize: Dimensions
+                                              //                   .fontSizeLarge),
+                                              //         )),
+                                              // ]),
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeExtraLarge),

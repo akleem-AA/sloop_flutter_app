@@ -243,10 +243,11 @@ class ItemCard extends StatelessWidget {
                                           color: Theme.of(context).hintColor),
                                     )
                                   : const SizedBox(),
+
                           // discount section
                           item.discount != null && item.discount! > 0
                               ? Obx(
-                                  () => !Get.find<MyClassController>()
+                                  () => Get.find<MyClassController>()
                                           .showBrutto
                                           .value
                                       ? Text(
@@ -268,7 +269,9 @@ class ItemCard extends StatelessWidget {
                                 )
                               : const SizedBox(),
                           Obx(
-                            () => Get.find<MyClassController>().showBrutto.value
+                            () => !Get.find<MyClassController>()
+                                    .showBrutto
+                                    .value
                                 ? Text(
                                     PriceConverter.convertPrice(
                                       startingBruttoPrice,
@@ -299,9 +302,9 @@ class ItemCard extends StatelessWidget {
 
                           // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
-                        // main price section
+                          // main price section
                           Obx(() =>
-                              !Get.find<MyClassController>().showBrutto.value
+                              Get.find<MyClassController>().showBrutto.value
                                   ? Text(
                                       PriceConverter.convertPrice(
                                         Get.find<ItemController>()
@@ -314,14 +317,14 @@ class ItemCard extends StatelessWidget {
                                     )
                                   : const SizedBox()),
                           Obx(() =>
-                              Get.find<MyClassController>().showBrutto.value
+                              !Get.find<MyClassController>().showBrutto.value
                                   ? Text(
-                                PriceConverter.convertPrice(
-                                  Get.find<ItemController>()
-                                      .getStartingBruttoPrice(item),
-                                  discount: item.discount,
-                                  discountType: item.discountType,
-                                ),
+                                      PriceConverter.convertPrice(
+                                        Get.find<ItemController>()
+                                            .getStartingBruttoPrice(item),
+                                        discount: item.discount,
+                                        discountType: item.discountType,
+                                      ),
                                       textDirection: TextDirection.ltr,
                                       style: robotoMedium,
                                     )

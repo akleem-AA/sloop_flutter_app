@@ -23,20 +23,29 @@ class ItemTitleView extends StatelessWidget {
   final bool inStorePage;
   final bool isCampaign;
   final bool inStock;
-   ItemTitleView(
+  ItemTitleView(
       {Key? key,
       required this.item,
       this.inStorePage = false,
       this.isCampaign = false,
       required this.inStock})
       : super(key: key);
+  String calculateBruttoPrice(double? bruttoPrice, {double? discount}) {
+    if (discount != null && bruttoPrice != null) {
+      double amountToSubtract = (bruttoPrice * discount) / 100;
+      double result = bruttoPrice - amountToSubtract;
+      print('brutton price${result}');
+      return '$result';
+    } else {
+      return '$bruttoPrice';
+    }
+  }
 
-  final MyClassController myClassController =
-  Get.find<MyClassController>();
+  final MyClassController myClassController = Get.find<MyClassController>();
 
   @override
   Widget build(BuildContext context) {
-  log("adss ${myClassController.showBrutto.value}");
+    log("adss ${myClassController.showBrutto.value}");
     final bool showBrutto = myClassController
         .showBrutto.value; // Get the value of showBrutto from the controller
     if (kDebugMode) {
@@ -74,9 +83,8 @@ class ItemTitleView extends StatelessWidget {
             : 'percent';
 
     return ResponsiveHelper.isDesktop(context)
-        ?
-    GetBuilder<ItemController>(builder: (itemController) {
-      log("adsds ${myClassController.showBrutto.value}");
+        ? GetBuilder<ItemController>(builder: (itemController) {
+            log("adsds ${myClassController.showBrutto.value}");
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -265,8 +273,8 @@ class ItemTitleView extends StatelessWidget {
                             ? const SizedBox()
                             : GetBuilder<WishListController>(
                                 builder: (wishController) {
-                                 print('123');
-                                  print(myClassController.showBrutto.value);
+                                print('123');
+                                print(myClassController.showBrutto.value);
                                 return Row(
                                   children: [
                                     // Text(
@@ -337,55 +345,72 @@ class ItemTitleView extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-
-                                      Obx(() => myClassController.showBrutto.value ?
-                                      Text(
-                                        'test${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
-                                            '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                                        style: robotoMedium.copyWith(
-                                            color: Theme.of(context).primaryColor,
-                                            fontSize: Dimensions.fontSizeLarge),
-                                        textDirection: TextDirection.ltr,
-                                      ) :
-                                      Text(
-                                        '123'
-                                            '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                                        style: robotoMedium.copyWith(
-                                            color: Theme.of(context).primaryColor,
-                                            fontSize: Dimensions.fontSizeLarge),
-                                        textDirection: TextDirection.ltr,
-                                      )
-                                      )
-                                  ,
+                                  Obx(() => myClassController.showBrutto.value
+                                      ? Text(
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              calculateBruttoPrice(item?.price,
+                                                  discount: item?.discount),
+                                          // '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
+                                          //     '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                                          style: robotoMedium.copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize:
+                                                  Dimensions.fontSizeLarge),
+                                          textDirection: TextDirection.ltr,
+                                        )
+                                      : Text(
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              calculateBruttoPrice(
+                                                  item?.brutto_price,
+                                                  discount: item?.discount),
+                                          //      '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
+                                          //          '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                                          // '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
+                                          style: robotoMedium.copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize:
+                                                  Dimensions.fontSizeLarge),
+                                          textDirection: TextDirection.ltr,
+                                        )),
                                   const SizedBox(height: 5),
 
-                                        Row(children: [
-                Obx(() => !myClassController.showBrutto.value ?
-
-                                        Text(
-                                          "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                              " " +
-
-                                         item!.tax.toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoMedium.copyWith(fontSize: 10),
-                                        ):
-                                        Text(
-                                          "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                              " " +
-                                              item!.tax.toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoMedium.copyWith(fontSize: 10),
-                                        )
-                ),
-                                        SizedBox(width: discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
-
-
-                                      ]),
-                                  discount! > 0
+                                  Row(children: [
+                                    Obx(() => myClassController.showBrutto.value
+                                        ? Text(
+                                            "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                                " " +
+                                                item!.tax.toString(),
+                                            textDirection: TextDirection.ltr,
+                                            style: robotoMedium.copyWith(
+                                                fontSize: 10),
+                                          )
+                                        : Text(
+                                            "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                                " " +
+                                                item!.tax.toString(),
+                                            textDirection: TextDirection.ltr,
+                                            style: robotoMedium.copyWith(
+                                                fontSize: 10),
+                                          )),
+                                    SizedBox(
+                                        width: discount! > 0
+                                            ? Dimensions.paddingSizeExtraSmall
+                                            : 0),
+                                  ]),
+                                  Obx(() => !Get.find<MyClassController>()
+                                          .showBrutto
+                                          .value
                                       ? Text(
-                                          'price${PriceConverter.convertPrice(startingPrice)}'
-                                          '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}',
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              (item?.brutto_price).toString(),
                                           textDirection: TextDirection.ltr,
                                           style: robotoRegular.copyWith(
                                               color:
@@ -393,7 +418,30 @@ class ItemTitleView extends StatelessWidget {
                                               decoration:
                                                   TextDecoration.lineThrough),
                                         )
-                                      : const SizedBox(),
+                                      : Text(
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              (item?.price).toString(),
+                                          textDirection: TextDirection.ltr,
+                                          style: robotoRegular.copyWith(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        )),
+                                  // discount! > 0
+                                  //     ? Text(
+                                  //         'price${PriceConverter.convertPrice(startingPrice)}'
+                                  //         '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice)}' : ''}',
+                                  //         textDirection: TextDirection.ltr,
+                                  //         style: robotoRegular.copyWith(
+                                  //             color:
+                                  //                 Theme.of(context).hintColor,
+                                  //             decoration:
+                                  //                 TextDecoration.lineThrough),
+                                  //       )
+                                  //     : const SizedBox(),
                                   SizedBox(height: discount > 0 ? 5 : 0),
                                   !isCampaign
                                       ? Row(children: [

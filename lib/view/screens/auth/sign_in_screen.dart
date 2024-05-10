@@ -346,7 +346,7 @@ class SignInScreenState extends State<SignInScreen> {
 
                                 ResponsiveHelper.isDesktop(context)
                                     ? const SizedBox()
-                                    : Row(
+                                    : Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [

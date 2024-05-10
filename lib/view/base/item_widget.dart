@@ -374,7 +374,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                                               : const SizedBox(),
                                         ]),
                                   Row(children: [
-                                    (!controller.showBrutto.value)
+                                    (controller.showBrutto.value)
                                         ? Text(
                                             "Inclu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
                                                 " " +

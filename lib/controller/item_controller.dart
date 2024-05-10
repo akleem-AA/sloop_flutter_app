@@ -637,6 +637,7 @@ class ItemController extends GetxController implements GetxService {
     }
     return startingPrice;
   }
+
   double? getStartingBruttoPrice(Item item) {
     double? startingBruttoPrice = 0;
     if (item.choiceOptions != null && item.choiceOptions!.isNotEmpty) {

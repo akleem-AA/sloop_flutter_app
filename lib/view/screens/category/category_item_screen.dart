@@ -178,7 +178,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                       }
                     },
                   ),
-                  backgroundColor: Theme.of(context).cardColor,
+                  backgroundColor: Colors.grey[200],
                   elevation: 0,
                   actions: [
                     IconButton(
@@ -194,6 +194,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                       onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
                       icon: CartWidget(
                           color: Theme.of(context).textTheme.bodyLarge!.color,
+                          // color: Theme.of(context).primaryColor,
                           size: 25),
                     ),
                     VegFilterWidget(
@@ -253,7 +254,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
               (catController.isStore || item?.length == 0)
                   ? SizedBox()
                   : Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(top: 5.0, right: 8.0),
                       child: Container(
                         height: 33,
                         decoration: const BoxDecoration(color: Colors.white),
@@ -264,7 +265,7 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                                 value: controller.categoryPage.value,
                                 width: 90,
                                 colorOff: Theme.of(context).primaryColor,
-                                iconOn: Icons.circle,
+                                iconOn: Icons.circle_outlined,
                                 iconOff: Icons.circle_outlined,
                                 textOn: "Brutto",
                                 textOff: "Netto",

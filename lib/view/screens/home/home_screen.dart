@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 90,
                                         colorOff:
                                             Theme.of(context).primaryColor,
-                                        iconOn: Icons.circle,
+                                        iconOn: Icons.circle_outlined,
                                         iconOff: Icons.circle_outlined,
                                         textOn: "Brutto",
                                         textOff: "Netto",

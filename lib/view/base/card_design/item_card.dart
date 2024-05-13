@@ -330,42 +330,39 @@ class ItemCard extends StatelessWidget {
                                     )
                                   : const SizedBox()),
 
-                          Obx(() => !Get.find<MyClassController>()
-                                  .showBrutto
-                                  .value
-                              ? Text(
-                                  // "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                  //     " " +
-                                  //     item.tax.toString(),
-                                  "Exlu : ${PriceConverter.convertPrice(item.tax)}",
-                                  textDirection: TextDirection.ltr,
-                                  style: robotoMedium.copyWith(fontSize: 10),
-                                )
-                              : const SizedBox(
-                                  height: Dimensions.paddingSizeExtraSmall)),
-                          Obx(() => Get.find<MyClassController>()
-                                  .showBrutto
-                                  .value
-                              ? Text(
-                                  // "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                  //     " " +
-                                  //     item.tax.toString(),
-                                  "Inclu : ${PriceConverter.convertPrice(item.tax)}",
-                                  textDirection: TextDirection.ltr,
-                                  style: robotoMedium.copyWith(fontSize: 10),
-                                )
-                              : const SizedBox(
-                                  height: Dimensions.paddingSizeExtraSmall)),
-
-                          // Text(
-                          //   "Tax : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                          //       " " +
-                          //       item.tax.toString(),
-                          //   textDirection: TextDirection.ltr,
-                          //   style: robotoMedium.copyWith(fontSize: 10),
-                          // ),
-                          // const SizedBox(
-                          //     height: Dimensions.paddingSizeExtraSmall),
+                          Obx(() {
+                            final isGerman = Get.locale?.languageCode == 'de';
+                            return !Get.find<MyClassController>()
+                                    .showBrutto
+                                    .value
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5), // Adjust the top padding here
+                                    child: Text(
+                                      "Exlu : %${isGerman ? item.tax.toString().replaceAll('.', ',') : item.tax}",
+                                      textDirection: TextDirection.ltr,
+                                      style:
+                                          robotoMedium.copyWith(fontSize: 10),
+                                    ),
+                                  )
+                                : const SizedBox(
+                                    height: Dimensions.paddingSizeExtraSmall,
+                                  );
+                          }),
+                          Obx(() {
+                            final isGerman = Get.locale?.languageCode == 'de';
+                            return Get.find<MyClassController>()
+                                    .showBrutto
+                                    .value
+                                ? Text(
+                                    "Incl : %${isGerman ? item.tax.toString().replaceAll('.', ',') : item.tax}",
+                                    textDirection: TextDirection.ltr,
+                                    style: robotoMedium.copyWith(fontSize: 10),
+                                  )
+                                : const SizedBox(
+                                    height: Dimensions.paddingSizeExtraSmall,
+                                  );
+                          }),
                         ]),
                     isShop
                         ? Positioned(

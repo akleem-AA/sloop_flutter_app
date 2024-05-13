@@ -73,13 +73,12 @@ class DetailsAppBarState extends State<DetailsAppBar>
       actions: [
         SizedBox(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: LiteRollingSwitch(
               value: myClassController.detailsPage.value,
-              width:
-                  100, // Adjust the width to reduce the size of the toggle button
+              width: 90,
               colorOff: Theme.of(context).primaryColor,
-              iconOn: Icons.circle,
+              iconOn: Icons.circle_outlined,
               iconOff: Icons.circle_outlined,
               textOn: "Brutto",
               textOff: "Netto",

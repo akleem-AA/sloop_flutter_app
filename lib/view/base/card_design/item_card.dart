@@ -334,9 +334,10 @@ class ItemCard extends StatelessWidget {
                                   .showBrutto
                                   .value
                               ? Text(
-                                  "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                      " " +
-                                      item.tax.toString(),
+                                  // "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                  //     " " +
+                                  //     item.tax.toString(),
+                                  "Exlu : ${PriceConverter.convertPrice(item.tax)}",
                                   textDirection: TextDirection.ltr,
                                   style: robotoMedium.copyWith(fontSize: 10),
                                 )
@@ -346,9 +347,10 @@ class ItemCard extends StatelessWidget {
                                   .showBrutto
                                   .value
                               ? Text(
-                                  "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                      " " +
-                                      item.tax.toString(),
+                                  // "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                  //     " " +
+                                  //     item.tax.toString(),
+                                  "Inclu : ${PriceConverter.convertPrice(item.tax)}",
                                   textDirection: TextDirection.ltr,
                                   style: robotoMedium.copyWith(fontSize: 10),
                                 )

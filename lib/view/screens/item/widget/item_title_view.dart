@@ -35,9 +35,18 @@ class ItemTitleView extends StatelessWidget {
       double amountToSubtract = (bruttoPrice * discount) / 100;
       double result = bruttoPrice - amountToSubtract;
       print('brutton price${result}');
-      return '$result';
+      print('brutton price status${Get.locale?.languageCode}');
+      String priceString = '$result';
+      if (Get.locale?.languageCode == 'de') {
+        priceString = priceString.replaceAll('.', ',');
+      }
+      return priceString;
     } else {
-      return '$bruttoPrice';
+      String priceString = '$bruttoPrice';
+      if (Get.locale?.languageCode == 'de') {
+        priceString = priceString.replaceAll('.', ',');
+      }
+      return priceString;
     }
   }
 
@@ -45,9 +54,9 @@ class ItemTitleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("adss ${myClassController.showBrutto.value}");
+    log("detail screen toggle ${myClassController.detailsPage.value}");
     final bool showBrutto = myClassController
-        .showBrutto.value; // Get the value of showBrutto from the controller
+        .detailsPage.value; // Get the value of showBrutto from the controller
     if (kDebugMode) {
       print(inStock ? 'out_of_stock'.tr : 'in_stock'.tr);
       print("toggle button status<<<<<<$showBrutto");
@@ -84,7 +93,7 @@ class ItemTitleView extends StatelessWidget {
 
     return ResponsiveHelper.isDesktop(context)
         ? GetBuilder<ItemController>(builder: (itemController) {
-            log("adsds ${myClassController.showBrutto.value}");
+            log("adsds ${myClassController.detailsPage.value}");
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -256,7 +265,7 @@ class ItemTitleView extends StatelessWidget {
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             child: GetBuilder<ItemController>(
               builder: (itemController) {
-                log("adsds1 ${myClassController.showBrutto.value}");
+                log("adsds1 ${myClassController.detailsPage.value}");
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -274,7 +283,7 @@ class ItemTitleView extends StatelessWidget {
                             : GetBuilder<WishListController>(
                                 builder: (wishController) {
                                 print('123');
-                                print(myClassController.showBrutto.value);
+                                print(myClassController.detailsPage.value);
                                 return Row(
                                   children: [
                                     // Text(
@@ -345,7 +354,7 @@ class ItemTitleView extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                  Obx(() => myClassController.showBrutto.value
+                                  Obx(() => myClassController.detailsPage.value
                                       ? Text(
                                           Get.find<SplashController>()
                                                   .configModel!
@@ -381,7 +390,8 @@ class ItemTitleView extends StatelessWidget {
                                   const SizedBox(height: 5),
 
                                   Row(children: [
-                                    Obx(() => myClassController.showBrutto.value
+                                    Obx(() => myClassController
+                                            .detailsPage.value
                                         ? Text(
                                             "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
                                                 " " +
@@ -404,7 +414,7 @@ class ItemTitleView extends StatelessWidget {
                                             : 0),
                                   ]),
                                   Obx(() => !Get.find<MyClassController>()
-                                          .showBrutto
+                                          .detailsPage
                                           .value
                                       ? Text(
                                           Get.find<SplashController>()

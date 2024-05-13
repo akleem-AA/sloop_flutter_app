@@ -77,8 +77,6 @@ void initState() {
 class _ItemWidgetState extends State<ItemWidget> {
   @override
   Widget build(BuildContext context) {
-    print('68-->> ${controller.showBrutto.value}');
-    print('69-->> ${widget.item?.price}');
     final bool ltr = Get.find<LocalizationController>().isLtr;
     BaseUrls? baseUrls = Get.find<SplashController>().configModel!.baseUrls;
     bool desktop = ResponsiveHelper.isDesktop(context);
@@ -326,7 +324,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                                               : widget.item!.ratingCount,
                                         )
                                       : Row(children: [
-                                          (controller.showBrutto.value)
+                                          (controller.categoryPage.value)
                                               ? Text(
                                                   PriceConverter.convertPrice(
                                                       widget.item!.price,
@@ -374,19 +372,22 @@ class _ItemWidgetState extends State<ItemWidget> {
                                               : const SizedBox(),
                                         ]),
                                   Row(children: [
-                                    (controller.showBrutto.value)
+                                    (controller.categoryPage.value)
                                         ? Text(
-                                            "Inclu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                                " " +
-                                                widget.item!.tax.toString(),
+                                            // "Inclu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                            //     " " +
+                                            //     widget.item!.tax.toString(),
+                                            "Inclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
                                             textDirection: TextDirection.ltr,
                                             style: robotoMedium.copyWith(
                                                 fontSize: 10),
                                           )
                                         : Text(
-                                            "Exlu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                                " " +
-                                                widget.item!.tax.toString(),
+                                            // "Exlu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                            //     " " +
+                                            //     widget.item!.tax.toString(),
+                                            "Exclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
+
                                             textDirection: TextDirection.ltr,
                                             style: robotoMedium.copyWith(
                                                 fontSize: 10),

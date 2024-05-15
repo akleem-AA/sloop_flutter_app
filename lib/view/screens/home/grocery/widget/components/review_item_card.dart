@@ -4,6 +4,7 @@ import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/helper/price_converter.dart';
+import 'package:sixam_mart/myCustomController.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
@@ -432,20 +433,80 @@ class ReviewItemCard extends StatelessWidget {
                                                         )
                                                       : const SizedBox(),
                                                   // SizedBox(height: item!.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
+                                                  //main price
+                                                  // Text(
+                                                  //   PriceConverter.convertPrice(
+                                                  //     Get.find<ItemController>()
+                                                  //         .getStartingPrice(
+                                                  //             item!),
+                                                  //     discount: item!.discount,
+                                                  //     discountType:
+                                                  //         item!.discountType,
+                                                  //   ),
+                                                  //   style: robotoMedium,
+                                                  //   textDirection:
+                                                  //       TextDirection.ltr,
+                                                  // ),
 
-                                                  Text(
-                                                    PriceConverter.convertPrice(
-                                                      Get.find<ItemController>()
-                                                          .getStartingPrice(
-                                                              item!),
-                                                      discount: item!.discount,
-                                                      discountType:
-                                                          item!.discountType,
-                                                    ),
-                                                    style: robotoMedium,
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                  ),
+                                                  // main price
+                                                  Obx(() {
+                                                    final showBrutto = Get.find<
+                                                            MyClassController>()
+                                                        .showBrutto
+                                                        .value;
+                                                    final startingPrice = showBrutto
+                                                        ? Get.find<
+                                                                ItemController>()
+                                                            .getStartingPrice(
+                                                                item!)
+                                                        : Get.find<
+                                                                ItemController>()
+                                                            .getStartingBruttoPrice(
+                                                                item!);
+
+                                                    return startingPrice != null
+                                                        ? Text(
+                                                            PriceConverter
+                                                                .convertPrice(
+                                                              startingPrice,
+                                                              discount: item
+                                                                  ?.discount,
+                                                              discountType: item
+                                                                  ?.discountType,
+                                                            ),
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .ltr,
+                                                            style: robotoMedium,
+                                                          )
+                                                        : const SizedBox();
+                                                  }),
+                                                  Obx(() {
+                                                    final isGerman = Get.locale
+                                                            ?.languageCode ==
+                                                        'de';
+                                                    final showBrutto = Get.find<
+                                                            MyClassController>()
+                                                        .showBrutto
+                                                        .value;
+                                                    final taxValue = isGerman
+                                                        ? item?.tax
+                                                                ?.toStringAsFixed(
+                                                                    2)
+                                                                .replaceAll(
+                                                                    '.', ',') ??
+                                                            ''
+                                                        : item?.tax.toString();
+
+                                                    return Text(
+                                                      "${!showBrutto ? 'Exlu' : 'Inclu'} :% $taxValue",
+                                                      textDirection:
+                                                          TextDirection.ltr,
+                                                      style:
+                                                          robotoMedium.copyWith(
+                                                              fontSize: 10),
+                                                    );
+                                                  }),
                                                 ]),
                                           ],
                                         ),

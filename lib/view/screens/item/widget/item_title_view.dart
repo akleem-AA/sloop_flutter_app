@@ -383,11 +383,18 @@ class ItemTitleView extends StatelessWidget {
                                         )),
                                   Obx(() => myClassController.detailsPage.value
                                       ? Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              calculateBruttoPrice(item?.price,
-                                                  discount: item?.discount),
+                                          PriceConverter.convertPrice(
+                                            Get.find<ItemController>()
+                                                .getStartingPrice(item!),
+                                            discount: item?.discount,
+                                            discountType: item?.discountType,
+                                          ),
+                                          // Get.find<SplashController>()
+                                          //         .configModel!
+                                          //         .currencySymbol! +
+                                          //     calculateBruttoPrice(item?.price,
+                                          //         discount: item?.discount),
+
                                           // '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
                                           //     '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
                                           style: robotoMedium.copyWith(
@@ -398,12 +405,18 @@ class ItemTitleView extends StatelessWidget {
                                           textDirection: TextDirection.ltr,
                                         )
                                       : Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              calculateBruttoPrice(
-                                                  item?.brutto_price,
-                                                  discount: item?.discount),
+                                          PriceConverter.convertPrice(
+                                            Get.find<ItemController>()
+                                                .getStartingBruttoPrice(item!),
+                                            discount: item?.discount,
+                                            discountType: item?.discountType,
+                                          ),
+                                          // Get.find<SplashController>()
+                                          //         .configModel!
+                                          //         .currencySymbol! +
+                                          //     calculateBruttoPrice(
+                                          //         item?.brutto_price,
+                                          //         discount: item?.discount),
                                           //      '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
                                           //          '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
                                           // '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
@@ -417,28 +430,46 @@ class ItemTitleView extends StatelessWidget {
                                   const SizedBox(height: 5),
 
                                   Row(children: [
-                                    Obx(() => myClassController
-                                            .detailsPage.value
-                                        ? Text(
-                                            "Inclu : %" +
-                                                " " +
-                                                item!.tax.toString(),
-                                            textDirection: TextDirection.ltr,
-                                            style: robotoMedium.copyWith(
-                                                fontSize: 10),
-                                          )
-                                        : Text(
-                                            "Exlu : %" +
-                                                " " +
-                                                item!.tax.toString(),
-                                            textDirection: TextDirection.ltr,
-                                            style: robotoMedium.copyWith(
-                                                fontSize: 10),
-                                          )),
+                                    Obx(() {
+                                      final isGerman =
+                                          Get.locale?.languageCode == 'de';
+                                      return myClassController.detailsPage.value
+                                          ? Text(
+                                              "Inclu : %" +
+                                                  " " +
+                                                  (isGerman
+                                                      ? item!.tax
+                                                              ?.toStringAsFixed(
+                                                                  2)
+                                                              .replaceAll(
+                                                                  '.', ',') ??
+                                                          ''
+                                                      : item!.tax.toString()),
+                                              textDirection: TextDirection.ltr,
+                                              style: robotoMedium.copyWith(
+                                                  fontSize: 10),
+                                            )
+                                          : Text(
+                                              "Exlu : %" +
+                                                  " " +
+                                                  (isGerman
+                                                      ? item!.tax
+                                                              ?.toStringAsFixed(
+                                                                  2)
+                                                              .replaceAll(
+                                                                  '.', ',') ??
+                                                          ''
+                                                      : item!.tax.toString()),
+                                              textDirection: TextDirection.ltr,
+                                              style: robotoMedium.copyWith(
+                                                  fontSize: 10),
+                                            );
+                                    }),
                                     SizedBox(
-                                        width: discount! > 0
-                                            ? Dimensions.paddingSizeExtraSmall
-                                            : 0),
+                                      width: discount! > 0
+                                          ? Dimensions.paddingSizeExtraSmall
+                                          : 0,
+                                    ),
                                   ]),
 
                                   // discount! > 0

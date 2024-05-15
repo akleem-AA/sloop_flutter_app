@@ -301,67 +301,45 @@ class ItemCard extends StatelessWidget {
                           //     // : const SizedBox(),
 
                           // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
-
-                          // main price section
-                          Obx(() =>
-                              Get.find<MyClassController>().showBrutto.value
-                                  ? Text(
-                                      PriceConverter.convertPrice(
-                                        Get.find<ItemController>()
-                                            .getStartingPrice(item),
-                                        discount: item.discount,
-                                        discountType: item.discountType,
-                                      ),
-                                      textDirection: TextDirection.ltr,
-                                      style: robotoMedium,
-                                    )
-                                  : const SizedBox()),
-                          Obx(() =>
-                              !Get.find<MyClassController>().showBrutto.value
-                                  ? Text(
-                                      PriceConverter.convertPrice(
-                                        Get.find<ItemController>()
-                                            .getStartingBruttoPrice(item),
-                                        discount: item.discount,
-                                        discountType: item.discountType,
-                                      ),
-                                      textDirection: TextDirection.ltr,
-                                      style: robotoMedium,
-                                    )
-                                  : const SizedBox()),
-
+                          //main price
                           Obx(() {
-                            final isGerman = Get.locale?.languageCode == 'de';
-                            return !Get.find<MyClassController>()
-                                    .showBrutto
-                                    .value
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 5), // Adjust the top padding here
-                                    child: Text(
-                                      "Exlu :% ${isGerman ? item.tax?.toStringAsFixed(2).replaceAll('.', ',') : item.tax}",
-                                      textDirection: TextDirection.ltr,
-                                      style:
-                                          robotoMedium.copyWith(fontSize: 10),
-                                    ),
-                                  )
-                                : const SizedBox(
-                                    height: Dimensions.paddingSizeExtraSmall,
-                                  );
-                          }),
-                          Obx(() {
-                            final isGerman = Get.locale?.languageCode == 'de';
-                            return Get.find<MyClassController>()
-                                    .showBrutto
-                                    .value
+                            final showBrutto =
+                                Get.find<MyClassController>().showBrutto.value;
+                            final startingPrice = showBrutto
+                                ? Get.find<ItemController>()
+                                    .getStartingPrice(item)
+                                : Get.find<ItemController>()
+                                    .getStartingBruttoPrice(item);
+
+                            return startingPrice != null
                                 ? Text(
-                                    "Incl :% ${isGerman ? item.tax?.toStringAsFixed(2).replaceAll('.', ',') : item.tax}",
+                                    PriceConverter.convertPrice(
+                                      startingPrice,
+                                      discount: item.discount,
+                                      discountType: item.discountType,
+                                    ),
                                     textDirection: TextDirection.ltr,
-                                    style: robotoMedium.copyWith(fontSize: 10),
+                                    style: robotoMedium,
                                   )
-                                : const SizedBox(
-                                    height: Dimensions.paddingSizeExtraSmall,
-                                  );
+                                : const SizedBox();
+                          }),
+
+                          Obx(() {
+                            final isGerman = Get.locale?.languageCode == 'de';
+                            final showBrutto =
+                                Get.find<MyClassController>().showBrutto.value;
+                            final taxValue = isGerman
+                                ? item.tax
+                                        ?.toStringAsFixed(2)
+                                        .replaceAll('.', ',') ??
+                                    ''
+                                : item.tax.toString();
+
+                            return Text(
+                              "${!showBrutto ? 'Exlu' : 'Inclu'} :% $taxValue",
+                              textDirection: TextDirection.ltr,
+                              style: robotoMedium.copyWith(fontSize: 10),
+                            );
                           }),
                         ]),
                     isShop

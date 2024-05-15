@@ -13,21 +13,32 @@ class UserRepo {
     return await apiClient.getData(AppConstants.customerInfoUri);
   }
 
-  Future<Response> updateProfile(UserInfoModel userInfoModel, XFile? data, String token) async {
+  Future<Response> updateProfile(UserInfoModel userInfoModel, XFile? data,
+      String token, List mmList) async {
+    // log('MMK $mmList');
     Map<String, String> body = {};
     body.addAll(<String, String>{
-      'f_name': userInfoModel.fName!, 'l_name': userInfoModel.lName!, 'email': userInfoModel.email!
+      'f_name': userInfoModel.fName!,
+      'l_name': userInfoModel.lName!,
+      'email': userInfoModel.email!,
+      'tax_id': userInfoModel.taxId!
     });
-    return await apiClient.postMultipartData(AppConstants.updateProfileUri, body, [MultipartBody('image', data)]);
+    print('body is $body');
+    return await apiClient.postMultipartData(
+        AppConstants.updateProfileUri, body, [MultipartBody('image', data)],
+        mImages: mmList);
   }
 
   Future<Response> changePassword(UserInfoModel userInfoModel) async {
-    return await apiClient.postData(AppConstants.updateProfileUri, {'f_name': userInfoModel.fName, 'l_name': userInfoModel.lName,
-      'email': userInfoModel.email, 'password': userInfoModel.password});
+    return await apiClient.postData(AppConstants.updateProfileUri, {
+      'f_name': userInfoModel.fName,
+      'l_name': userInfoModel.lName,
+      'email': userInfoModel.email,
+      'password': userInfoModel.password
+    });
   }
 
   Future<Response> deleteUser() async {
     return await apiClient.deleteData(AppConstants.customerRemoveUri);
   }
-
 }

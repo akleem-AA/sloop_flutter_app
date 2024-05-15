@@ -60,6 +60,7 @@ dependencies:
   lite_rolling_switch: ^1.0.1
   chips_choice: ^3.0.1
   dio: ^5.4.0
+  flutter_downloader: ^1.11.7
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

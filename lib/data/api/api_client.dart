@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'dart:io';
 
 class ApiClient extends GetxService {
   final dio = Dio();
@@ -29,51 +31,71 @@ class ApiClient extends GetxService {
     }
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
-    }catch(_) {}
+      addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
+    } catch (_) {}
     int? moduleID;
-    if(GetPlatform.isWeb && sharedPreferences.containsKey(AppConstants.moduleId)) {
+    if (GetPlatform.isWeb &&
+        sharedPreferences.containsKey(AppConstants.moduleId)) {
       try {
-        moduleID = ModuleModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!)).id;
-      }catch(_) {}
+        moduleID = ModuleModel.fromJson(
+                jsonDecode(sharedPreferences.getString(AppConstants.moduleId)!))
+            .id;
+      } catch (_) {}
     }
     updateHeader(
-      token, addressModel?.zoneIds, addressModel?.areaIds,
-      sharedPreferences.getString(AppConstants.languageCode), moduleID, addressModel?.latitude,
-        addressModel?.longitude
-    );
+        token,
+        addressModel?.zoneIds,
+        addressModel?.areaIds,
+        sharedPreferences.getString(AppConstants.languageCode),
+        moduleID,
+        addressModel?.latitude,
+        addressModel?.longitude);
   }
 
-  Map<String, String> updateHeader(String? token, List<int>? zoneIDs, List<int>? operationIds, String? languageCode, int? moduleID, String? latitude, String? longitude, {bool setHeader = true}) {
+  Map<String, String> updateHeader(
+      String? token,
+      List<int>? zoneIDs,
+      List<int>? operationIds,
+      String? languageCode,
+      int? moduleID,
+      String? latitude,
+      String? longitude,
+      {bool setHeader = true}) {
     Map<String, String> header = {};
-    if(moduleID != null) {
+    if (moduleID != null) {
       header.addAll({AppConstants.moduleId: moduleID.toString()});
     }
     header.addAll({
       'Content-Type': 'application/json; charset=UTF-8',
       AppConstants.zoneId: zoneIDs != null ? jsonEncode(zoneIDs) : '',
+
       ///this will add in ride module
       // AppConstants.operationAreaId: operationIds != null ? jsonEncode(operationIds) : '',
-      AppConstants.localizationKey: languageCode ?? AppConstants.languages[0].languageCode!,
+      AppConstants.localizationKey:
+          languageCode ?? AppConstants.languages[0].languageCode!,
       AppConstants.latitude: latitude != null ? jsonEncode(latitude) : '',
       AppConstants.longitude: longitude != null ? jsonEncode(longitude) : '',
       'Authorization': 'Bearer $token'
     });
-    if(setHeader) {
+    if (setHeader) {
       _mainHeaders = header;
     }
     return header;
   }
 
-  Future<Response> getData(String uri, {Map<String, dynamic>? query, Map<String, String>? headers}) async {
+  Future<Response> getData(String uri,
+      {Map<String, dynamic>? query, Map<String, String>? headers}) async {
     try {
       if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }
-      http.Response response = await http.get(
-        Uri.parse(appBaseUrl+uri),
-        headers: headers ?? _mainHeaders,
-      ).timeout(Duration(seconds: timeoutInSeconds));
+      http.Response response = await http
+          .get(
+            Uri.parse(appBaseUrl + uri),
+            headers: headers ?? _mainHeaders,
+          )
+          .timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
       if (kDebugMode) {
@@ -83,76 +105,130 @@ class ApiClient extends GetxService {
     }
   }
 
-  Future<Response> postData(String uri, dynamic body, {Map<String, String>? headers, int? timeout}) async {
+  Future<Response> postData(String uri, dynamic body,
+      {Map<String, String>? headers, int? timeout}) async {
     try {
-      if(kDebugMode) {
+      if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
         print('====> API Body: $body');
       }
-      http.Response response = await http.post(
-        Uri.parse(appBaseUrl+uri),
-        body: jsonEncode(body),
-        headers: headers ?? _mainHeaders,
-      ).timeout(Duration(seconds: timeout ?? timeoutInSeconds));
+      http.Response response = await http
+          .post(
+            Uri.parse(appBaseUrl + uri),
+            body: jsonEncode(body),
+            headers: headers ?? _mainHeaders,
+          )
+          .timeout(Duration(seconds: timeout ?? timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
-  Future<Response> postMultipartData(String uri, Map<String, String> body, List<MultipartBody> multipartBody, {Map<String, String>? headers}) async {
+  Future<Response> postMultipartData(
+      String uri, Map<String, String> body, List<MultipartBody> multipartBody,
+      {Map<String, String>? headers, List? mImages}) async {
+    log('hh Lisr $mImages');
     try {
-      if(kDebugMode) {
+      if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
         print('====> API Body: $body with ${multipartBody.length} picture');
       }
-      http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(appBaseUrl+uri));
-      request.headers.addAll(headers ?? _mainHeaders);
-      for(MultipartBody multipart in multipartBody) {
 
-        if(multipart.file != null) {
+      http.MultipartRequest request =
+          http.MultipartRequest('POST', Uri.parse(appBaseUrl + uri));
+      request.headers.addAll(headers ?? _mainHeaders);
+      for (MultipartBody multipart in multipartBody) {
+        if (multipart.file != null) {
           Uint8List list = await multipart.file!.readAsBytes();
           request.files.add(http.MultipartFile(
-            multipart.key, multipart.file!.readAsBytes().asStream(), list.length,
+            multipart.key,
+            multipart.file!.readAsBytes().asStream(),
+            list.length,
             filename: '${DateTime.now().toString()}.png',
           ));
+        }
+
+        if (mImages != null && uri == AppConstants.updateProfileUri) {
+          log('166 $mImages');
+          List<XFile> xFiles = mImages.map((path) => XFile(path)).toList();
+          for (XFile xFile in xFiles) {
+            // Convert XFile to File
+            File image = File(xFile.path);
+
+            // Print the XFile objects
+            Uint8List imageBytes = await image.readAsBytes();
+            log('WORKING');
+            request.files.add(http.MultipartFile(
+              'user_documents[]',
+              image.readAsBytes().asStream(),
+              imageBytes.length,
+              filename: '${DateTime.now().toString()}.png',
+            ));
+            log('File ${request.files.length}');
+          }
+          // for (File image in xFiles) {
+          //   // Print the XFile objects
+          //   Uint8List imageBytes = await image.readAsBytes();
+          //   log('WORKING');
+          //   request.files.add(http.MultipartFile(
+          //     'user_documents',
+          //     image.readAsBytes().asStream(),
+          //     imageBytes.length,
+          //     filename: '${DateTime.now().toString()}.png',
+          //   ));
+          //   log('File ${request.files.length}');
+          // }
         }
       }
 
       request.fields.addAll(body);
-      http.Response response = await http.Response.fromStream(await request.send());
+      log('177-->> $body');
+      log('178-->> ${request.fields}');
+      for (var file in request.files) {
+        log('File field: ${file.field}, filename: ${file.filename}, length: ${file.length}');
+      }
+      http.Response response =
+          await http.Response.fromStream(await request.send());
+
       return handleResponse(response, uri);
     } catch (e) {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
-  Future<Response> putData(String uri, dynamic body, {Map<String, String>? headers}) async {
+  Future<Response> putData(String uri, dynamic body,
+      {Map<String, String>? headers}) async {
     try {
-      if(kDebugMode) {
+      if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
         print('====> API Body: $body');
       }
-      http.Response response = await http.put(
-        Uri.parse(appBaseUrl+uri),
-        body: jsonEncode(body),
-        headers: headers ?? _mainHeaders,
-      ).timeout(Duration(seconds: timeoutInSeconds));
+      http.Response response = await http
+          .put(
+            Uri.parse(appBaseUrl + uri),
+            body: jsonEncode(body),
+            headers: headers ?? _mainHeaders,
+          )
+          .timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
       return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
-  Future<Response> deleteData(String uri, {Map<String, String>? headers}) async {
+  Future<Response> deleteData(String uri,
+      {Map<String, String>? headers}) async {
     try {
-      if(kDebugMode) {
+      if (kDebugMode) {
         print('====> API Call: $uri\nHeader: $_mainHeaders');
       }
-      http.Response response = await http.delete(
-        Uri.parse(appBaseUrl+uri),
-        headers: headers ?? _mainHeaders,
-      ).timeout(Duration(seconds: timeoutInSeconds));
+      http.Response response = await http
+          .delete(
+            Uri.parse(appBaseUrl + uri),
+            headers: headers ?? _mainHeaders,
+          )
+          .timeout(Duration(seconds: timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
       return Response(statusCode: 1, statusText: noInternetMessage);
@@ -163,25 +239,39 @@ class ApiClient extends GetxService {
     dynamic body;
     try {
       body = jsonDecode(response.body);
-    }catch(_) {}
+    } catch (_) {}
     Response response0 = Response(
-      body: body ?? response.body, bodyString: response.body.toString(),
-      request: Request(headers: response.request!.headers, method: response.request!.method, url: response.request!.url),
-      headers: response.headers, statusCode: response.statusCode, statusText: response.reasonPhrase,
+      body: body ?? response.body,
+      bodyString: response.body.toString(),
+      request: Request(
+          headers: response.request!.headers,
+          method: response.request!.method,
+          url: response.request!.url),
+      headers: response.headers,
+      statusCode: response.statusCode,
+      statusText: response.reasonPhrase,
     );
-    if(response0.statusCode != 200 && response0.body != null && response0.body is !String) {
-      if(response0.body.toString().startsWith('{errors: [{code:')) {
+    if (response0.statusCode != 200 &&
+        response0.body != null &&
+        response0.body is! String) {
+      if (response0.body.toString().startsWith('{errors: [{code:')) {
         ErrorResponse errorResponse = ErrorResponse.fromJson(response0.body);
-        response0 = Response(statusCode: response0.statusCode, body: response0.body, statusText: errorResponse.errors![0].message);
-      }else if(response0.body.toString().startsWith('{message')) {
-        response0 = Response(statusCode: response0.statusCode, body: response0.body, statusText: response0.body['message']);
+        response0 = Response(
+            statusCode: response0.statusCode,
+            body: response0.body,
+            statusText: errorResponse.errors![0].message);
+      } else if (response0.body.toString().startsWith('{message')) {
+        response0 = Response(
+            statusCode: response0.statusCode,
+            body: response0.body,
+            statusText: response0.body['message']);
       }
-    }else if(response0.statusCode != 200 && response0.body == null) {
+    } else if (response0.statusCode != 200 && response0.body == null) {
       response0 = Response(statusCode: 0, statusText: noInternetMessage);
     }
-    if(kDebugMode) {
+    if (kDebugMode) {
       print('====> API Response: [${response0.statusCode}] $uri');
-      if(!ResponsiveHelper.isWeb() || response.statusCode != 500){
+      if (!ResponsiveHelper.isWeb() || response.statusCode != 500) {
         print('${response0.body}');
       }
     }

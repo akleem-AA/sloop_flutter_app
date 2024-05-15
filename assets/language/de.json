@@ -1133,6 +1133,9 @@
   "store_texId_validation": "Geschäfts-Tex-ID darf nicht leer sein",
   "documents_validation": "Bitte Dokumente hochladen",
   "category_validation": "Bitte Kategorie auswählen",
-  "category_already_selected": "Kategorie bereits ausgewählt"
+  "category_already_selected": "Kategorie bereits ausgewählt",
+  "inclu":"inkl",
+  "exclu":"exkl",
+  "VAT":"USt"
 
 }

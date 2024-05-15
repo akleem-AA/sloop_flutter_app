@@ -372,30 +372,54 @@ class _ItemWidgetState extends State<ItemWidget> {
                                               : const SizedBox(),
                                         ]),
                                   Row(children: [
-                                    (controller.categoryPage.value)
-                                        ? Text(
-                                            // "Inclu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                            //     " " +
-                                            //     widget.item!.tax.toString(),
-                                            "Inclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
-                                            textDirection: TextDirection.ltr,
-                                            style: robotoMedium.copyWith(
-                                                fontSize: 10),
-                                          )
-                                        : Text(
-                                            // "Exlu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
-                                            //     " " +
-                                            //     widget.item!.tax.toString(),
-                                            "Exclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
+                                    // (controller.categoryPage.value)
+                                    //     ? Text(
+                                    //         // "Inclu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                    //         //     " " +
+                                    //         //     widget.item!.tax.toString(),
+                                    //         "Inclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
+                                    //         textDirection: TextDirection.ltr,
+                                    //         style: robotoMedium.copyWith(
+                                    //             fontSize: 10),
+                                    //       )
+                                    //     : Text(
+                                    //         // "Exlu: ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                    //         //     " " +
+                                    //         //     widget.item!.tax.toString(),
+                                    //         "Exclu : ${PriceConverter.convertPrice(widget.item!.tax)}",
 
-                                            textDirection: TextDirection.ltr,
-                                            style: robotoMedium.copyWith(
-                                                fontSize: 10),
-                                          ),
+                                    //         textDirection: TextDirection.ltr,
+                                    //         style: robotoMedium.copyWith(
+                                    //             fontSize: 10),
+                                    //       ),
                                     SizedBox(
                                         width: discount! > 0
                                             ? Dimensions.paddingSizeExtraSmall
                                             : 0),
+
+                                    Obx(() {
+                                      final isGerman =
+                                          Get.locale?.languageCode == 'de';
+                                      final showBrutto =
+                                          controller.categoryPage.value;
+                                      final taxValue = isGerman
+                                          ? widget.item?.tax
+                                                  ?.toStringAsFixed(2)
+                                                  .replaceAll('.', ',') ??
+                                              ''
+                                          : widget.item?.tax
+                                              ?.toStringAsFixed(2);
+
+                                      return Text(
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
+                                                " "
+                                                'VAT'
+                                            .tr,
+                                        textDirection: TextDirection.ltr,
+                                        style:
+                                            robotoMedium.copyWith(fontSize: 10),
+                                      );
+                                    }),
                                   ]),
                                 ]),
                           ),

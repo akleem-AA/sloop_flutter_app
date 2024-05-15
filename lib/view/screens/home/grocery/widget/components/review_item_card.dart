@@ -496,10 +496,14 @@ class ReviewItemCard extends StatelessWidget {
                                                                 .replaceAll(
                                                                     '.', ',') ??
                                                             ''
-                                                        : item?.tax.toString();
-
+                                                        : item?.tax
+                                                            ?.toStringAsFixed(
+                                                                2);
                                                     return Text(
-                                                      "${!showBrutto ? 'Exlu' : 'Inclu'} :% $taxValue",
+                                                      "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
+                                                              " "
+                                                              'VAT'
+                                                          .tr,
                                                       textDirection:
                                                           TextDirection.ltr,
                                                       style:
@@ -538,6 +542,8 @@ class ReviewItemCard extends StatelessWidget {
                                             ),
                                           ],
                                         ),
+
+                                        //add button icon
                                         child: const Icon(
                                           Icons.add,
                                           size: 25,

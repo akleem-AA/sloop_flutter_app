@@ -365,10 +365,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                                 : const SizedBox(),
                             const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                            ConditionCheckBox(
-                                authController: authController,
-                                fromSignUp: true),
-                            const SizedBox(height: Dimensions.paddingSizeLarge),
+                            // ConditionCheckBox(
+                            //     authController: authController,
+                            //     fromSignUp: true),
+                            // const SizedBox(height: Dimensions.paddingSizeLarge),
 
                             CustomButton(
                               height: ResponsiveHelper.isDesktop(context)
@@ -390,11 +390,12 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   ? () => Get.toNamed(RouteHelper
                                   .getSignUpNextRoute())
                                   : null,*/
-
-                              onPressed: authController.acceptTerms
-                                  ? () => _register(
-                                      authController, _countryDialCode!)
-                                  : null,
+                              onPressed: () =>
+                                  _register(authController, _countryDialCode!),
+                              // onPressed: !authController.acceptTerms
+                              //     ? () => _register(
+                              //         authController, _countryDialCode!)
+                              //     : null,
                             ),
 
                             const SizedBox(

@@ -23,6 +23,7 @@ import 'package:sixam_mart/view/base/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide MultipartFile hide FormData;
 import 'package:dio/dio.dart';
+import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 
 class SignUpNextScreen extends StatefulWidget {
   final String firstName;
@@ -408,6 +409,11 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
                                 height: !ResponsiveHelper.isDesktop(context)
                                     ? Dimensions.paddingSizeLarge
                                     : 0),
+
+                            ConditionCheckBox(
+                                authController: authController,
+                                fromSignUp: true),
+                            const SizedBox(height: Dimensions.paddingSizeLarge),
                             CustomButton(
                               height: ResponsiveHelper.isDesktop(context)
                                   ? 45
@@ -512,6 +518,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
       // ignore: use_build_context_synchronously
       authController.registration(signUpBody, context).then((status) async {
+        print("register api response${status}");
         // Check if status is not null and if the API call was successful
         if (status.isSuccess) {
           // Success callback

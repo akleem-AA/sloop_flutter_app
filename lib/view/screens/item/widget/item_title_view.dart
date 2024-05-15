@@ -430,40 +430,61 @@ class ItemTitleView extends StatelessWidget {
                                   const SizedBox(height: 5),
 
                                   Row(children: [
+                                    // Obx(() {
+                                    //   final isGerman =
+                                    //       Get.locale?.languageCode == 'de';
+                                    //   return myClassController.detailsPage.value
+                                    //       ? Text(
+                                    //           "Inclu : %" +
+                                    //               " " +
+                                    //               (isGerman
+                                    //                   ? item!.tax
+                                    //                           ?.toStringAsFixed(
+                                    //                               2)
+                                    //                           .replaceAll(
+                                    //                               '.', ',') ??
+                                    //                       ''
+                                    //                   : item!.tax.toString()),
+                                    //           textDirection: TextDirection.ltr,
+                                    //           style: robotoMedium.copyWith(
+                                    //               fontSize: 10),
+                                    //         )
+                                    //       : Text(
+                                    //           "Exlu : %" +
+                                    //               " " +
+                                    //               (isGerman
+                                    //                   ? item!.tax
+                                    //                           ?.toStringAsFixed(
+                                    //                               2)
+                                    //                           .replaceAll(
+                                    //                               '.', ',') ??
+                                    //                       ''
+                                    //                   : item!.tax.toString()),
+                                    //           textDirection: TextDirection.ltr,
+                                    //           style: robotoMedium.copyWith(
+                                    //               fontSize: 10),
+                                    //         );
+                                    // }),
                                     Obx(() {
                                       final isGerman =
                                           Get.locale?.languageCode == 'de';
-                                      return myClassController.detailsPage.value
-                                          ? Text(
-                                              "Inclu : %" +
-                                                  " " +
-                                                  (isGerman
-                                                      ? item!.tax
-                                                              ?.toStringAsFixed(
-                                                                  2)
-                                                              .replaceAll(
-                                                                  '.', ',') ??
-                                                          ''
-                                                      : item!.tax.toString()),
-                                              textDirection: TextDirection.ltr,
-                                              style: robotoMedium.copyWith(
-                                                  fontSize: 10),
-                                            )
-                                          : Text(
-                                              "Exlu : %" +
-                                                  " " +
-                                                  (isGerman
-                                                      ? item!.tax
-                                                              ?.toStringAsFixed(
-                                                                  2)
-                                                              .replaceAll(
-                                                                  '.', ',') ??
-                                                          ''
-                                                      : item!.tax.toString()),
-                                              textDirection: TextDirection.ltr,
-                                              style: robotoMedium.copyWith(
-                                                  fontSize: 10),
-                                            );
+                                      final showBrutto =
+                                          myClassController.detailsPage.value;
+                                      final taxValue = isGerman
+                                          ? item?.tax
+                                                  ?.toStringAsFixed(2)
+                                                  .replaceAll('.', ',') ??
+                                              ''
+                                          : item?.tax?.toStringAsFixed(2);
+                                      return Text(
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
+                                                " "
+                                                'VAT'
+                                            .tr,
+                                        textDirection: TextDirection.ltr,
+                                        style:
+                                            robotoMedium.copyWith(fontSize: 10),
+                                      );
                                     }),
                                     SizedBox(
                                       width: discount! > 0

@@ -1133,5 +1133,8 @@
   "store_texId_validation":"Store Tex id should not empty",
   "documents_validation":"Please upload documents",
   "category_validation":"Please select category",
-  "category_already_selected":"Category already selected"
+  "category_already_selected":"Category already selected",
+  "inclu":"including",
+  "exclu":"Exlu",
+  "VAT":"VAT"
 }

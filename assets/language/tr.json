@@ -1133,5 +1133,8 @@
   "store_texId_validation": "Mağaza Tex kimliği boş olmamalıdır",
   "documents_validation": "Lütfen belgeleri yükleyin",
   "category_validation": "Lütfen kategori seçin",
-  "category_already_selected": "Kategori zaten seçildi"
+  "category_already_selected": "Kategori zaten seçildi",
+  "inclu":"including",
+  "exclu":"Exlu",
+  "VAT":"VAT"
 }

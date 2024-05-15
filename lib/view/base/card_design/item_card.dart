@@ -333,10 +333,13 @@ class ItemCard extends StatelessWidget {
                                         ?.toStringAsFixed(2)
                                         .replaceAll('.', ',') ??
                                     ''
-                                : item.tax.toString();
+                                : item.tax?.toStringAsFixed(2);
 
                             return Text(
-                              "${!showBrutto ? 'Exlu' : 'Inclu'} :% $taxValue",
+                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
+                                      " "
+                                      'VAT'
+                                  .tr,
                               textDirection: TextDirection.ltr,
                               style: robotoMedium.copyWith(fontSize: 10),
                             );

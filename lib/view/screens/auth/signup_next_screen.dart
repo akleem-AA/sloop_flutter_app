@@ -516,27 +516,30 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
             .join(','),
       );
 
-      // ignore: use_build_context_synchronously
-      authController.registration(signUpBody, context).then((status) async {
-        print("register api response${status}");
-        // Check if status is not null and if the API call was successful
-        if (status.isSuccess) {
-          // Success callback
-          showCustomSnackBar(
-            "Successfully registering! Please await admin approval before logging in",
-            isError: false,
-          );
+      // Store the result of registration in a variable
+      var registrationResult =
+          // ignore: use_build_context_synchronously
+          await authController.registration(signUpBody, context);
+      print("register api response${registrationResult}");
+      print("Success status: ${registrationResult.isSuccess}");
+      print("Message: ${registrationResult.message}");
+// Check if the response is not null and if it was successful
+      if (registrationResult.isSuccess) {
+        // Success callback
+        showCustomSnackBar(
+          "Successfully registering! Please await admin approval before logging in",
+          isError: false,
+        );
+      } else {
+        // Display the error message from the response
+        if (registrationResult != null && registrationResult.message != null) {
+          showCustomSnackBar(registrationResult.message, isError: true);
         } else {
-          // Display the error message from the response
-          if (status != null && status.message != null) {
-            showCustomSnackBar(status.message, isError: true);
-          } else {
-            // If status or message is null, display a generic error message
-            showCustomSnackBar("An error occurred. Please try again later.",
-                isError: true);
-          }
+          // If status or message is null, display a generic error message
+          showCustomSnackBar("An error occurred. Please try again later.",
+              isError: true);
         }
-      });
+      }
     }
   }
 }

@@ -219,7 +219,7 @@ class AuthController extends GetxController implements GetxService {
       multiParts.add(MultipartBody('identity_image[]', file));
     }
     Response response =
-    await authRepo.registerDeliveryMan(deliveryManBody, multiParts);
+        await authRepo.registerDeliveryMan(deliveryManBody, multiParts);
     if (response.statusCode == 200) {
       Get.offAllNamed(RouteHelper.getInitialRoute());
       showCustomSnackBar('delivery_man_registration_successful'.tr,
@@ -230,7 +230,6 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
-
 
   Future<ResponseModel> registration(
       SignUpBody signUpBody, BuildContext context) async {
@@ -257,7 +256,8 @@ class AuthController extends GetxController implements GetxService {
           Get.back();
         }
       }
-      responseModel = ResponseModel(false, response.statusText);
+      responseModel = ResponseModel(true, "Registration successful");
+      // responseModel = ResponseModel(false, response.statusText);
     } else {
       responseModel = ResponseModel(false, response.statusText);
     }
@@ -575,7 +575,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
   Future<void> getZoneList() async {
     _pickedLogo = null;
     _pickedCover = null;
@@ -741,8 +740,7 @@ class AuthController extends GetxController implements GetxService {
         } else {
           //file = null;
         }
-        
-        
+
         /*XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
         if (xFile != null) {
           _pickedIdentities.add(xFile);
@@ -751,7 +749,6 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
-
 
   void removeDmImage() {
     _pickedImage = null;
@@ -801,7 +798,6 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-
   @override
   void dispose() {
     _selectedCategories = [];
@@ -809,5 +805,4 @@ class AuthController extends GetxController implements GetxService {
     // TODO: implement dispose
     super.dispose();
   }
-
 }

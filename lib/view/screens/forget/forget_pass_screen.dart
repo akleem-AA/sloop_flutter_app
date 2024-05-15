@@ -30,6 +30,7 @@ class ForgetPassScreen extends StatefulWidget {
 
 class _ForgetPassScreenState extends State<ForgetPassScreen> {
   final TextEditingController _numberController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   String? _countryDialCode = CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).dialCode;
 
   @override
@@ -56,19 +57,57 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
               child: Text('please_enter_mobile'.tr, style: robotoRegular, textAlign: TextAlign.center),
             ),
 
-            CustomTextField(
-              titleText: 'phone'.tr,
-              controller: _numberController,
-              inputType: TextInputType.phone,
-              inputAction: TextInputAction.done,
-              isPhone: true,
-              showTitle: ResponsiveHelper.isDesktop(context),
-              onCountryChanged: (CountryCode countryCode) {
-                _countryDialCode = countryCode.dialCode;
+            // CustomTextField(
+            //   titleText: 'phone'.tr,
+            //   controller: _numberController,
+            //   inputType: TextInputType.phone,
+            //   inputAction: TextInputAction.done,
+            //   isPhone: true,
+            //   showTitle: ResponsiveHelper.isDesktop(context),
+            //   onCountryChanged: (CountryCode countryCode) {
+            //     _countryDialCode = countryCode.dialCode;
+            //   },
+            //   countryDialCode: _countryDialCode != null ? CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).code
+            //       : Get.find<LocalizationController>().locale.countryCode,
+            //   onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode!) : null,
+            // ),
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(prefixIcon: const Icon(Icons.email,size: 20.0,),
+                  labelText: 'Email',
+                  fillColor: Theme.of(context).cardColor,
+                  hintStyle:  robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
+                  filled: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 7.0, horizontal: 10.0),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide:
+                      BorderSide(color: Theme.of(context).primaryColor)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide:
+                      BorderSide(color: Theme.of(context).primaryColor)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide:
+                      BorderSide(color: Theme.of(context).primaryColor))),
+              validator: (value) {
+                if (value != null && value.isNotEmpty) {
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$')
+                      .hasMatch(value!)) {
+                    return 'Invalid Email Format';
+                  }
+                }
+                // if (value!.isEmpty) {
+                //   return 'Email is required.';
+                // }
+                // // You can add email validation using a regular expression or other methods here.
+                // return null;
               },
-              countryDialCode: _countryDialCode != null ? CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).code
-                  : Get.find<LocalizationController>().locale.countryCode,
-              onSubmit: (text) => GetPlatform.isWeb ? _forgetPass(_countryDialCode!) : null,
+              onSaved: (value) {
+                //email = value!;
+              },
             ),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
@@ -76,7 +115,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
               return CustomButton(
                 buttonText: 'next'.tr,
                 isLoading: authController.isLoading,
-                onPressed: () => _forgetPass(_countryDialCode!),
+                onPressed: () => _forgetPass(),
               );
             }),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
@@ -99,7 +138,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
     );
   }
 
-  void _forgetPass(String countryCode) async {
+ /* void _forgetPass(String countryCode) async {
     String phone = _numberController.text.trim();
 
     String numberWithCountryCode = countryCode+phone;
@@ -118,6 +157,34 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         Get.find<AuthController>().forgetPassword(numberWithCountryCode).then((status) async {
           if (status.isSuccess) {
             Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode, '', RouteHelper.forgotPassword, ''));
+          }else {
+            showCustomSnackBar(status.message);
+          }
+        });
+      }
+    }
+  }*/
+  bool _validateEmail(String email) {
+    // Regular expression for basic email validation
+    String emailRegex = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    RegExp regex = RegExp(emailRegex);
+    return regex.hasMatch(email);
+  }
+  void _forgetPass() async {
+    String email = emailController.text.trim();
+    bool isCorrect = _validateEmail(email);
+    if (email.isEmpty) {
+      showCustomSnackBar('Enter Email Address');
+    }else if (!isCorrect) {
+      showCustomSnackBar('Invalid Email Address');
+    }else {
+      if(widget.fromSocialLogin) {
+        widget.socialLogInBody!.phone = email;
+        Get.find<AuthController>().registerWithSocialMedia(widget.socialLogInBody!);
+      }else {
+        Get.find<AuthController>().forgetPassword(email).then((status) async {
+          if (status.isSuccess) {
+            Get.toNamed(RouteHelper.getVerificationRoute(email, '', RouteHelper.forgotPassword, ''));
           }else {
             showCustomSnackBar(status.message);
           }

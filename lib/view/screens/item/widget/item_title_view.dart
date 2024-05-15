@@ -354,6 +354,33 @@ class ItemTitleView extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                  Obx(() => !Get.find<MyClassController>()
+                                          .detailsPage
+                                          .value
+                                      ? Text(
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              (item?.brutto_price).toString(),
+                                          textDirection: TextDirection.ltr,
+                                          style: robotoRegular.copyWith(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        )
+                                      : Text(
+                                          Get.find<SplashController>()
+                                                  .configModel!
+                                                  .currencySymbol! +
+                                              (item?.price).toString(),
+                                          textDirection: TextDirection.ltr,
+                                          style: robotoRegular.copyWith(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              decoration:
+                                                  TextDecoration.lineThrough),
+                                        )),
                                   Obx(() => myClassController.detailsPage.value
                                       ? Text(
                                           Get.find<SplashController>()
@@ -393,7 +420,7 @@ class ItemTitleView extends StatelessWidget {
                                     Obx(() => myClassController
                                             .detailsPage.value
                                         ? Text(
-                                            "Inclu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                            "Inclu : %" +
                                                 " " +
                                                 item!.tax.toString(),
                                             textDirection: TextDirection.ltr,
@@ -401,7 +428,7 @@ class ItemTitleView extends StatelessWidget {
                                                 fontSize: 10),
                                           )
                                         : Text(
-                                            "Exlu : ${Get.find<SplashController>().configModel!.currencySymbol!}" +
+                                            "Exlu : %" +
                                                 " " +
                                                 item!.tax.toString(),
                                             textDirection: TextDirection.ltr,
@@ -413,33 +440,7 @@ class ItemTitleView extends StatelessWidget {
                                             ? Dimensions.paddingSizeExtraSmall
                                             : 0),
                                   ]),
-                                  Obx(() => !Get.find<MyClassController>()
-                                          .detailsPage
-                                          .value
-                                      ? Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              (item?.brutto_price).toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoRegular.copyWith(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )
-                                      : Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              (item?.price).toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoRegular.copyWith(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )),
+
                                   // discount! > 0
                                   //     ? Text(
                                   //         'price${PriceConverter.convertPrice(startingPrice)}'

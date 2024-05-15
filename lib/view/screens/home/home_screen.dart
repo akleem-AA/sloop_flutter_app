@@ -333,14 +333,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )),
                                   SizedBox(
-                                    height: 30,
+                                    height: 33,
                                     // width: 0,
                                     child: LiteRollingSwitch(
                                         value: false,
                                         width: 90,
                                         colorOff:
                                             Theme.of(context).primaryColor,
-                                        iconOn: Icons.circle_outlined,
+                                        iconOn: Icons.circle_rounded,
                                         iconOff: Icons.circle_outlined,
                                         textOn: "Brutto",
                                         textOff: "Netto",

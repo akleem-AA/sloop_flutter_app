@@ -247,43 +247,43 @@ class ItemCard extends StatelessWidget {
                           // discount section
                           item.discount != null && item.discount! > 0
                               ? Obx(
-                                  () => Get.find<MyClassController>()
-                                          .showBrutto
-                                          .value
-                                      ? Text(
-                                          PriceConverter.convertPrice(
-                                            Get.find<ItemController>()
-                                                .getStartingPrice(item),
-                                          ),
-                                          style: robotoMedium.copyWith(
-                                            fontSize:
-                                                Dimensions.fontSizeExtraSmall,
-                                            color:
-                                                Theme.of(context).disabledColor,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                          textDirection: TextDirection.ltr,
-                                        )
-                                      : const SizedBox(),
+                                  () {
+                                    if (Get.find<MyClassController>()
+                                        .showBrutto
+                                        .value) {
+                                      return Text(
+                                        PriceConverter.convertPrice(
+                                          Get.find<ItemController>()
+                                              .getStartingPrice(item),
+                                        ),
+                                        style: robotoMedium.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeExtraSmall,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                        textDirection: TextDirection.ltr,
+                                      );
+                                    } else {
+                                      return Text(
+                                        PriceConverter.convertPrice(
+                                            startingBruttoPrice),
+                                        style: robotoMedium.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeExtraSmall,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                        textDirection: TextDirection.ltr,
+                                      );
+                                    }
+                                  },
                                 )
                               : const SizedBox(),
-                          Obx(
-                            () => !Get.find<MyClassController>()
-                                    .showBrutto
-                                    .value
-                                ? Text(
-                                    PriceConverter.convertPrice(
-                                      startingBruttoPrice,
-                                    ),
-                                    style: robotoMedium.copyWith(
-                                      fontSize: Dimensions.fontSizeExtraSmall,
-                                      color: Theme.of(context).disabledColor,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ),
 
                           //discount section
                           // item.discount != null && item.discount! > 0
@@ -339,7 +339,7 @@ class ItemCard extends StatelessWidget {
                                     padding: const EdgeInsets.only(
                                         top: 5), // Adjust the top padding here
                                     child: Text(
-                                      "Exlu : %${isGerman ? item.tax.toString().replaceAll('.', ',') : item.tax}",
+                                      "Exlu :% ${isGerman ? item.tax?.toStringAsFixed(2).replaceAll('.', ',') : item.tax}",
                                       textDirection: TextDirection.ltr,
                                       style:
                                           robotoMedium.copyWith(fontSize: 10),
@@ -355,7 +355,7 @@ class ItemCard extends StatelessWidget {
                                     .showBrutto
                                     .value
                                 ? Text(
-                                    "Incl : %${isGerman ? item.tax.toString().replaceAll('.', ',') : item.tax}",
+                                    "Incl :% ${isGerman ? item.tax?.toStringAsFixed(2).replaceAll('.', ',') : item.tax}",
                                     textDirection: TextDirection.ltr,
                                     style: robotoMedium.copyWith(fontSize: 10),
                                   )

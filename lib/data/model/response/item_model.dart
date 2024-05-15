@@ -107,6 +107,7 @@ class Item {
   int? quantityLimit;
   int? flashSale;
   double? brutto_price;
+  List<Tag>? tags;
 
   Item(
       {this.id,
@@ -141,7 +142,8 @@ class Item {
       this.organic,
       this.quantityLimit,
       this.flashSale,
-      this.brutto_price});
+        this.tags,
+       this.brutto_price});
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -169,6 +171,13 @@ class Item {
         foodVariations!.add(FoodVariation.fromJson(v));
       });
     }
+    if (json['tags'] != null) {
+      tags = [];
+      json['tags'].forEach((v) {
+        tags!.add(Tag.fromJson(v));
+      });
+    }
+
     if (json['add_ons'] != null) {
       addOns = [];
       if (json['add_ons'].length > 0 && json['add_ons'][0] != '[') {
@@ -231,6 +240,10 @@ class Item {
     if (addOns != null) {
       data['add_ons'] = addOns!.map((v) => v.toJson()).toList();
     }
+    if (tags != null) {
+      data['tags'] = tags!.map((tag) => tag.toJson()).toList();
+    }
+
     if (choiceOptions != null) {
       data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
@@ -276,7 +289,35 @@ class CategoryIds {
     return data;
   }
 }
+class Tag {
+  int? id;
+  String? tag;
+  String? createdAt;
+  String? updatedAt;
 
+  Tag({
+    this.id,
+    this.tag,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  Tag.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    tag = json['tag'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['tag'] = tag;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
 class Variation {
   String? type;
   double? price;

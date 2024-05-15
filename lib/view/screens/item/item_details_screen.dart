@@ -673,6 +673,68 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                               //                   .fontSizeLarge),
                                               //         )),
                                               // ]),
+
+//tag section
+                                              widget.item?.tags != null
+                                                  ? SizedBox(
+                                                      height:
+                                                          40, // Adjust the height according to your design
+                                                      child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount: widget
+                                                                .item
+                                                                ?.tags
+                                                                ?.length ??
+                                                            0,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          final Tag = widget
+                                                              .item
+                                                              ?.tags?[index];
+                                                          return Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text('#'),
+                                                              InkWell(
+                                                                  onTap: () {
+                                                                    Get.toNamed(
+                                                                        RouteHelper
+                                                                            .getSearchRoute(
+                                                                      queryText:
+                                                                          Tag?.tag,
+                                                                    ));
+                                                                  },
+                                                                  child: Text(
+                                                                    Tag?.tag ??
+                                                                        "",
+                                                                    textDirection:
+                                                                        TextDirection
+                                                                            .ltr,
+                                                                    style: robotoBold.copyWith(
+                                                                        color: Theme.of(context)
+                                                                            .primaryColor,
+                                                                        fontSize:
+                                                                            Dimensions.fontSizeDefault),
+                                                                  )),
+                                                              SizedBox(
+                                                                  width:
+                                                                      Get.width *
+                                                                          0.02)
+                                                            ],
+                                                          );
+                                                        },
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                              widget.item?.tags != null
+                                                  ? const SizedBox(
+                                                      height: Dimensions
+                                                          .paddingSizeExtraSmall)
+                                                  : SizedBox(),
+
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeExtraLarge),

@@ -402,19 +402,18 @@ class _ItemWidgetState extends State<ItemWidget> {
                                           Get.locale?.languageCode == 'de';
                                       final showBrutto =
                                           controller.categoryPage.value;
-                                      final taxValue = isGerman
-                                          ? widget.item?.tax
-                                                  ?.toStringAsFixed(2)
-                                                  .replaceAll('.', ',') ??
-                                              ''
-                                          : widget.item?.tax
-                                              ?.toStringAsFixed(2);
+                                      // final taxValue = isGerman
+                                      //     ? widget.item?.tax
+                                      //             ?.toStringAsFixed(2)
+                                      //             .replaceAll('.', ',') ??
+                                      //         ''
+                                      //     : widget.item?.tax
+                                      //         ?.toStringAsFixed(2);
 
+                                      final taxValue =
+                                          widget.item?.tax?.toString();
                                       return Text(
-                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
-                                                " "
-                                                'VAT'
-                                            .tr,
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
                                         textDirection: TextDirection.ltr,
                                         style:
                                             robotoMedium.copyWith(fontSize: 10),

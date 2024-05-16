@@ -1134,8 +1134,11 @@
   "documents_validation": "Bitte Dokumente hochladen",
   "category_validation": "Bitte Kategorie auswählen",
   "category_already_selected": "Kategorie bereits ausgewählt",
-  "inclu":"inkl",
-  "exclu":"exkl",
-  "VAT":"USt"
+  "inclu":"inkl.",
+  "exclu":"exkl.",
+  "tax":"USt",
+  "netto":"Netto",
+  "brutto":"Brutto"
+  
 
 }

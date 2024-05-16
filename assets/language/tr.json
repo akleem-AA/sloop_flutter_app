@@ -1134,7 +1134,9 @@
   "documents_validation": "Lütfen belgeleri yükleyin",
   "category_validation": "Lütfen kategori seçin",
   "category_already_selected": "Kategori zaten seçildi",
-  "inclu":"including",
-  "exclu":"Exlu",
-  "VAT":"VAT"
+  "inclu":"içeren.",
+  "exclu":"özel.",
+  "tax":"KDV",
+  "netto":"Net",
+  "brutto":"Brüt"
 }

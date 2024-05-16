@@ -523,7 +523,7 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
       print("register api response${registrationResult}");
       print("Success status: ${registrationResult.isSuccess}");
       print("Message: ${registrationResult.message}");
-// Check if the response is not null and if it was successful
+
       if (registrationResult.isSuccess) {
         // Success callback
         showCustomSnackBar(

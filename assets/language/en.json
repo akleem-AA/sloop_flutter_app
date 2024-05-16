@@ -1134,7 +1134,9 @@
   "documents_validation":"Please upload documents",
   "category_validation":"Please select category",
   "category_already_selected":"Category already selected",
-  "inclu":"including",
-  "exclu":"Exlu",
-  "VAT":"VAT"
+  "inclu":"incl.",
+  "exclu":"Excl.",
+  "tax":"VAT",
+  "netto":"Net",
+  "brutto":"Gross"
 }

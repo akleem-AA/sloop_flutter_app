@@ -479,7 +479,7 @@ class ItemTitleView extends StatelessWidget {
                                       return Text(
                                         "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
                                                 " "
-                                                'VAT'
+                                                'tax'
                                             .tr,
                                         textDirection: TextDirection.ltr,
                                         style:

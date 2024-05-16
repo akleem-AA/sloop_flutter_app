@@ -115,11 +115,13 @@ class AuthRepo {
         AppConstants.forgetPasswordUri, {"phone": '', "email": phone});
   }
 
-  Future<Response> verifyToken(String? phone, String token) async {
+//I have changed the phone key with email for forgot password
+  Future<Response> verifyToken(String? email, String token) async {
     return await apiClient.postData(
-        AppConstants.verifyTokenUri, {"phone": phone, "reset_token": token});
+        AppConstants.verifyTokenUri, {"email": email, "reset_token": token});
   }
 
+// I have changed the phone key with email for forgot password
   Future<Response> resetPassword(String? resetToken, String number,
       String password, String confirmPassword) async {
     return await apiClient.postData(
@@ -127,7 +129,7 @@ class AuthRepo {
       {
         "_method": "put",
         "reset_token": resetToken,
-        "phone": number,
+        "email": number,
         "password": password,
         "confirm_password": confirmPassword
       },

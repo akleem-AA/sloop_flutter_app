@@ -326,20 +326,11 @@ class ItemCard extends StatelessWidget {
 
                           Obx(() {
                             final isGerman = Get.locale?.languageCode == 'de';
-                            final showBrutto =
-                                Get.find<MyClassController>().showBrutto.value;
-                            final taxValue = isGerman
-                                ? item.tax
-                                        ?.toStringAsFixed(2)
-                                        .replaceAll('.', ',') ??
-                                    ''
-                                : item.tax?.toStringAsFixed(2);
-
+                            final showBrutto = Get.find<MyClassController>().showBrutto.value;
+                            final taxValue = item.tax;
+                            final taxPercentage = taxValue?.toInt() ?? 0; // Convert to integer
                             return Text(
-                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
-                                      " "
-                                      'VAT'
-                                  .tr,
+                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxPercentage % ${'tax'.tr}",
                               textDirection: TextDirection.ltr,
                               style: robotoMedium.copyWith(fontSize: 10),
                             );

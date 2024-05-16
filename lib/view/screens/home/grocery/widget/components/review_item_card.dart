@@ -489,21 +489,20 @@ class ReviewItemCard extends StatelessWidget {
                                                             MyClassController>()
                                                         .showBrutto
                                                         .value;
-                                                    final taxValue = isGerman
-                                                        ? item?.tax
-                                                                ?.toStringAsFixed(
-                                                                    2)
-                                                                .replaceAll(
-                                                                    '.', ',') ??
-                                                            ''
-                                                        : item?.tax
-                                                            ?.toStringAsFixed(
-                                                                2);
+                                                    // final taxValue = isGerman
+                                                    //     ? item?.tax
+                                                    //             ?.toStringAsFixed(
+                                                    //                 2)
+                                                    //             .replaceAll(
+                                                    //                 '.', ',') ??
+                                                    //         ''
+                                                    //     : item?.tax
+                                                    //         ?.toStringAsFixed(
+                                                    //             2);
+                                                    final taxValue =
+                                                        item?.tax?.toString();
                                                     return Text(
-                                                      "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
-                                                              " "
-                                                              'VAT'
-                                                          .tr,
+                                                      "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
                                                       textDirection:
                                                           TextDirection.ltr,
                                                       style:

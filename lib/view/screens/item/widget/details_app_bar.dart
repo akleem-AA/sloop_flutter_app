@@ -78,6 +78,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
               value: myClassController.detailsPage.value,
               width: 90,
               colorOff: Theme.of(context).primaryColor,
+              colorOn: Theme.of(context).primaryColor,
               iconOn: Icons.circle_outlined,
               iconOff: Icons.circle_outlined,
               textOn: "Brutto",

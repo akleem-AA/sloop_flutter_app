@@ -340,10 +340,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 90,
                                         colorOff:
                                             Theme.of(context).primaryColor,
-                                        iconOn: Icons.circle_rounded,
+                                        colorOn: Theme.of(context).primaryColor,
+                                        iconOn: Icons.circle_outlined,
                                         iconOff: Icons.circle_outlined,
-                                        textOn: "Brutto",
-                                        textOff: "Netto",
+                                        textOn: "brutto".tr,
+                                        textOff: "netto".tr,
+                                        textOnColor: Colors
+                                            .white, // Set textOnColor to white
+                                        textOffColor: Colors.black,
+                                        textSize: 15,
                                         // textSize: 10,
                                         onTap: () {},
                                         onDoubleTap: () {},

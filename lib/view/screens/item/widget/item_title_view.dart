@@ -466,26 +466,18 @@ class ItemTitleView extends StatelessWidget {
                                     //         );
                                     // }),
                                     Obx(() {
-                                      final isGerman =
-                                          Get.locale?.languageCode == 'de';
                                       final showBrutto =
                                           myClassController.detailsPage.value;
-                                      final taxValue = isGerman
-                                          ? item?.tax
-                                                  ?.toStringAsFixed(2)
-                                                  .replaceAll('.', ',') ??
-                                              ''
-                                          : item?.tax?.toStringAsFixed(2);
+                                      final taxValue =
+                                          item?.tax?.toInt().toString() ?? '';
                                       return Text(
-                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue %"
-                                                " "
-                                                'tax'
-                                            .tr,
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxValue % ${'tax'.tr}",
                                         textDirection: TextDirection.ltr,
                                         style:
                                             robotoMedium.copyWith(fontSize: 10),
                                       );
                                     }),
+
                                     SizedBox(
                                       width: discount! > 0
                                           ? Dimensions.paddingSizeExtraSmall

@@ -397,23 +397,38 @@ class _ItemWidgetState extends State<ItemWidget> {
                                             ? Dimensions.paddingSizeExtraSmall
                                             : 0),
 
+                                    // Obx(() {
+                                    //   final isGerman =
+                                    //       Get.locale?.languageCode == 'de';
+                                    //   final showBrutto =
+                                    //       controller.categoryPage.value;
+                                    //   // final taxValue = isGerman
+                                    //   //     ? widget.item?.tax
+                                    //   //             ?.toStringAsFixed(2)
+                                    //   //             .replaceAll('.', ',') ??
+                                    //   //         ''
+                                    //   //     : widget.item?.tax
+                                    //   //         ?.toStringAsFixed(2);
+
+                                    //   final taxValue =
+                                    //       widget.item?.tax?.toString();
+                                    //   return Text(
+                                    //     "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
+                                    //     textDirection: TextDirection.ltr,
+                                    //     style:
+                                    //         robotoMedium.copyWith(fontSize: 10),
+                                    //   );
+                                    // }),
                                     Obx(() {
-                                      final isGerman =
-                                          Get.locale?.languageCode == 'de';
                                       final showBrutto =
                                           controller.categoryPage.value;
-                                      // final taxValue = isGerman
-                                      //     ? widget.item?.tax
-                                      //             ?.toStringAsFixed(2)
-                                      //             .replaceAll('.', ',') ??
-                                      //         ''
-                                      //     : widget.item?.tax
-                                      //         ?.toStringAsFixed(2);
-
-                                      final taxValue =
-                                          widget.item?.tax?.toString();
+                                      // Convert taxValue to an integer if it's not null
+                                      final taxValue = widget.item?.tax
+                                              ?.toInt()
+                                              .toString() ??
+                                          '';
                                       return Text(
-                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}  $taxValue % ${'tax'.tr}",
                                         textDirection: TextDirection.ltr,
                                         style:
                                             robotoMedium.copyWith(fontSize: 10),

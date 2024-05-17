@@ -324,13 +324,31 @@ class ItemCard extends StatelessWidget {
                                 : const SizedBox();
                           }),
 
+                          // Obx(() {
+                          //   final isGerman = Get.locale?.languageCode == 'de';
+                          //   final showBrutto =
+                          //       Get.find<MyClassController>().showBrutto.value;
+                          //   // final taxValue = isGerman
+                          //   //     ? item.tax
+                          //   //             ?.toStringAsFixed(2)
+                          //   //             .replaceAll('.', ',') ??
+                          //   //         ''
+                          //   //     : item.tax?.toStringAsFixed(2);
+                          //   final taxValue = item.tax;
+                          //   return Text(
+                          //     "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
+                          //     textDirection: TextDirection.ltr,
+                          //     style: robotoMedium.copyWith(fontSize: 10),
+                          //   );
+                          // }),
                           Obx(() {
-                            final isGerman = Get.locale?.languageCode == 'de';
-                            final showBrutto = Get.find<MyClassController>().showBrutto.value;
+                            final showBrutto =
+                                Get.find<MyClassController>().showBrutto.value;
                             final taxValue = item.tax;
-                            final taxPercentage = taxValue?.toInt() ?? 0; // Convert to integer
+                            final taxPercentage =
+                                taxValue?.toInt() ?? 0; // Convert to integer
                             return Text(
-                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxPercentage % ${'tax'.tr}",
+                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxPercentage % ${'tax'.tr}",
                               textDirection: TextDirection.ltr,
                               style: robotoMedium.copyWith(fontSize: 10),
                             );

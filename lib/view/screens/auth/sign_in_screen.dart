@@ -442,6 +442,70 @@ class SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  // void _login(AuthController authController, String countryDialCode) async {
+  //   String phone = _phoneController.text.trim();
+  //   String password = _passwordController.text.trim();
+  //   String numberWithCountryCode = countryDialCode + phone;
+  //   PhoneValid phoneValid =
+  //       await CustomValidator.isPhoneValid(numberWithCountryCode);
+  //   numberWithCountryCode = phoneValid.phone;
+
+  //   if (phone.isEmpty) {
+  //     showCustomSnackBar('enter_phone_number'.tr);
+  //   } else if (!phoneValid.isValid) {
+  //     showCustomSnackBar('invalid_phone_number'.tr);
+  //   } else if (password.isEmpty) {
+  //     showCustomSnackBar('enter_password'.tr);
+  //   } else if (password.length < 6) {
+  //     showCustomSnackBar('password_should_be'.tr);
+  //   } else {
+  //     authController
+  //         .login(numberWithCountryCode, password)
+  //         .then((status) async {
+  //       if (status.isSuccess) {
+  //         Get.find<CartController>().getCartDataOnline();
+  //         if (authController.isActiveRememberMe) {
+  //           authController.saveUserNumberAndPassword(
+  //               phone, password, countryDialCode);
+  //         } else {
+  //           authController.clearUserNumberAndPassword();
+  //         }
+  //         String token = status.message!.substring(1, status.message!.length);
+  //         if (Get.find<SplashController>().configModel!.customerVerification! &&
+  //             int.parse(status.message![0]) == 0) {
+  //           List<int> encoded = utf8.encode(password);
+  //           String data = base64Encode(encoded);
+  //           Get.toNamed(RouteHelper.getVerificationRoute(
+  //               numberWithCountryCode, token, RouteHelper.signUp, data));
+  //         } else {
+  //           // if (widget.backFromThis) {
+  //           //   if (ResponsiveHelper.isDesktop(context)) {
+  //           //     Get.offAllNamed(RouteHelper.getInitialRoute(fromSplash: false));
+  //           //   } else {
+  //           //     Get.back();
+  //           //   }
+  //           // } else {
+  //           //   Get.find<LocationController>()
+  //           //       .navigateToLocationScreen('sign-in', offNamed: true);
+  //           // }
+
+  //           //to fixed the forgot password navigation gtlich
+  //           if (widget.backFromThis) {
+  //             if (ResponsiveHelper.isDesktop(context)) {
+  //               Get.offAllNamed(RouteHelper.getInitialRoute(fromSplash: false));
+  //             } else {
+  //               Get.find<LocationController>()
+  //                   .navigateToLocationScreen('sign-in', offNamed: true);
+  //               //Get.back();
+  //             }
+  //           }
+  //         }
+  //       } else {
+  //         showCustomSnackBar(status.message);
+  //       }
+  //     });
+  //   }
+  // }
   void _login(AuthController authController, String countryDialCode) async {
     String phone = _phoneController.text.trim();
     String password = _passwordController.text.trim();
@@ -482,7 +546,9 @@ class SignInScreenState extends State<SignInScreen> {
               if (ResponsiveHelper.isDesktop(context)) {
                 Get.offAllNamed(RouteHelper.getInitialRoute(fromSplash: false));
               } else {
-                Get.back();
+                Get.find<LocationController>()
+                    .navigateToLocationScreen('sign-in', offNamed: true);
+                //Get.back();
               }
             } else {
               Get.find<LocationController>()
@@ -490,6 +556,8 @@ class SignInScreenState extends State<SignInScreen> {
             }
           }
         } else {
+          // Get.find<LocationController>()
+          //     .navigateToLocationScreen('sign-in', offNamed: true);
           showCustomSnackBar(status.message);
         }
       });

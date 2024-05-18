@@ -453,6 +453,96 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     });
   }
 
+  // void _register(AuthController authController, String countryCode) async {
+  //   String firstName = widget.firstName.trim();
+  //   String lastName = widget.lastName.trim();
+  //   String email = widget.email.trim();
+  //   String number = widget.phone.trim();
+  //   String password = widget.password.trim();
+  //   String confirmPassword = widget.confirmPassword.trim();
+  //   String referCode = widget.referCode.trim();
+  //   String storeName = _storeNameController.text.trim();
+  //   String stroreAddress = _storeAddressController.text.trim();
+  //   String storeTexId = _storeTexIdController.text.trim();
+
+  //   String numberWithCountryCode = '+$countryCode$number';
+  //   PhoneValid phoneValid =
+  //       await CustomValidator.isPhoneValid(numberWithCountryCode);
+  //   numberWithCountryCode = phoneValid.phone;
+  //   if (firstName.isEmpty) {
+  //     showCustomSnackBar('enter_your_first_name'.tr);
+  //   } else if (lastName.isEmpty) {
+  //     showCustomSnackBar('enter_your_last_name'.tr);
+  //   } else if (email.isEmpty) {
+  //     showCustomSnackBar('enter_email_address'.tr);
+  //   } else if (!GetUtils.isEmail(email)) {
+  //     showCustomSnackBar('enter_a_valid_email_address'.tr);
+  //   } else if (number.isEmpty) {
+  //     showCustomSnackBar('enter_phone_number'.tr);
+  //   } else if (!phoneValid.isValid) {
+  //     showCustomSnackBar('invalid_phone_number'.tr);
+  //   } else if (password.isEmpty) {
+  //     showCustomSnackBar('enter_password'.tr);
+  //   } else if (password.length < 6) {
+  //     showCustomSnackBar('password_should_be'.tr);
+  //   } else if (password != confirmPassword) {
+  //     showCustomSnackBar('confirm_password_does_not_matched'.tr);
+  //   } else if (storeName.isEmpty) {
+  //     showCustomSnackBar('Store name should not empty');
+  //   } else if (storeTexId.isEmpty) {
+  //     showCustomSnackBar('Store Tex id should not empty');
+  //   } else if (authController.pickedIdentities.isEmpty) {
+  //     showCustomSnackBar('Please upload documents');
+  //   } else if (authController.selectedCategories.length <= 0) {
+  //     showCustomSnackBar('Please select category');
+  //   } else {
+  //     SignUpBody signUpBody = SignUpBody(
+  //       fName: firstName,
+  //       lName: lastName,
+  //       email: email,
+  //       phone: numberWithCountryCode,
+  //       password: password,
+  //       refCode: referCode,
+  //       store_name: storeName,
+  //       store_address: stroreAddress,
+  //       tex_id: storeTexId,
+  //       new_category: authController.selectedCategories
+  //           .where((category) => category.isNew!)
+  //           .map((category) => category.name)
+  //           .join(','),
+  //       exist_category: authController.selectedCategories
+  //           .where((category) => !category.isNew!)
+  //           .map((category) => category.id.toString())
+  //           .join(','),
+  //     );
+
+  //     // Store the result of registration in a variable
+  //     var registrationResult =
+  //         // ignore: use_build_context_synchronously
+  //         await authController.registration(signUpBody, context);
+  //     print("register api response${registrationResult}");
+  //     print("Success status: ${registrationResult.isSuccess}");
+  //     print("Message: ${registrationResult.message}");
+
+  //     if (registrationResult.isSuccess) {
+  //       // Success callback
+  //       showCustomSnackBar(
+  //         "Successfully registering! Please await admin approval before logging in",
+  //         isError: false,
+  //       );
+  //     } else {
+  //       // Display the error message from the response
+  //       if (registrationResult != null && registrationResult.message != null) {
+  //         showCustomSnackBar(registrationResult.message, isError: true);
+  //       } else {
+  //         // If status or message is null, display a generic error message
+  //         showCustomSnackBar("An error occurred. Please try again later.",
+  //             isError: true);
+  //       }
+  //     }
+  //   }
+  // }
+
   void _register(AuthController authController, String countryCode) async {
     String firstName = widget.firstName.trim();
     String lastName = widget.lastName.trim();
@@ -462,13 +552,17 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     String confirmPassword = widget.confirmPassword.trim();
     String referCode = widget.referCode.trim();
     String storeName = _storeNameController.text.trim();
-    String stroreAddress = _storeAddressController.text.trim();
-    String storeTexId = _storeTexIdController.text.trim();
+    String storeAddress = _storeAddressController.text.trim();
+    String storeTexId = _storeTexIdController.text
+        .trim(); // Retrieve the tex id from the controller
+
+    print("storeTexId before validation: $storeTexId");
 
     String numberWithCountryCode = '+$countryCode$number';
     PhoneValid phoneValid =
         await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
+
     if (firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
     } else if (lastName.isEmpty) {
@@ -488,9 +582,10 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (storeName.isEmpty) {
-      showCustomSnackBar('Store name should not empty');
+      showCustomSnackBar('Store name should not be empty');
     } else if (storeTexId.isEmpty) {
-      showCustomSnackBar('Store Tex id should not empty');
+      // Check if tex id is empty
+      showCustomSnackBar('Store Tex id should not be empty');
     } else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('Please upload documents');
     } else if (authController.selectedCategories.length <= 0) {
@@ -504,8 +599,8 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
         password: password,
         refCode: referCode,
         store_name: storeName,
-        store_address: stroreAddress,
-        tex_id: storeTexId,
+        store_address: storeAddress,
+        tex_id: storeTexId, // Pass the tex id to the SignUpBody
         new_category: authController.selectedCategories
             .where((category) => category.isNew!)
             .map((category) => category.name)
@@ -516,26 +611,25 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
             .join(','),
       );
 
-      // Store the result of registration in a variable
+      print("SignUpBody tex_id: ${signUpBody.tex_id}");
+      // Debugging the payload
+      print("SignUpBody JSON: ${jsonEncode(signUpBody.toJson())}");
+
       var registrationResult =
-          // ignore: use_build_context_synchronously
           await authController.registration(signUpBody, context);
-      print("register api response${registrationResult}");
+      print("register api response: ${registrationResult}");
       print("Success status: ${registrationResult.isSuccess}");
       print("Message: ${registrationResult.message}");
 
       if (registrationResult.isSuccess) {
-        // Success callback
         showCustomSnackBar(
           "Successfully registering! Please await admin approval before logging in",
           isError: false,
         );
       } else {
-        // Display the error message from the response
         if (registrationResult != null && registrationResult.message != null) {
           showCustomSnackBar(registrationResult.message, isError: true);
         } else {
-          // If status or message is null, display a generic error message
           showCustomSnackBar("An error occurred. Please try again later.",
               isError: true);
         }

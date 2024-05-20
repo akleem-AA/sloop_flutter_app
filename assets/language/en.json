@@ -54,7 +54,7 @@
   "stores": "Stores",
   "all_restaurants": "All Restaurants",
   "all_stores": "All Stores",
-  "please_enter_mobile": "Please enter your registered Mobile Number so that we can help you to recover your password.",
+  "please_enter_mobile": "Please enter your registered Email Id so that we can help you to recover your password.",
   "done": "Done",
   "enter_new_password": "Enter your new password and confirm password.",
   "new_password": "New Password",
@@ -1125,5 +1125,18 @@
   "receiver_info": "Receiver Info",
   "pickup_location": "Pickup Location",
   "upload_document": "Store Document",
-  "related_product": "Related Products"
+  "related_product": "Related Products",
+  "my_store":"My Store",
+  "tex_id":"Tax ID",
+  "select_categories":"Select Categories",
+  "store_name_validation":"Store name should not empty",
+  "store_texId_validation":"Store Tex id should not empty",
+  "documents_validation":"Please upload documents",
+  "category_validation":"Please select category",
+  "category_already_selected":"Category already selected",
+  "inclu":"incl.",
+  "exclu":"Excl.",
+  "tax":"VAT",
+  "netto":"Net",
+  "brutto":"Gross"
 }

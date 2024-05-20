@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.12"
+  animated_checkmark:
+    dependency: transitive
+    description:
+      name: animated_checkmark
+      sha256: "878db0c6754c4145e9e17b46f20e304da060ac7a65f8ab4ab43494093f3f8443"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   animated_flip_counter:
     dependency: "direct main"
     description:
@@ -145,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  chips_choice:
+    dependency: "direct main"
+    description:
+      name: chips_choice
+      sha256: ba1c649293cba4e5d827b7f55681390e6c9bb9a98b45cc9128591000fb103d02
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   cli_util:
     dependency: transitive
     description:
@@ -257,6 +273,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.8"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: "0978e9a3e45305a80a7210dbeaf79d6ee8bee33f70c8e542dc654c952070217f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.2+1"
   dotted_border:
     dependency: "direct main"
     description:
@@ -313,6 +337,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.10"
+  file_selector_linux:
+    dependency: transitive
+    description:
+      name: file_selector_linux
+      sha256: "045d372bf19b02aeb69cacf8b4009555fb5f6f0b7ad8016e5f46dd1387ddd492"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.2+1"
+  file_selector_macos:
+    dependency: transitive
+    description:
+      name: file_selector_macos
+      sha256: b15c3da8bd4908b9918111fa486903f5808e388b8d1c559949f584725a6594d6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3+3"
+  file_selector_platform_interface:
+    dependency: transitive
+    description:
+      name: file_selector_platform_interface
+      sha256: "0aa47a725c346825a2bd396343ce63ac00bda6eff2fbc43eabe99737dede8262"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+  file_selector_windows:
+    dependency: transitive
+    description:
+      name: file_selector_windows
+      sha256: d3547240c20cabf205c7c7f01a50ecdbc413755814d6677f3cb366f04abcead0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.3+1"
   firebase_core:
     dependency: "direct main"
     description:
@@ -361,6 +417,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.11"
+  flexi_chip:
+    dependency: transitive
+    description:
+      name: flexi_chip
+      sha256: "5942219bdbd94a7527b69eb5640e6bd05d8ec6a41a5a4a1a10ca22a5a1f41beb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -884,42 +948,66 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: f98d76672d309c8b7030c323b3394669e122d52b307d2bbd8d06bd70f5b2aabe
+      sha256: b6951e25b795d053a6ba03af5f710069c99349de9341af95155d52665cb4607c
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.6+1"
+    version: "0.8.9"
   image_picker_android:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: b1cbfec0f5aef427a18eb573f5445af8c9c568626bf3388553e40c263d3f7368
+      sha256: "42c098e7fb6334746be37cdc30369ade356ed4f14d48b7a0313f95a9159f4321"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.5+5"
+    version: "0.8.9+5"
   image_picker_for_web:
     dependency: transitive
     description:
       name: image_picker_for_web
-      sha256: "7d319fb74955ca46d9bf7011497860e3923bb67feebcf068f489311065863899"
+      sha256: "869fe8a64771b7afbc99fc433a5f7be2fea4d1cb3d7c11a48b6b579eb9c797f0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.10"
+    version: "2.2.0"
   image_picker_ios:
     dependency: "direct main"
     description:
       name: image_picker_ios
-      sha256: "8ffb14b43713d7c43fb21299cc18181cc5b39bd3ea1cc427a085c6400fe5aa52"
+      sha256: "917a5cadd67d052554cfb258595e54217de53fac5b52939426e26319a02e6297"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.6+7"
+    version: "0.8.9+2"
+  image_picker_linux:
+    dependency: transitive
+    description:
+      name: image_picker_linux
+      sha256: "4ed1d9bb36f7cd60aa6e6cd479779cc56a4cb4e4de8f49d487b1aaad831300fa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1+1"
+  image_picker_macos:
+    dependency: transitive
+    description:
+      name: image_picker_macos
+      sha256: "3f5ad1e8112a9a6111c46d0b57a7be2286a9a07fc6e1976fdf5be2bd31d4ff62"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1+1"
   image_picker_platform_interface:
     dependency: transitive
     description:
       name: image_picker_platform_interface
-      sha256: "7cef2f28f4f2fef99180f636c3d446b4ccbafd6ba0fad2adc9a80c4040f656b8"
+      sha256: "0e827c156e3a90edd3bbe7f6de048b39247b16e58173b08a835b7eb00aba239e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.2"
+    version: "2.9.2"
+  image_picker_windows:
+    dependency: transitive
+    description:
+      name: image_picker_windows
+      sha256: "6ad07afc4eb1bc25f3a01084d28520496c4a3bb0cb13685435838167c9dcedeb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1+1"
   intl:
     dependency: "direct main"
     description:
@@ -1685,6 +1773,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.9.5"
+  widget_event:
+    dependency: transitive
+    description:
+      name: widget_event
+      sha256: "1e97328db2d009d7475cf7a01762ec3925ba2fdad25f34b1289c6f4ab4f19279"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.6"
   win32:
     dependency: transitive
     description:
@@ -1734,5 +1830,5 @@ packages:
     source: hosted
     version: "1.0.4"
 sdks:
-  dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=3.14.0-0"
+  dart: ">=3.2.3 <4.0.0"
+  flutter: ">=3.16.6"

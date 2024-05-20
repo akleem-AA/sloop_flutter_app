@@ -4,6 +4,7 @@ import 'package:sixam_mart/controller/item_controller.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:sixam_mart/helper/price_converter.dart';
+import 'package:sixam_mart/myCustomController.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -21,6 +22,7 @@ class ItemCard extends StatelessWidget {
   final bool isFood;
   final bool isShop;
   final bool isPopularItemCart;
+
   const ItemCard(
       {Key? key,
       required this.item,
@@ -36,6 +38,9 @@ class ItemCard extends StatelessWidget {
         item.storeDiscount == 0 ? item.discount : item.storeDiscount;
     String? discountType =
         item.storeDiscount == 0 ? item.discountType : 'percent';
+
+    double? startingBruttoPrice =
+        Get.find<ItemController>().getStartingBruttoPrice(item);
 
     return OnHover(
       isItem: true,
@@ -153,10 +158,10 @@ class ItemCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           (isFood || isShop)
-                              ? Text(item.storeName ?? '',
+                              ? Text("${item.storeName}" ?? '',
                                   style: robotoRegular.copyWith(
                                       color: Theme.of(context).disabledColor))
-                              : Text(item.name ?? '',
+                              : Text("${item.name}" ?? '',
                                   style: robotoBold,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis),
@@ -239,32 +244,115 @@ class ItemCard extends StatelessWidget {
                                     )
                                   : const SizedBox(),
 
-//diccount price
+                          // discount section
                           item.discount != null && item.discount! > 0
-                              ? Text(
-                                  "${PriceConverter.convertPrice(Get.find<ItemController>().getStartingPrice(item))}",
-                                  style: robotoMedium.copyWith(
-                                    fontSize: Dimensions.fontSizeExtraSmall,
-                                    color: Theme.of(context).disabledColor,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                  textDirection: TextDirection.ltr,
+                              ? Obx(
+                                  () {
+                                    if (Get.find<MyClassController>()
+                                        .showBrutto
+                                        .value) {
+                                      return Text(
+                                        PriceConverter.convertPrice(
+                                          Get.find<ItemController>()
+                                              .getStartingPrice(item),
+                                        ),
+                                        style: robotoMedium.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeExtraSmall,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                        textDirection: TextDirection.ltr,
+                                      );
+                                    } else {
+                                      return Text(
+                                        PriceConverter.convertPrice(
+                                            startingBruttoPrice),
+                                        style: robotoMedium.copyWith(
+                                          fontSize:
+                                              Dimensions.fontSizeExtraSmall,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                        textDirection: TextDirection.ltr,
+                                      );
+                                    }
+                                  },
                                 )
                               : const SizedBox(),
-                          // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
 
-//price with discount
-                          Text(
-                            "${PriceConverter.convertPrice(
-                              Get.find<ItemController>().getStartingPrice(item),
-                              discount: item.discount,
-                              discountType: item.discountType,
-                            )}",
-                            textDirection: TextDirection.ltr,
-                            style: robotoMedium,
-                          ),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraSmall),
+                          //discount section
+                          // item.discount != null && item.discount! > 0
+                          //     // ? Text(
+                          //     //     PriceConverter.convertPrice(
+                          //     //         Get.find<ItemController>()
+                          //     //             .getStartingPrice(item)),
+                          //     //     style: robotoMedium.copyWith(
+                          //     //       fontSize: Dimensions.fontSizeExtraSmall,
+                          //     //       color: Theme.of(context).disabledColor,
+                          //     //       decoration: TextDecoration.lineThrough,
+                          //     //     ),
+                          //     //     textDirection: TextDirection.ltr,
+                          //     //   )
+                          //     // : const SizedBox(),
+
+                          // SizedBox(height: item.discount != null && item.discount! > 0 ? Dimensions.paddingSizeExtraSmall : 0),
+                          //main price
+                          Obx(() {
+                            final showBrutto =
+                                Get.find<MyClassController>().showBrutto.value;
+                            final startingPrice = showBrutto
+                                ? Get.find<ItemController>()
+                                    .getStartingPrice(item)
+                                : Get.find<ItemController>()
+                                    .getStartingBruttoPrice(item);
+
+                            return startingPrice != null
+                                ? Text(
+                                    PriceConverter.convertPrice(
+                                      startingPrice,
+                                      discount: item.discount,
+                                      discountType: item.discountType,
+                                    ),
+                                    textDirection: TextDirection.ltr,
+                                    style: robotoMedium,
+                                  )
+                                : const SizedBox();
+                          }),
+
+                          // Obx(() {
+                          //   final isGerman = Get.locale?.languageCode == 'de';
+                          //   final showBrutto =
+                          //       Get.find<MyClassController>().showBrutto.value;
+                          //   // final taxValue = isGerman
+                          //   //     ? item.tax
+                          //   //             ?.toStringAsFixed(2)
+                          //   //             .replaceAll('.', ',') ??
+                          //   //         ''
+                          //   //     : item.tax?.toStringAsFixed(2);
+                          //   final taxValue = item.tax;
+                          //   return Text(
+                          //     "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}: $taxValue % ${'tax'.tr}",
+                          //     textDirection: TextDirection.ltr,
+                          //     style: robotoMedium.copyWith(fontSize: 10),
+                          //   );
+                          // }),
+                          Obx(() {
+                            final showBrutto =
+                                Get.find<MyClassController>().showBrutto.value;
+                            final taxValue = item.tax;
+                            final taxPercentage =
+                                taxValue?.toInt() ?? 0; // Convert to integer
+                            return Text(
+                              "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxPercentage % ${'tax'.tr}",
+                              textDirection: TextDirection.ltr,
+                              style: robotoMedium.copyWith(fontSize: 10),
+                            );
+                          }),
                         ]),
                     isShop
                         ? Positioned(

@@ -21,6 +21,8 @@ import 'package:sixam_mart/view/screens/auth/widget/condition_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/category_controller.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -50,6 +52,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<CategoryController>().getCategoryList(true, allCategory: true);
 
     _countryDialCode = CountryCode.fromCountryCode(
             Get.find<SplashController>().configModel!.country!)
@@ -86,14 +89,6 @@ class SignUpScreenState extends State<SignUpScreen> {
                   )
                 : null,
             child: GetBuilder<AuthController>(builder: (authController) {
-              // ResponsiveHelper.isDesktop(context) ? Align(
-              //   alignment: Alignment.topRight,
-              //   child: IconButton(
-              //     onPressed: () => Get.back(),
-              //     icon: const Icon(Icons.clear),
-              //   ),
-              // ) : const SizedBox(),
-
               return SingleChildScrollView(
                 child: Stack(
                   children: [
@@ -120,9 +115,9 @@ class SignUpScreenState extends State<SignUpScreen> {
                             Image.asset(Images.logo, width: 125),
                             // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge))),
-                            Center(
-                                child:
-                                    Image.asset(Images.logoName, width: 125)),
+                            // Center(
+                            //     child:
+                            //         Image.asset(Images.logoName, width: 125)),
                             const SizedBox(
                                 height: Dimensions.paddingSizeExtraLarge),
 
@@ -370,10 +365,10 @@ class SignUpScreenState extends State<SignUpScreen> {
                                 : const SizedBox(),
                             const SizedBox(height: Dimensions.paddingSizeLarge),
 
-                            ConditionCheckBox(
-                                authController: authController,
-                                fromSignUp: true),
-                            const SizedBox(height: Dimensions.paddingSizeLarge),
+                            // ConditionCheckBox(
+                            //     authController: authController,
+                            //     fromSignUp: true),
+                            // const SizedBox(height: Dimensions.paddingSizeLarge),
 
                             CustomButton(
                               height: ResponsiveHelper.isDesktop(context)
@@ -389,12 +384,18 @@ class SignUpScreenState extends State<SignUpScreen> {
                               fontSize: ResponsiveHelper.isDesktop(context)
                                   ? Dimensions.fontSizeExtraSmall
                                   : null,
-                              buttonText: 'sign_up'.tr,
+                              buttonText: 'next'.tr,
                               isLoading: authController.isLoading,
-                              onPressed: authController.acceptTerms
-                                  ? () => _register(
-                                      authController, _countryDialCode!)
-                                  : null,
+                              /*onPressed: authController.acceptTerms
+                                  ? () => Get.toNamed(RouteHelper
+                                  .getSignUpNextRoute())
+                                  : null,*/
+                              onPressed: () =>
+                                  _register(authController, _countryDialCode!),
+                              // onPressed: !authController.acceptTerms
+                              //     ? () => _register(
+                              //         authController, _countryDialCode!)
+                              //     : null,
                             ),
 
                             const SizedBox(
@@ -454,12 +455,12 @@ class SignUpScreenState extends State<SignUpScreen> {
     String password = _passwordController.text.trim();
     String confirmPassword = _confirmPasswordController.text.trim();
     String referCode = _referCodeController.text.trim();
-
-    String numberWithCountryCode = countryCode + number;
+    String numberWithCountryCode = "+" + countryCode + number;
     PhoneValid phoneValid =
         await CustomValidator.isPhoneValid(numberWithCountryCode);
     numberWithCountryCode = phoneValid.phone;
 
+    print('phone number singup $phoneValid');
     if (firstName.isEmpty) {
       showCustomSnackBar('enter_your_first_name'.tr);
     } else if (lastName.isEmpty) {
@@ -479,29 +480,15 @@ class SignUpScreenState extends State<SignUpScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else {
-      SignUpBody signUpBody = SignUpBody(
-        fName: firstName,
-        lName: lastName,
-        email: email,
-        phone: numberWithCountryCode,
-        password: password,
-        refCode: referCode,
-      );
-      authController.registration(signUpBody).then((status) async {
-        if (status.isSuccess) {
-          if (Get.find<SplashController>().configModel!.customerVerification!) {
-            List<int> encoded = utf8.encode(password);
-            String data = base64Encode(encoded);
-            Get.toNamed(RouteHelper.getVerificationRoute(numberWithCountryCode,
-                status.message, RouteHelper.signUp, data));
-          } else {
-            Get.find<LocationController>()
-                .navigateToLocationScreen(RouteHelper.signUp);
-          }
-        } else {
-          showCustomSnackBar(status.message);
-        }
-      });
+      Get.toNamed(RouteHelper.getSignUpNextRoute(
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: number,
+          password: password,
+          confirmPassword: confirmPassword,
+          referCode: referCode,
+          countryCode: countryCode));
     }
   }
 }

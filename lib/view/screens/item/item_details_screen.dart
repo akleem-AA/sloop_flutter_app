@@ -542,203 +542,70 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                 ),
                                               ]),
 
-                                              // Row(children: [
-                                              //   Text('${'total_amount'.tr}:',
-                                              //       style: robotoMedium.copyWith(
-                                              //           fontSize: Dimensions
-                                              //               .fontSizeLarge)),
-                                              //   const SizedBox(
-                                              //       width: Dimensions
-                                              //           .paddingSizeExtraSmall),
-                                              //   Obx(() =>
-                                              //   !Get.find<
-                                              //       MyClassController>()
-                                              //       .showBrutto
-                                              //       .value
-                                              //       ?
-                                              //   Text(
-                                              //     Get.find<SplashController>().configModel!.currencySymbol! +
-                                              //         (widget.item?.brutto_price).toString(),
-                                              //     //calculateNetPrice(widget.item?.price ,tax:widget.item?.tax),
-                                              //     textDirection:
-                                              //     TextDirection.ltr,
-                                              //     style: robotoRegular.copyWith(
-                                              //         color:
-                                              //         Theme.of(context).hintColor,
-                                              //         decoration:
-                                              //         TextDecoration.lineThrough),
-                                              //   )
-                                              //   :
-                                              //   Text(Get.find<SplashController>().configModel!.currencySymbol! +(widget.item?.price).toString(),
-                                              //     textDirection:
-                                              //     TextDirection.ltr,
-                                              //     style: robotoRegular.copyWith(
-                                              //         color:
-                                              //         Theme.of(context).hintColor,
-                                              //         decoration:
-                                              //         TextDecoration.lineThrough),
-                                              //   )),
-
-                                              //   //total price section
-                                              //   /*Obx(() =>*/
-                                              //   // (widget.item?.discount != null) && (widget.item!.discount! > 0)
-                                              //   //     ? Text(widget.item!.price.toString(),
-                                              //   //     textDirection:
-                                              //   //     TextDirection.ltr,
-                                              //   //   style: robotoRegular.copyWith(
-                                              //   //       color:
-                                              //   //       Theme.of(context).hintColor,
-                                              //   //       decoration:
-                                              //   //       TextDecoration.lineThrough),
-                                              //   // ):SizedBox(),
-                                              //   Obx(() =>
-                                              //   Get.find<
-                                              //       MyClassController>()
-                                              //       .showBrutto
-                                              //       .value
-                                              //       ? Text(
-                                              //       Get.find<SplashController>().configModel!.currencySymbol! +
-                                              //           calculateBruttoPrice(widget.item?.price,discount: widget.item?.discount),
-
-                                              //     // PriceConverter.convertPrice(itemController
-                                              //     //     .cartIndex !=
-                                              //     //     -1
-                                              //     //     ? CartHelper.getItemDetailsDiscountPrice(
-                                              //     //     cart: Get.find<
-                                              //     //         CartController>()
-                                              //     //         .cartList[
-                                              //     //     itemController
-                                              //     //         .cartIndex])
-                                              //     //     : priceWithAddons),
-                                              //     textDirection:
-                                              //     TextDirection.ltr,
-                                              //     style: robotoBold.copyWith(
-                                              //         color: Theme.of(
-                                              //             context)
-                                              //             .primaryColor,
-                                              //         fontSize: Dimensions
-                                              //             .fontSizeLarge),
-                                              //   )
-                                              //       : Text(
-                                              //     Get.find<SplashController>().configModel!.currencySymbol! +
-                                              //         calculateBruttoPrice(widget.item?.brutto_price,discount: widget.item?.discount),
-                                              //     // PriceConverter.convertPrice(itemController
-                                              //     //     .cartIndex !=
-                                              //     //     -1
-                                              //     //     ? CartHelper.getItemDetailsDiscountBruttoPrice(
-                                              //     //     cart: Get.find<
-                                              //     //         CartController>()
-                                              //     //         .cartList[
-                                              //     //     itemController
-                                              //     //         .cartIndex])
-                                              //     //     : priceWithAddons),
-                                              //     textDirection:
-                                              //     TextDirection.ltr,
-                                              //     style: robotoBold.copyWith(
-                                              //         color: Theme.of(
-                                              //             context)
-                                              //             .primaryColor,
-                                              //         fontSize: Dimensions
-                                              //             .fontSizeLarge,
-                                              //        /* decoration:
-                                              //         TextDecoration
-                                              //             .lineThrough*/),
-                                              //   )),
-
-                                              //   //tex section
-                                              //   Obx(() => Get.find<
-                                              //               MyClassController>()
-                                              //           .showBrutto
-                                              //           .value
-                                              //       ? Text(
-                                              //           " ( Excl: ${widget.item!.tax.toString()})",
-                                              //           textDirection:
-                                              //               TextDirection.ltr,
-                                              //           style: robotoBold.copyWith(
-                                              //               color: Theme.of(
-                                              //                       context)
-                                              //                   .primaryColor,
-                                              //               fontSize: Dimensions
-                                              //                   .fontSizeLarge),
-                                              //         )
-                                              //       : Text(
-                                              //           " ( Incl:${widget.item!.tax.toString()} )",
-                                              //           textDirection:
-                                              //               TextDirection.ltr,
-                                              //           style: robotoBold.copyWith(
-                                              //               color: Theme.of(
-                                              //                       context)
-                                              //                   .primaryColor,
-                                              //               fontSize: Dimensions
-                                              //                   .fontSizeLarge),
-                                              //         )),
-                                              // ]),
-
+                                              const SizedBox(
+                                                  height: Dimensions
+                                                      .paddingSizeDefault),
 //tag section
                                               widget.item?.tags != null
                                                   ? SizedBox(
-                                                      height:
-                                                          40, // Adjust the height according to your design
-                                                      child: ListView.builder(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        itemCount: widget
+                                                      child: Wrap(
+                                                        spacing: Get.width *
+                                                            0.02, // Space between tags
+                                                        runSpacing:
+                                                            10.0, // Space between rows
+                                                        children: List<
+                                                            Widget>.generate(
+                                                          widget.item?.tags
+                                                                  ?.length ??
+                                                              0,
+                                                          (index) {
+                                                            final Tag = widget
                                                                 .item
-                                                                ?.tags
-                                                                ?.length ??
-                                                            0,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          final Tag = widget
-                                                              .item
-                                                              ?.tags?[index];
-                                                          return Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text('#'),
-                                                              InkWell(
+                                                                ?.tags?[index];
+                                                            return Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Text('#'),
+                                                                InkWell(
                                                                   onTap: () {
                                                                     Get.toNamed(
-                                                                        RouteHelper
-                                                                            .getSearchRoute(
-                                                                      queryText:
-                                                                          Tag?.tag,
-                                                                    ));
+                                                                      RouteHelper
+                                                                          .getSearchRoute(
+                                                                        queryText:
+                                                                            Tag?.tag,
+                                                                      ),
+                                                                    );
                                                                   },
                                                                   child: Text(
-                                                                    Tag?.tag ??
+                                                                    (Tag?.tag)
+                                                                            ?.trim() ??
                                                                         "",
                                                                     textDirection:
                                                                         TextDirection
                                                                             .ltr,
-                                                                    style: robotoBold.copyWith(
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                        fontSize:
-                                                                            Dimensions.fontSizeDefault),
-                                                                  )),
-                                                              SizedBox(
-                                                                  width:
-                                                                      Get.width *
-                                                                          0.02)
-                                                            ],
-                                                          );
-                                                        },
+                                                                    style: robotoBold
+                                                                        .copyWith(
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      fontSize:
+                                                                          Dimensions
+                                                                              .fontSizeDefault,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        ),
                                                       ),
                                                     )
                                                   : SizedBox(),
-                                              widget.item?.tags != null
-                                                  ? const SizedBox(
-                                                      height: Dimensions
-                                                          .paddingSizeExtraSmall)
-                                                  : SizedBox(),
-
                                               const SizedBox(
                                                   height: Dimensions
-                                                      .paddingSizeExtraLarge),
-
+                                                      .paddingSizeDefault),
                                               (itemController.item!
                                                               .description !=
                                                           null &&

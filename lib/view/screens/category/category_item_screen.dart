@@ -263,13 +263,16 @@ class CategoryItemScreenState extends State<CategoryItemScreen>
                           children: [
                             LiteRollingSwitch(
                                 value: controller.categoryPage.value,
-                                width: 90,
+                                width: 85,
                                 colorOff: Theme.of(context).primaryColor,
                                 colorOn: Theme.of(context).primaryColor,
                                 iconOn: Icons.circle_outlined,
                                 iconOff: Icons.circle_outlined,
                                 textOn: "brutto".tr,
                                 textOff: "netto".tr,
+                                textOnColor: Colors.white,
+                                textOffColor: Colors.white,
+                                textSize: Dimensions.fontSizeSmall,
                                 // textSize: 10,
                                 onTap: () {},
                                 onDoubleTap: () {},

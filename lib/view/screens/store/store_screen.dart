@@ -177,7 +177,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               ),
                             )
                           : SliverAppBar(
-                              expandedHeight: 280,
+                              expandedHeight: 300,
                               toolbarHeight: 100,
                               pinned: true,
                               floating: false,
@@ -549,7 +549,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                   },
                                 ),
                                 background: CustomImage(
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                   image:
                                       '${Get.find<SplashController>().configModel!.baseUrls!.storeCoverPhotoUrl}/${store!.coverPhoto}',
                                 ),

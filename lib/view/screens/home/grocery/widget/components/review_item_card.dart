@@ -492,7 +492,7 @@ class ReviewItemCard extends StatelessWidget {
                                                             ?.toInt() ??
                                                         0; // Convert to integer
                                                     return Text(
-                                                      "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxPercentage % ${'tax'.tr}",
+                                                      "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxPercentage% ${'tax'.tr}",
                                                       textDirection:
                                                           TextDirection.ltr,
                                                       style:

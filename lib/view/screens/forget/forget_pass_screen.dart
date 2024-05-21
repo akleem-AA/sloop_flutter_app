@@ -74,7 +74,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             TextFormField(
               controller: emailController,
               decoration: InputDecoration(prefixIcon: const Icon(Icons.email,size: 20.0,),
-                  labelText: 'Email',
+                  labelText: 'email'.tr,
                   fillColor: Theme.of(context).cardColor,
                   hintStyle:  robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).hintColor),
                   filled: true,
@@ -174,9 +174,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
     String email = emailController.text.trim();
     bool isCorrect = _validateEmail(email);
     if (email.isEmpty) {
-      showCustomSnackBar('Enter Email Address');
+      showCustomSnackBar('enter_email_address'.tr);
     }else if (!isCorrect) {
-      showCustomSnackBar('Invalid Email Address');
+      showCustomSnackBar('enter_a_valid_email_address'.tr);
     }else {
       if(widget.fromSocialLogin) {
         widget.socialLogInBody!.phone = email;

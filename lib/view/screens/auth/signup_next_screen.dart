@@ -582,14 +582,14 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
     } else if (password != confirmPassword) {
       showCustomSnackBar('confirm_password_does_not_matched'.tr);
     } else if (storeName.isEmpty) {
-      showCustomSnackBar('Store name should not be empty');
+      showCustomSnackBar('store_name_should_not_be_empty'.tr);
     } else if (storeTexId.isEmpty) {
       // Check if tex id is empty
-      showCustomSnackBar('Store Tex id should not be empty');
+      showCustomSnackBar('store_tex_id_should_not_be_empty'.tr);
     } else if (authController.pickedIdentities.isEmpty) {
-      showCustomSnackBar('Please upload documents');
+      showCustomSnackBar('please_upload_documents'.tr);
     } else if (authController.selectedCategories.length <= 0) {
-      showCustomSnackBar('Please select category');
+      showCustomSnackBar('please_select_category'.tr);
     } else {
       SignUpBody signUpBody = SignUpBody(
         fName: firstName,

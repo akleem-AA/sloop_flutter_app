@@ -428,7 +428,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                                               .toString() ??
                                           '';
                                       return Text(
-                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}  $taxValue % ${'tax'.tr}",
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr}  $taxValue% ${'tax'.tr}",
                                         textDirection: TextDirection.ltr,
                                         style:
                                             robotoMedium.copyWith(fontSize: 10),

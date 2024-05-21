@@ -14,7 +14,7 @@
   "get_started": "Loslegen",
   "sign_in": "Anmelden",
   "sign_up": "Melden Sie sich an",
-  "email": "Email",
+  "email": "E-Mail",
   "password": "Passwort",
   "confirm_password": "Bestätige das Passwort",
   "remember_me": "Passwort merken",
@@ -1138,5 +1138,9 @@
   "exclu":"exkl.",
   "tax":"USt",
   "netto":"Netto",
-  "brutto":"Brutto"
+  "brutto":"Brutto",
+  "store_name_should_not_be_empty": "Der Ladenname darf nicht leer sein",
+  "store_tex_id_should_not_be_empty": "Die Laden-ID darf nicht leer sein",
+  "please_upload_documents": "Bitte Dokumente hochladen",
+  "please_select_category": "Bitte Kategorie auswählen"
 }

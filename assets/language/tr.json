@@ -1138,5 +1138,9 @@
   "exclu":"özel",
   "tax":"KDV",
   "netto":"Net",
-  "brutto":"Brüt"
+  "brutto":"Brüt",
+  "store_name_should_not_be_empty": "Mağaza adı boş olmamalıdır",
+  "store_tex_id_should_not_be_empty": "Mağaza Tex kimliği boş olmamalıdır",
+  "please_upload_documents": "Lütfen belgeleri yükleyin",
+  "please_select_category": "Lütfen kategori seçin"
 }

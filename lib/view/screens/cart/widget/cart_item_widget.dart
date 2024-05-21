@@ -149,6 +149,13 @@ class CartItemWidget extends StatelessWidget {
                           ),
                         ) : const SizedBox(),
                       ]),
+                      // Display tax information
+                      const SizedBox(height: 5),
+                      Text(
+                          "${'inclu'.tr} ${cart.item!.tax?.toInt()}%  ${'tax'.tr}",
+                        textDirection: TextDirection.ltr,
+                        style: robotoMedium.copyWith(fontSize: 10),
+                      ),
 
                       ResponsiveHelper.isDesktop(context) ? (Get.find<SplashController>().configModel!.moduleConfig!.module!.addOn! && addOnText.isNotEmpty) ? Padding(
                         padding: const EdgeInsets.only(top: Dimensions.paddingSizeExtraSmall),

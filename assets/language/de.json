@@ -317,7 +317,7 @@
   "service_not_available_in_this_area": "Der Service ist in diesem Bereich nicht verfügbar",
   "you_have_to_allow": "Sie müssen die Standortberechtigung erteilen, um Ihren Standort verwenden zu können",
   "you_denied_location_permission": "Sie haben die Standortberechtigung für immer verweigert. ",
-  "view_cart": "Warenkorb ansehen",
+  "view_cart": "Warenkorb",
   "close": "Schließen",
   "settings": "Einstellungen",
   "service_not_available_in_current_location": "Der Dienst ist an Ihrem aktuellen Standort nicht verfügbar",

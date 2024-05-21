@@ -550,9 +550,9 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                   ? SizedBox(
                                                       child: Wrap(
                                                         spacing: Get.width *
-                                                            0.02, // Space between tags
-                                                        runSpacing:
-                                                            10.0, // Space between rows
+                                                            0.01, // Space between tags
+                                                        runSpacing: Get.width *
+                                                            0.02, // Space between rows, same as spacing
                                                         children: List<
                                                             Widget>.generate(
                                                           widget.item?.tags
@@ -562,47 +562,61 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                             final Tag = widget
                                                                 .item
                                                                 ?.tags?[index];
-                                                            return Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Text('#'),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    Get.toNamed(
-                                                                      RouteHelper
-                                                                          .getSearchRoute(
-                                                                        queryText:
-                                                                            Tag?.tag,
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                  child: Text(
-                                                                    (Tag?.tag)
-                                                                            ?.trim() ??
-                                                                        "",
-                                                                    textDirection:
-                                                                        TextDirection
-                                                                            .ltr,
-                                                                    style: robotoBold
-                                                                        .copyWith(
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      fontSize:
-                                                                          Dimensions
-                                                                              .fontSizeDefault,
-                                                                    ),
+                                                            return TextButton(
+                                                              onPressed: () {
+                                                                Get.toNamed(
+                                                                  RouteHelper
+                                                                      .getSearchRoute(
+                                                                    queryText:
+                                                                        Tag?.tag,
                                                                   ),
+                                                                );
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                backgroundColor:
+                                                                    Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        8.0,
+                                                                    vertical:
+                                                                        4.0), // Adjusted padding for smaller button
+                                                                minimumSize:
+                                                                    const Size(
+                                                                        0,
+                                                                        0), // Allow the button to shrink further
+                                                                tapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap, // Ensures the button size is small
+                                                              ),
+                                                              child: Text(
+                                                                (Tag?.tag)
+                                                                        ?.trim() ??
+                                                                    "",
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      Dimensions
+                                                                          .fontSizeSmall, // Smaller font size
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
-                                                              ],
+                                                              ),
                                                             );
                                                           },
                                                         ),
                                                       ),
                                                     )
-                                                  : SizedBox(),
+                                                  : const SizedBox(),
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeDefault),

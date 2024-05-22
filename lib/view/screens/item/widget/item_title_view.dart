@@ -471,7 +471,7 @@ class ItemTitleView extends StatelessWidget {
                                       final taxValue =
                                           item?.tax?.toInt().toString() ?? '';
                                       return Text(
-                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxValue % ${'tax'.tr}",
+                                        "${!showBrutto ? 'exclu'.tr : 'inclu'.tr} $taxValue% ${'tax'.tr}",
                                         textDirection: TextDirection.ltr,
                                         style:
                                             robotoMedium.copyWith(fontSize: 10),

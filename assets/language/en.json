@@ -1138,5 +1138,12 @@
   "exclu":"Excl.",
   "tax":"VAT",
   "netto":"Net",
-  "brutto":"Gross"
+  "brutto":"Gross",
+  "store_name_should_not_be_empty":"Store name should not be empty",
+  "store_tex_id_should_not_be_empty":"Store Tex id should not be empty",
+  "please_upload_documents":"Please upload documents",
+  "please_select_category":"Please select category",
+  "succussfully_register_admin_message":"Successfully registering! Please await admin approval before logging in",
+  "login_api_error_message":"An error occurred. Please try again later."
+
 }

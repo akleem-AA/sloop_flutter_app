@@ -548,42 +548,75 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 //tag section
                                               widget.item?.tags != null
                                                   ? SizedBox(
-  child: Wrap(
-    spacing: Get.width * 0.01, // Space between tags
-    runSpacing: Get.width * 0.02, // Space between rows, same as spacing
-    children: List<Widget>.generate(
-      widget.item?.tags?.length ?? 0,
-      (index) {
-        final Tag = widget.item?.tags?[index];
-        return TextButton(
-          onPressed: () {
-            Get.toNamed(
-              RouteHelper.getSearchRoute(
-                queryText: Tag?.tag,
-              ),
-            );
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjusted padding for smaller button
-            minimumSize: Size(0, 0), // Allow the button to shrink further
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Ensures the button size is small
-          ),
-          child: Text(
-            (Tag?.tag)?.trim() ?? "",
-            textDirection: TextDirection.ltr,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: Dimensions.fontSizeSmall, // Smaller font size
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        );
-      },
-    ),
-  ),
-)
-                                                  : SizedBox(),
+                                                      child: Wrap(
+                                                        spacing: Get.width *
+                                                            0.01, // Space between tags
+                                                        runSpacing: Get.width *
+                                                            0.02, // Space between rows, same as spacing
+                                                        children: List<
+                                                            Widget>.generate(
+                                                          widget.item?.tags
+                                                                  ?.length ??
+                                                              0,
+                                                          (index) {
+                                                            final Tag = widget
+                                                                .item
+                                                                ?.tags?[index];
+                                                            return TextButton(
+                                                              onPressed: () {
+                                                                Get.toNamed(
+                                                                  RouteHelper
+                                                                      .getSearchRoute(
+                                                                    queryText:
+                                                                        Tag?.tag,
+                                                                  ),
+                                                                );
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                backgroundColor:
+                                                                    Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        8.0,
+                                                                    vertical:
+                                                                        4.0), // Adjusted padding for smaller button
+                                                                minimumSize:
+                                                                    const Size(
+                                                                        0,
+                                                                        0), // Allow the button to shrink further
+                                                                tapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap, // Ensures the button size is small
+                                                              ),
+                                                              child: Text(
+                                                                (Tag?.tag)
+                                                                        ?.trim() ??
+                                                                    "",
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      Dimensions
+                                                                          .fontSizeSmall, // Smaller font size
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeDefault),

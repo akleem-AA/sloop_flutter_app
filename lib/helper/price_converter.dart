@@ -1,5 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/util/styles.dart';
@@ -41,11 +42,44 @@ class PriceConverter {
     return formattedPrice;
   }
 
+  // static Widget convertAnimationPrice(double? price,
+  //     {double? discount,
+  //     String? discountType,
+  //     bool forDM = false,
+  //     TextStyle? textStyle}) {
+  //   if (discount != null && discountType != null) {
+  //     if (discountType == 'amount') {
+  //       price = price! - discount;
+  //     } else if (discountType == 'percent') {
+  //       price = price! - ((discount / 100) * price);
+  //     }
+  //   }
+  //   bool isRightSide =
+  //       Get.find<SplashController>().configModel!.currencySymbolDirection ==
+  //           'right';
+  //   return Directionality(
+  //     textDirection: TextDirection.ltr,
+  //     child: AnimatedFlipCounter(
+  //       duration: const Duration(milliseconds: 500),
+  //       value: toFixed(price!),
+  //       textStyle: textStyle ?? robotoMedium,
+  //       fractionDigits: forDM
+  //           ? 0
+  //           : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
+  //       prefix: isRightSide
+  //           ? ''
+  //           : Get.find<SplashController>().configModel!.currencySymbol!,
+  //       suffix: isRightSide
+  //           ? Get.find<SplashController>().configModel!.currencySymbol!
+  //           : '',
+  //     ),
+  //   );
+  // }
   static Widget convertAnimationPrice(double? price,
       {double? discount,
-      String? discountType,
-      bool forDM = false,
-      TextStyle? textStyle}) {
+        String? discountType,
+        bool forDM = false,
+        TextStyle? textStyle}) {
     if (discount != null && discountType != null) {
       if (discountType == 'amount') {
         price = price! - discount;
@@ -53,25 +87,36 @@ class PriceConverter {
         price = price! - ((discount / 100) * price);
       }
     }
+
     bool isRightSide =
         Get.find<SplashController>().configModel!.currencySymbolDirection ==
             'right';
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: AnimatedFlipCounter(
-        duration: const Duration(milliseconds: 500),
-        value: toFixed(price!),
-        textStyle: textStyle ?? robotoMedium,
-        fractionDigits: forDM
-            ? 0
-            : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: isRightSide
-            ? ''
-            : Get.find<SplashController>().configModel!.currencySymbol!,
-        suffix: isRightSide
-            ? Get.find<SplashController>().configModel!.currencySymbol!
-            : '',
-      ),
+
+    bool isGermanLocale = Get.locale?.languageCode == 'de';
+    int fractionDigits = forDM
+        ? 0
+        : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!;
+
+    // Format the price based on locale
+    String formattedPrice;
+    if (isGermanLocale) {
+      NumberFormat numberFormat = NumberFormat.currency(
+        locale: 'de_DE',
+        symbol: '',
+        decimalDigits: fractionDigits,
+      );
+      formattedPrice = numberFormat.format(price).trim();
+    } else {
+      formattedPrice = price!.toStringAsFixed(fractionDigits);
+    }
+
+    String priceString = isRightSide
+        ? '$formattedPrice${Get.find<SplashController>().configModel!.currencySymbol!}'
+        : '${Get.find<SplashController>().configModel!.currencySymbol!}$formattedPrice';
+
+    return Text(
+      priceString,
+      style: textStyle ?? robotoMedium,
     );
   }
 

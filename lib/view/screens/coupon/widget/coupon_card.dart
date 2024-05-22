@@ -58,7 +58,7 @@ class CouponCard extends StatelessWidget {
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
               Text(
-                '${coupon.discount}${coupon.discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} ${'off'.tr}',
+                '${Get.locale?.languageCode == 'de'?coupon.discount.toString().replaceAll('.', ','):coupon.discount}${coupon.discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} ${'off'.tr}',
                 style:
                     robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault),
               ),

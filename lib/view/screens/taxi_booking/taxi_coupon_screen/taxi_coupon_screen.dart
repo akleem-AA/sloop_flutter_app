@@ -105,10 +105,10 @@ class _TaxiCouponScreenState extends State<TaxiCouponScreen> {
                               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                               Text(
-                                '${couponController.taxiCouponList![index].discount}${couponController.taxiCouponList![index].discountType == 'percent' ? '%'
-                                    : Get.find<SplashController>().configModel!.currencySymbol} off',
+                                '${Get.locale?.languageCode == 'de' ? couponController.taxiCouponList![index].discount.toString().replaceAll('.', ',') : couponController.taxiCouponList![index].discount}${couponController.taxiCouponList![index].discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} off',
                                 style: robotoMedium.copyWith(color: Theme.of(context).cardColor),
                               ),
+
                               const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                               Row(children: [

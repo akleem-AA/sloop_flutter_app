@@ -14,7 +14,7 @@
   "get_started": "Loslegen",
   "sign_in": "Anmelden",
   "sign_up": "Melden Sie sich an",
-  "email": "Email",
+  "email": "E-Mail",
   "password": "Passwort",
   "confirm_password": "Bestätige das Passwort",
   "remember_me": "Passwort merken",
@@ -317,7 +317,7 @@
   "service_not_available_in_this_area": "Der Service ist in diesem Bereich nicht verfügbar",
   "you_have_to_allow": "Sie müssen die Standortberechtigung erteilen, um Ihren Standort verwenden zu können",
   "you_denied_location_permission": "Sie haben die Standortberechtigung für immer verweigert. ",
-  "view_cart": "Warenkorb ansehen",
+  "view_cart": "Warenkorb",
   "close": "Schließen",
   "settings": "Einstellungen",
   "service_not_available_in_current_location": "Der Dienst ist an Ihrem aktuellen Standort nicht verfügbar",
@@ -1138,5 +1138,11 @@
   "exclu":"exkl.",
   "tax":"USt",
   "netto":"Netto",
-  "brutto":"Brutto"
+  "brutto":"Brutto",
+  "store_name_should_not_be_empty": "Der Ladenname darf nicht leer sein",
+  "store_tex_id_should_not_be_empty": "Die Laden-ID darf nicht leer sein",
+  "please_upload_documents": "Bitte Dokumente hochladen",
+  "please_select_category": "Bitte Kategorie auswählen",
+  "succussfully_register_admin_message": "Erfolgreiche Registrierung! Bitte warten Sie auf die Genehmigung des Administrators, bevor Sie sich anmelden",
+  "login_api_error_message":"Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal."
 }

@@ -1142,5 +1142,7 @@
   "store_name_should_not_be_empty": "Der Ladenname darf nicht leer sein",
   "store_tex_id_should_not_be_empty": "Die Laden-ID darf nicht leer sein",
   "please_upload_documents": "Bitte Dokumente hochladen",
-  "please_select_category": "Bitte Kategorie auswählen"
+  "please_select_category": "Bitte Kategorie auswählen",
+  "succussfully_register_admin_message": "Erfolgreiche Registrierung! Bitte warten Sie auf die Genehmigung des Administrators, bevor Sie sich anmelden",
+  "login_api_error_message":"Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal."
 }

@@ -623,14 +623,14 @@ class SignUpNextScreenState extends State<SignUpNextScreen> {
 
       if (registrationResult.isSuccess) {
         showCustomSnackBar(
-          "Successfully registering! Please await admin approval before logging in",
+          "succussfully_register_admin_message".tr,
           isError: false,
         );
       } else {
         if (registrationResult != null && registrationResult.message != null) {
           showCustomSnackBar(registrationResult.message, isError: true);
         } else {
-          showCustomSnackBar("An error occurred. Please try again later.",
+          showCustomSnackBar("login_api_error_message".tr,
               isError: true);
         }
       }

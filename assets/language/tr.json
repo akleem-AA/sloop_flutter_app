@@ -1142,5 +1142,7 @@
   "store_name_should_not_be_empty": "Mağaza adı boş olmamalıdır",
   "store_tex_id_should_not_be_empty": "Mağaza Tex kimliği boş olmamalıdır",
   "please_upload_documents": "Lütfen belgeleri yükleyin",
-  "please_select_category": "Lütfen kategori seçin"
+  "please_select_category": "Lütfen kategori seçin",
+  "succussfully_register_admin_message": "Başarıyla kayıt olunuyor! Lütfen giriş yapmadan önce yönetici onayını bekleyin",
+  "login_api_error_message": "Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
 }

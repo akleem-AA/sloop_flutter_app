@@ -39,7 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         //   icon: CartWidget(color: Theme.of(context).textTheme.bodyLarge!.color, size: 25),
         // )
 
-        //shopping cart icon setion 
+        //shopping cart icon setion
         Stack(
           children: [
             IconButton(

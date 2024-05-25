@@ -5,7 +5,7 @@ import 'package:sixam_mart/util/images.dart';
 
 class AppConstants {
   static const String appName = 'Sloop';
-  static const double appVersion = 2.5;
+  static const double appVersion = 2.6;
 
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;

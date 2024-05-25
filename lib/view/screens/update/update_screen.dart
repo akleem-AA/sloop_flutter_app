@@ -23,44 +23,61 @@ class _UpdateScreenState extends State<UpdateScreen> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                widget.isUpdate ? Images.update : Images.maintenance,
+                width: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.4,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Text(
+                widget.isUpdate ? 'update'.tr : 'we_are_under_maintenance'.tr,
+                style: robotoBold.copyWith(
+                  fontSize: MediaQuery.of(context).size.height * 0.023,
+                  color: Theme.of(context).primaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Text(
+                widget.isUpdate ? 'your_app_is_deprecated'.tr : 'we_will_be_right_back'.tr,
+                style: robotoRegular.copyWith(
+                  fontSize: MediaQuery.of(context).size.height * 0.0175,
+                  color: Theme.of(context).disabledColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: widget.isUpdate ? MediaQuery.of(context).size.height * 0.04 : 0),
+              widget.isUpdate
+                  ? CustomButton(
+                buttonText: 'update_now'.tr,
+                onPressed: () async {
+                  String? appUrl;
+                  if (GetPlatform.isAndroid) {
+                    appUrl = Get.find<SplashController>().configModel!.appUrlAndroid;
+                  } else if (GetPlatform.isIOS) {
+                    // appUrl = 'https://google.com';
+                    appUrl = Get.find<SplashController>().configModel!.appUrlIos;
+                  } else {
+                    appUrl = 'https://google.com';
+                  }
 
-            Image.asset(
-              widget.isUpdate ? Images.update : Images.maintenance,
-              width: MediaQuery.of(context).size.height*0.4,
-              height: MediaQuery.of(context).size.height*0.4,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.01),
-
-            Text(
-              widget.isUpdate ? 'update'.tr : 'we_are_under_maintenance'.tr,
-              style: robotoBold.copyWith(fontSize: MediaQuery.of(context).size.height*0.023, color: Theme.of(context).primaryColor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.01),
-
-            Text(
-              widget.isUpdate ? 'your_app_is_deprecated'.tr : 'we_will_be_right_back'.tr,
-              style: robotoRegular.copyWith(fontSize: MediaQuery.of(context).size.height*0.0175, color: Theme.of(context).disabledColor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: widget.isUpdate ? MediaQuery.of(context).size.height*0.04 : 0),
-
-            widget.isUpdate ? CustomButton(buttonText: 'update_now'.tr, onPressed: () async {
-              String? appUrl = 'https://google.com';
-              if(GetPlatform.isAndroid) {
-                appUrl = Get.find<SplashController>().configModel!.appUrlAndroid;
-              }else if(GetPlatform.isIOS) {
-                appUrl = Get.find<SplashController>().configModel!.appUrlIos;
-              }
-              if(await canLaunchUrlString(appUrl!)) {
-                launchUrlString(appUrl);
-              }else {
-                showCustomSnackBar('${'can_not_launch'.tr} $appUrl');
-              }
-            }) : const SizedBox(),
-
-          ]),
+                  if (appUrl != null && appUrl.isNotEmpty) {
+                    if (await canLaunchUrlString(appUrl)) {
+                      launchUrlString(appUrl);
+                    } else {
+                      showCustomSnackBar('${'can_not_launch'.tr} $appUrl');
+                    }
+                  } else {
+                    showCustomSnackBar('Invalid URL');
+                  }
+                },
+              )
+                  : const SizedBox(),
+            ],
+          ),
         ),
       ),
     );

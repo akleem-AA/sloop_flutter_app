@@ -354,33 +354,32 @@ class ItemTitleView extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                  Obx(() => !Get.find<MyClassController>()
-                                          .detailsPage
-                                          .value
-                                      ? Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              (item?.brutto_price).toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoRegular.copyWith(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )
-                                      : Text(
-                                          Get.find<SplashController>()
-                                                  .configModel!
-                                                  .currencySymbol! +
-                                              (item?.price).toString(),
-                                          textDirection: TextDirection.ltr,
-                                          style: robotoRegular.copyWith(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              decoration:
-                                                  TextDecoration.lineThrough),
-                                        )),
+
+                                      if (item?.discount != null && item!.discount! > 0)
+                                        Obx(() {
+                                          final myClassController = Get.find<MyClassController>();
+                                          final splashController = Get.find<SplashController>();
+                                          final currencySymbol = splashController.configModel?.currencySymbol ?? '';
+                                          final itemPrice = item?.price?.toString() ?? '';
+                                          final itemBruttoPrice = item?.brutto_price?.toString() ?? '';
+
+                                          return !myClassController.detailsPage.value
+                                              ? Text(
+                                            currencySymbol + itemBruttoPrice,
+                                            textDirection: TextDirection.ltr,
+                                            style: robotoRegular.copyWith(
+                                                color: Theme.of(context).hintColor,
+                                                decoration: TextDecoration.lineThrough),
+                                          )
+                                              : Text(
+                                            currencySymbol + itemPrice,
+                                            textDirection: TextDirection.ltr,
+                                            style: robotoRegular.copyWith(
+                                                color: Theme.of(context).hintColor,
+                                                decoration: TextDecoration.lineThrough),
+                                          );
+                                        }),
+
                                   Obx(() => myClassController.detailsPage.value
                                       ? Text(
                                           PriceConverter.convertPrice(
@@ -389,14 +388,7 @@ class ItemTitleView extends StatelessWidget {
                                             discount: item?.discount,
                                             discountType: item?.discountType,
                                           ),
-                                          // Get.find<SplashController>()
-                                          //         .configModel!
-                                          //         .currencySymbol! +
-                                          //     calculateBruttoPrice(item?.price,
-                                          //         discount: item?.discount),
 
-                                          // '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
-                                          //     '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
                                           style: robotoMedium.copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -411,15 +403,6 @@ class ItemTitleView extends StatelessWidget {
                                             discount: item?.discount,
                                             discountType: item?.discountType,
                                           ),
-                                          // Get.find<SplashController>()
-                                          //         .configModel!
-                                          //         .currencySymbol! +
-                                          //     calculateBruttoPrice(
-                                          //         item?.brutto_price,
-                                          //         discount: item?.discount),
-                                          //      '${PriceConverter.convertPrice(startingPrice, discount: discount, discountType: discountType)}'
-                                          //          '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
-                                          // '${endingPrice != null ? ' - ${PriceConverter.convertPrice(endingPrice, discount: discount, discountType: discountType)}' : ''}',
                                           style: robotoMedium.copyWith(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -430,41 +413,7 @@ class ItemTitleView extends StatelessWidget {
                                   const SizedBox(height: 5),
 
                                   Row(children: [
-                                    // Obx(() {
-                                    //   final isGerman =
-                                    //       Get.locale?.languageCode == 'de';
-                                    //   return myClassController.detailsPage.value
-                                    //       ? Text(
-                                    //           "Inclu : %" +
-                                    //               " " +
-                                    //               (isGerman
-                                    //                   ? item!.tax
-                                    //                           ?.toStringAsFixed(
-                                    //                               2)
-                                    //                           .replaceAll(
-                                    //                               '.', ',') ??
-                                    //                       ''
-                                    //                   : item!.tax.toString()),
-                                    //           textDirection: TextDirection.ltr,
-                                    //           style: robotoMedium.copyWith(
-                                    //               fontSize: 10),
-                                    //         )
-                                    //       : Text(
-                                    //           "Exlu : %" +
-                                    //               " " +
-                                    //               (isGerman
-                                    //                   ? item!.tax
-                                    //                           ?.toStringAsFixed(
-                                    //                               2)
-                                    //                           .replaceAll(
-                                    //                               '.', ',') ??
-                                    //                       ''
-                                    //                   : item!.tax.toString()),
-                                    //           textDirection: TextDirection.ltr,
-                                    //           style: robotoMedium.copyWith(
-                                    //               fontSize: 10),
-                                    //         );
-                                    // }),
+
                                     Obx(() {
                                       final showBrutto =
                                           myClassController.detailsPage.value;

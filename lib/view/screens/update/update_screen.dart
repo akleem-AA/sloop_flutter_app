@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:sixam_mart/view/base/custom_button.dart';
 import 'package:sixam_mart/view/base/custom_snackbar.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class UpdateScreen extends StatefulWidget {
@@ -23,44 +23,62 @@ class _UpdateScreenState extends State<UpdateScreen> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                widget.isUpdate ? Images.update : Images.maintenance,
+                width: MediaQuery.of(context).size.height * 0.4,
+                height: MediaQuery.of(context).size.height * 0.4,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Text(
+                widget.isUpdate ? 'update'.tr : 'we_are_under_maintenance'.tr,
+                style: robotoBold.copyWith(
+                  fontSize: MediaQuery.of(context).size.height * 0.023,
+                  color: Theme.of(context).primaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Text(
+                widget.isUpdate ? 'your_app_is_deprecated'.tr : 'we_will_be_right_back'.tr,
+                style: robotoRegular.copyWith(
+                  fontSize: MediaQuery.of(context).size.height * 0.0175,
+                  color: Theme.of(context).disabledColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: widget.isUpdate ? MediaQuery.of(context).size.height * 0.04 : 0),
+              widget.isUpdate
+                  ? CustomButton(
+                buttonText: 'update_now'.tr,
+                onPressed: () async {
+                  String? appUrl;
+                  if (GetPlatform.isAndroid) {
+                    appUrl = Get.find<SplashController>().configModel?.appUrlAndroid;
+                    print("play store url ${appUrl}");
+                  } else if (GetPlatform.isIOS) {
+                    appUrl =Get.find<SplashController>().configModel?.appUrlIos;
+                    // appUrl = Uri.encodeFull('https://apps.apple.com/us/app/id6473779307');
+                    print("apple store url ${appUrl}");
 
-            Image.asset(
-              widget.isUpdate ? Images.update : Images.maintenance,
-              width: MediaQuery.of(context).size.height*0.4,
-              height: MediaQuery.of(context).size.height*0.4,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.01),
+                  }
 
-            Text(
-              widget.isUpdate ? 'update'.tr : 'we_are_under_maintenance'.tr,
-              style: robotoBold.copyWith(fontSize: MediaQuery.of(context).size.height*0.023, color: Theme.of(context).primaryColor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height*0.01),
-
-            Text(
-              widget.isUpdate ? 'your_app_is_deprecated'.tr : 'we_will_be_right_back'.tr,
-              style: robotoRegular.copyWith(fontSize: MediaQuery.of(context).size.height*0.0175, color: Theme.of(context).disabledColor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: widget.isUpdate ? MediaQuery.of(context).size.height*0.04 : 0),
-
-            widget.isUpdate ? CustomButton(buttonText: 'update_now'.tr, onPressed: () async {
-              String? appUrl = 'https://google.com';
-              if(GetPlatform.isAndroid) {
-                appUrl = Get.find<SplashController>().configModel!.appUrlAndroid;
-              }else if(GetPlatform.isIOS) {
-                appUrl = Get.find<SplashController>().configModel!.appUrlIos;
-              }
-              if(await canLaunchUrlString(appUrl!)) {
-                launchUrlString(appUrl);
-              }else {
-                showCustomSnackBar('${'can_not_launch'.tr} $appUrl');
-              }
-            }) : const SizedBox(),
-
-          ]),
+                  if (appUrl != null) {
+                    if (await canLaunchUrlString(appUrl)) {
+                      await launchUrlString(appUrl, mode: LaunchMode.externalApplication);
+                    } else {
+                      showCustomSnackBar('${'can_not_launch'.tr} $appUrl');
+                    }
+                  } else {
+                    showCustomSnackBar('app_url_not_found'.tr);
+                  }
+                },
+              )
+                  : const SizedBox(),
+            ],
+          ),
         ),
       ),
     );

@@ -93,7 +93,7 @@ class PaymentScreenState extends State<PaymentScreen> {
       },
     );
     await browser.openUrlRequest(
-      urlRequest: URLRequest(url: WebUri(Uri.parse(selectedUrl).toString())),
+      urlRequest: URLRequest(url: Uri.parse(selectedUrl)),
       options: InAppBrowserClassOptions(
         crossPlatform: InAppBrowserOptions(hideUrlBar: true, hideToolbarTop: true),
         inAppWebViewGroupOptions: InAppWebViewGroupOptions(

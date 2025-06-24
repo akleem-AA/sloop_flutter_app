@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sixam_mart/controller/auth_controller.dart';
 import 'package:sixam_mart/controller/banner_controller.dart';
@@ -15,6 +17,7 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/controller/user_controller.dart';
 import 'package:sixam_mart/helper/responsive_helper.dart';
 import 'package:sixam_mart/helper/route_helper.dart';
+import 'package:sixam_mart/myCustomController.dart';
 import 'package:sixam_mart/util/app_constants.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
@@ -36,7 +39,7 @@ import 'package:sixam_mart/view/screens/parcel/parcel_category_screen.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   static Future<void> loadData(bool reload) async {
     Get.find<LocationController>().syncZoneData();
@@ -112,8 +115,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  // ignore: non_constant_identifier_names
-  bool is_brotto = false;
+  final controller = Get.put(MyClassController());
+
   @override
   void initState() {
     super.initState();
@@ -330,28 +333,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   )),
                                   SizedBox(
-                                    height: 30,
+                                    height: 33,
                                     // width: 0,
                                     child: LiteRollingSwitch(
-                                        value: is_brotto,
+                                        value: false,
                                         width: 90,
                                         colorOff:
                                             Theme.of(context).primaryColor,
-                                        iconOn: Icons.circle,
+                                        colorOn: Theme.of(context).primaryColor,
+                                        iconOn: Icons.circle_outlined,
                                         iconOff: Icons.circle_outlined,
-                                        textOn: "Brutto",
-                                        textOff: "Netto",
+                                        textOn: "brutto".tr,
+                                        textOff: "netto".tr,
+                                        textOnColor: Colors.white,
+                                        textOffColor: Colors.white,
+                                        textSize: Dimensions.fontSizeSmall,
                                         // textSize: 10,
                                         onTap: () {},
                                         onDoubleTap: () {},
                                         onSwipe: () {},
                                         onChanged: (bool postion) {
-                                          print(
-                                              "toggle buton homescreen $postion");
-
-                                          setState(() {
-                                            is_brotto = postion;
-                                          });
+                                          controller.showBrutto.value =
+                                              !controller.showBrutto.value;
+                                          print("toggle buton $postion");
                                         }),
                                   ),
                                   InkWell(
@@ -399,7 +403,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     delegate: SliverDelegate(
                                         child: Center(
                                             child: Container(
-                                      height: 50, width: Dimensions.webMaxWidth,
+                                      height: 50,
+                                      width: Dimensions.webMaxWidth,
                                       // color: Theme.of(context).colorScheme.background,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal:
@@ -476,8 +481,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                             isGrocery
                                                 ? const GroceryHomeScreen()
-                                                // ? const Text(
-                                                //     "grocery Home screen")
                                                 : isPharmacy
                                                     ? const PharmacyHomeScreen()
                                                     : isFood

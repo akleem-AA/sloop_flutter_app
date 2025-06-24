@@ -72,7 +72,7 @@ class CornerDiscountTag extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children:  [
                 Text(
-                  discount! > 0 ? '$discount${discountType == 'percent' ? '%'
+                  discount! > 0 ? '${Get.locale?.languageCode == 'de' ? discount.toString().replaceAll('.', ',') : discount}${discountType == 'percent' ? '%'
                       : Get.find<SplashController>().configModel!.currencySymbol} ${'off'.tr}' : 'free_delivery'.tr,
                   style: robotoMedium.copyWith(
                     color: Colors.white,

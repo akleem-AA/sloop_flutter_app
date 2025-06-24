@@ -25,6 +25,8 @@ import 'package:sixam_mart/view/screens/item/widget/details_web_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_image_view.dart';
 import 'package:sixam_mart/view/screens/item/widget/item_title_view.dart';
 
+import '../../../myCustomController.dart';
+
 class ItemDetailsScreen extends StatefulWidget {
   final Item? item;
   final bool inStorePage;
@@ -41,6 +43,8 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   final GlobalKey<ScaffoldMessengerState> _globalKey = GlobalKey();
   final GlobalKey<DetailsAppBarState> _key = GlobalKey();
   bool is_brotto = false;
+
+  get brutto_price => null;
   @override
   void initState() {
     super.initState();
@@ -48,6 +52,35 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
     Get.find<ItemController>().getProductDetails(widget.item!);
   }
 
+  String calculateBruttoPrice(double? bruttoPrice, {double? discount}) {
+    if (discount != null && bruttoPrice != null) {
+      double amountToSubtract = (bruttoPrice * discount) / 100;
+      double result = bruttoPrice - amountToSubtract;
+      return '$result';
+    } else {
+      return '$bruttoPrice';
+    }
+  }
+
+  String calculateNetPrice(double? price, {double? tax}) {
+    if (tax != null) {
+      double result = price! + tax;
+      return '$result';
+    } else {
+      return '';
+    }
+  }
+
+  // String calculateNonNetPrice(double ? price, {double? tax}) {
+  //   if(tax !=null) {
+  //   double result = price! - tax;
+  //   return '$result';
+  //   }
+  //   else {
+  //     return '';
+  //   }
+  //
+  // }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartController>(builder: (cartController) {
@@ -478,7 +511,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                               const SizedBox(
                                                   height: Dimensions
                                                       .paddingSizeLarge),
-
+                                              //total amount section
                                               Row(children: [
                                                 Text('${'total_amount'.tr}:',
                                                     style: robotoMedium.copyWith(
@@ -508,10 +541,85 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                                                           .fontSizeLarge),
                                                 ),
                                               ]),
+
                                               const SizedBox(
                                                   height: Dimensions
-                                                      .paddingSizeExtraLarge),
-
+                                                      .paddingSizeDefault),
+//tag section
+                                              widget.item?.tags != null
+                                                  ? SizedBox(
+                                                      child: Wrap(
+                                                        spacing: Get.width *
+                                                            0.01, // Space between tags
+                                                        runSpacing: Get.width *
+                                                            0.02, // Space between rows, same as spacing
+                                                        children: List<
+                                                            Widget>.generate(
+                                                          widget.item?.tags
+                                                                  ?.length ??
+                                                              0,
+                                                          (index) {
+                                                            final Tag = widget
+                                                                .item
+                                                                ?.tags?[index];
+                                                            return TextButton(
+                                                              onPressed: () {
+                                                                Get.toNamed(
+                                                                  RouteHelper
+                                                                      .getSearchRoute(
+                                                                    queryText:
+                                                                        Tag?.tag,
+                                                                  ),
+                                                                );
+                                                              },
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                backgroundColor:
+                                                                    Theme.of(
+                                                                            context)
+                                                                        .primaryColor,
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        8.0,
+                                                                    vertical:
+                                                                        4.0), // Adjusted padding for smaller button
+                                                                minimumSize:
+                                                                    const Size(
+                                                                        0,
+                                                                        0), // Allow the button to shrink further
+                                                                tapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap, // Ensures the button size is small
+                                                              ),
+                                                              child: Text(
+                                                                (Tag?.tag)
+                                                                        ?.trim() ??
+                                                                    "",
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      Dimensions
+                                                                          .fontSizeSmall, // Smaller font size
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                              const SizedBox(
+                                                  height: Dimensions
+                                                      .paddingSizeDefault),
                                               (itemController.item!
                                                               .description !=
                                                           null &&

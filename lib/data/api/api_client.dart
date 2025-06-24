@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-
+import 'package:dio/dio.dart' hide Response;
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/error_response.dart';
 import 'package:sixam_mart/data/model/response/module_model.dart';
@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient extends GetxService {
+  final dio = Dio();
   final String appBaseUrl;
   final SharedPreferences sharedPreferences;
   static final String noInternetMessage = 'connection_to_api_server_failed'.tr;

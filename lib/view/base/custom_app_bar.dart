@@ -8,6 +8,8 @@ import 'package:sixam_mart/view/base/web_menu_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controller/cart_controller.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool backButton;
@@ -31,10 +33,50 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).cardColor,
       elevation: 0,
       actions: showCart || onVegFilterTap != null ? [
-        showCart ? IconButton(
-          onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
-          icon: CartWidget(color: Theme.of(context).textTheme.bodyLarge!.color, size: 25),
-        ) : const SizedBox(),
+        showCart ?
+        // IconButton(
+        //   onPressed: () => Get.toNamed(RouteHelper.getCartRoute()),
+        //   icon: CartWidget(color: Theme.of(context).textTheme.bodyLarge!.color, size: 25),
+        // )
+
+        //shopping cart icon setion
+        Stack(
+          children: [
+            IconButton(
+              icon: Icon(Icons.shopping_cart,
+                  color: Theme.of(context).primaryColor),
+              onPressed: () {
+                Navigator.pushNamed(
+                    context, RouteHelper.getCartRoute());
+              },
+            ),
+            Positioned(
+              top: 5,
+              right: 5,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+                child: GetBuilder<CartController>(
+                    builder: (cartController) {
+                      return Text(
+                        cartController.cartList.length.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ],
+        )
+            : const SizedBox(),
 
         onVegFilterTap != null ? VegFilterWidget(
           type: type,

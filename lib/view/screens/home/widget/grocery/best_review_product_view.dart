@@ -13,44 +13,41 @@ class BestReviewedProductView extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
+      padding:
+          const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('best_reviewed_products'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeDefault),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('best_reviewed_products'.tr,
+                style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
             const SizedBox(height: Dimensions.paddingSizeDefault),
-
-            Row(mainAxisAlignment : MainAxisAlignment.spaceBetween, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               SortingTextButton(
                 title: 'all'.tr,
                 onTap: () {},
               ),
-
               SortingTextButton(
                 title: 'beauty'.tr,
                 onTap: () {},
               ),
-
               SortingTextButton(
                 title: 'men_fashion'.tr,
                 onTap: () {},
               ),
-
               SortingTextButton(
                 title: 'women_fashion'.tr,
                 onTap: () {},
               ),
-
               SortingTextButton(
                 title: 'electronics'.tr,
                 onTap: () {},
               ),
-
             ]),
           ]),
         ),
-
         Padding(
           padding: const EdgeInsets.only(top: Dimensions.paddingSizeDefault),
           child: Container(
@@ -58,7 +55,8 @@ class BestReviewedProductView extends StatelessWidget {
               color: Theme.of(context).disabledColor.withOpacity(0.1),
             ),
             child: SizedBox(
-              height: 280, width: Get.width,
+              height: 280,
+              width: Get.width,
               child: ListView.builder(
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
@@ -68,7 +66,8 @@ class BestReviewedProductView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   const int cartQty = 0;
                   return Padding(
-                    padding: EdgeInsets.only(left: index == 0 ? 0 : Dimensions.paddingSizeDefault),
+                    padding: EdgeInsets.only(
+                        left: index == 0 ? 0 : Dimensions.paddingSizeDefault),
                     child: const ReviewItemCard(),
                   );
                 },
@@ -76,12 +75,7 @@ class BestReviewedProductView extends StatelessWidget {
             ),
           ),
         ),
-
       ]),
     );
   }
 }
-
-
-
-

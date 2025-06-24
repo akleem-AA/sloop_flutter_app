@@ -1,73 +1,160 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart/util/styles.dart';
 
 class PriceConverter {
-  static String convertPrice(double? price, {double? discount, String? discountType, bool forDM = false}) {
-    if(discount != null && discountType != null){
-      if(discountType == 'amount') {
+  static String convertPrice(double? price,
+      {double? discount, String? discountType, bool forDM = false}) {
+    if (discount != null && discountType != null) {
+      if (discountType == 'amount') {
         price = price! - discount;
-      }else if(discountType == 'percent') {
+      } else if (discountType == 'percent') {
         price = price! - ((discount / 100) * price);
       }
     }
-    bool isRightSide = Get.find<SplashController>().configModel!.currencySymbolDirection == 'right';
-    return '${isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
-        '${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!)
-        .replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
+    bool isRightSide =
+        Get.find<SplashController>().configModel!.currencySymbolDirection ==
+            'right';
+    String formattedPrice =
+        '${isRightSide ? '' : '${Get.find<SplashController>().configModel!.currencySymbol!} '}'
+        '${toFixed(price!).toStringAsFixed(forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}'
         '${isRightSide ? ' ${Get.find<SplashController>().configModel!.currencySymbol!}' : ''}';
+
+    // Replace "." with "," if the selected language is German
+    // if (Get.locale?.languageCode == 'de') {
+    //   formattedPrice = formattedPrice.replaceAll('.', ',');
+    // }
+    if (Get.locale?.languageCode == 'de') {
+      int lastDotIndex = formattedPrice.lastIndexOf('.');
+      if (lastDotIndex != -1) {
+        String beforeLastDot = formattedPrice.substring(0, lastDotIndex);
+        String afterLastDot = formattedPrice.substring(lastDotIndex + 1);
+
+        beforeLastDot = beforeLastDot.replaceAll(',', '.');
+        afterLastDot = afterLastDot.replaceAll('.', ',');
+
+        formattedPrice = beforeLastDot + ',' + afterLastDot;
+      }
+    }
+    return formattedPrice;
   }
 
-  static Widget convertAnimationPrice(double? price, {double? discount, String? discountType, bool forDM = false, TextStyle? textStyle}) {
-    if(discount != null && discountType != null){
-      if(discountType == 'amount') {
+  // static Widget convertAnimationPrice(double? price,
+  //     {double? discount,
+  //     String? discountType,
+  //     bool forDM = false,
+  //     TextStyle? textStyle}) {
+  //   if (discount != null && discountType != null) {
+  //     if (discountType == 'amount') {
+  //       price = price! - discount;
+  //     } else if (discountType == 'percent') {
+  //       price = price! - ((discount / 100) * price);
+  //     }
+  //   }
+  //   bool isRightSide =
+  //       Get.find<SplashController>().configModel!.currencySymbolDirection ==
+  //           'right';
+  //   return Directionality(
+  //     textDirection: TextDirection.ltr,
+  //     child: AnimatedFlipCounter(
+  //       duration: const Duration(milliseconds: 500),
+  //       value: toFixed(price!),
+  //       textStyle: textStyle ?? robotoMedium,
+  //       fractionDigits: forDM
+  //           ? 0
+  //           : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
+  //       prefix: isRightSide
+  //           ? ''
+  //           : Get.find<SplashController>().configModel!.currencySymbol!,
+  //       suffix: isRightSide
+  //           ? Get.find<SplashController>().configModel!.currencySymbol!
+  //           : '',
+  //     ),
+  //   );
+  // }
+  static Widget convertAnimationPrice(double? price,
+      {double? discount,
+        String? discountType,
+        bool forDM = false,
+        TextStyle? textStyle}) {
+    if (discount != null && discountType != null) {
+      if (discountType == 'amount') {
         price = price! - discount;
-      }else if(discountType == 'percent') {
+      } else if (discountType == 'percent') {
         price = price! - ((discount / 100) * price);
       }
     }
-    bool isRightSide = Get.find<SplashController>().configModel!.currencySymbolDirection == 'right';
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: AnimatedFlipCounter(
-        duration: const Duration(milliseconds: 500),
-        value: toFixed(price!),
-        textStyle: textStyle ?? robotoMedium,
-        fractionDigits: forDM ? 0 : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!,
-        prefix: isRightSide ? '' : Get.find<SplashController>().configModel!.currencySymbol!,
-        suffix: isRightSide ? Get.find<SplashController>().configModel!.currencySymbol! : '',
-      ),
+
+    bool isRightSide =
+        Get.find<SplashController>().configModel!.currencySymbolDirection ==
+            'right';
+
+    bool isGermanLocale = Get.locale?.languageCode == 'de';
+    int fractionDigits = forDM
+        ? 0
+        : Get.find<SplashController>().configModel!.digitAfterDecimalPoint!;
+
+    // Format the price based on locale
+    String formattedPrice;
+    if (isGermanLocale) {
+      NumberFormat numberFormat = NumberFormat.currency(
+        locale: 'de_DE',
+        symbol: '',
+        decimalDigits: fractionDigits,
+      );
+      formattedPrice = numberFormat.format(price).trim();
+    } else {
+      formattedPrice = price!.toStringAsFixed(fractionDigits);
+    }
+
+    String priceString = isRightSide
+        ? '$formattedPrice${Get.find<SplashController>().configModel!.currencySymbol!}'
+        : '${Get.find<SplashController>().configModel!.currencySymbol!}$formattedPrice';
+
+    return Text(
+      priceString,
+      style: textStyle ?? robotoMedium,
     );
   }
 
-  static double? convertWithDiscount(double? price, double? discount, String? discountType) {
-    if(discountType == 'amount') {
+  static double? convertWithDiscount(
+      double? price, double? discount, String? discountType) {
+    if (discountType == 'amount') {
       price = price! - discount!;
-    }else if(discountType == 'percent') {
+    } else if (discountType == 'percent') {
       price = price! - ((discount! / 100) * price);
     }
     return price;
   }
 
-  static double calculation(double amount, double? discount, String type, int quantity) {
+  static double calculation(
+      double amount, double? discount, String type, int quantity) {
     double calculatedAmount = 0;
-    if(type == 'amount') {
+    if (type == 'amount') {
       calculatedAmount = discount! * quantity;
-    }else if(type == 'percent') {
+    } else if (type == 'percent') {
       calculatedAmount = (discount! / 100) * (amount * quantity);
     }
     return calculatedAmount;
   }
 
-  static String percentageCalculation(String price, String discount, String discountType) {
+  static String percentageCalculation(
+      String price, String discount, String discountType) {
     return '$discount${discountType == 'percent' ? '%' : Get.find<SplashController>().configModel!.currencySymbol} OFF';
   }
 
   static double toFixed(double val) {
-    num mod = power(10, Get.find<SplashController>().configModel!.digitAfterDecimalPoint!);
-    return (((val * mod).toPrecision(Get.find<SplashController>().configModel!.digitAfterDecimalPoint!)).floor().toDouble() / mod);
+    num mod = power(
+        10, Get.find<SplashController>().configModel!.digitAfterDecimalPoint!);
+    return (((val * mod).toPrecision(Get.find<SplashController>()
+                .configModel!
+                .digitAfterDecimalPoint!))
+            .floor()
+            .toDouble() /
+        mod);
   }
 
   static int power(int x, int n) {
@@ -77,5 +164,4 @@ class PriceConverter {
     }
     return retval;
   }
-
 }

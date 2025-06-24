@@ -5,8 +5,25 @@ class SignUpBody {
   String? email;
   String? password;
   String? refCode;
+  String? exist_category;
+  String? store_name;
+  String? store_address;
+  String? new_category;
+  String? tex_id;
 
-  SignUpBody({this.fName, this.lName, this.phone, this.email='', this.password, this.refCode = ''});
+  SignUpBody(
+      {this.fName,
+      this.lName,
+      this.phone,
+      this.email = '',
+      this.password,
+      this.refCode = '',
+      this.exist_category,
+      this.store_name,
+      this.store_address,
+      this.new_category,
+      this.tex_id,
+      });
 
   SignUpBody.fromJson(Map<String, dynamic> json) {
     fName = json['f_name'];
@@ -15,16 +32,26 @@ class SignUpBody {
     email = json['email'];
     password = json['password'];
     refCode = json['ref_code'];
+    exist_category = json['exist_category'];
+    store_name = json['store_name'];
+    store_address = json['store_address'];
+    new_category = json['new_category'];
+    tex_id = json['tex_id'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['f_name'] = fName;
-    data['l_name'] = lName;
-    data['phone'] = phone;
-    data['email'] = email;
-    data['password'] = password;
-    data['ref_code'] = refCode;
+  Map<String, String> toJson() {
+    final Map<String, String> data = <String, String>{};
+    data['f_name'] = fName!;
+    data['l_name'] = lName!;
+    data['phone'] = phone!;
+    data['email'] = email!;
+    data['password'] = password!;
+    data['ref_code'] = refCode!;
+    data['exist_category'] = exist_category!;
+    data['store_name'] = store_name!;
+    data['store_address'] = store_address!;
+    data['new_category'] = new_category!;
+    data['tex_id'] = tex_id!;
     return data;
   }
 }

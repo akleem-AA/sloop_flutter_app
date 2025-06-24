@@ -35,8 +35,9 @@ class DiscountTag extends StatelessWidget {
           ),
         ),
         child: Text(
-          discount! > 0 ? '${(isRightSide || discountType == 'percent') ? '' : currencySymbol}$discount${discountType == 'percent' ? '%'
-              : isRightSide ? currencySymbol : ''} ${'off'.tr}' : 'free_delivery'.tr,
+          discount! > 0
+              ? '${(isRightSide || discountType == 'percent') ? '' : currencySymbol}${Get.locale?.languageCode == 'de' ? discount.toString().replaceAll('.', ',') : discount}${discountType == 'percent' ? '%' : isRightSide ? currencySymbol : ''} ${'off'.tr}'
+              : 'free_delivery'.tr,
           style: robotoMedium.copyWith(
             color: Theme.of(context).cardColor,
             fontSize: fontSize ?? (ResponsiveHelper.isMobile(context) ? 8 : 12),

@@ -86,20 +86,21 @@ class PaymentScreenState extends State<PaymentScreen> {
       ),
       onRefresh: () async {
         if (Platform.isAndroid) {
-          browser.webViewController.reload();
+          browser.webViewController?.reload();
         } else if (Platform.isIOS) {
-          browser.webViewController.loadUrl(urlRequest: URLRequest(url: await browser.webViewController.getUrl()));
+          browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
         }
       },
     );
-    browser.pullToRefreshController = pullToRefreshController;
-
     await browser.openUrlRequest(
       urlRequest: URLRequest(url: Uri.parse(selectedUrl)),
       options: InAppBrowserClassOptions(
         crossPlatform: InAppBrowserOptions(hideUrlBar: true, hideToolbarTop: true),
         inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+          crossPlatform: InAppWebViewOptions(
+            useShouldOverrideUrlLoading: true,
+            useOnLoadResource: true,
+          ),
         ),
       ),
     );

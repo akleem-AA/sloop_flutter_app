@@ -3,21 +3,29 @@ import 'package:sixam_mart/controller/splash_controller.dart';
 import 'package:sixam_mart/data/model/body/place_order_body.dart';
 import 'package:sixam_mart/data/model/response/cart_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
-import 'package:sixam_mart/data/model/response/item_model.dart' as other_variation;
+import 'package:sixam_mart/data/model/response/item_model.dart'
+    as other_variation;
 import 'package:sixam_mart/data/model/response/online_cart_model.dart';
 import 'package:sixam_mart/helper/price_converter.dart';
 
 class CartHelper {
-
-  static List<OrderVariation> getSelectedVariations ({required bool isFoodVariation, required List<FoodVariation>? foodVariations, required List<List<bool?>> selectedVariations}) {
+  static List<OrderVariation> getSelectedVariations(
+      {required bool isFoodVariation,
+      required List<FoodVariation>? foodVariations,
+      required List<List<bool?>> selectedVariations}) {
     List<OrderVariation> variations = [];
-    if(isFoodVariation) {
-      for(int i=0; i<foodVariations!.length; i++) {
-        if(selectedVariations[i].contains(true)) {
-          variations.add(OrderVariation(name: foodVariations[i].name, values: OrderVariationValue(label: [])));
-          for(int j=0; j<foodVariations[i].variationValues!.length; j++) {
-            if(selectedVariations[i][j]!) {
-              variations[variations.length-1].values!.label!.add(foodVariations[i].variationValues![j].level);
+    if (isFoodVariation) {
+      for (int i = 0; i < foodVariations!.length; i++) {
+        if (selectedVariations[i].contains(true)) {
+          variations.add(OrderVariation(
+              name: foodVariations[i].name,
+              values: OrderVariationValue(label: [])));
+          for (int j = 0; j < foodVariations[i].variationValues!.length; j++) {
+            if (selectedVariations[i][j]!) {
+              variations[variations.length - 1]
+                  .values!
+                  .label!
+                  .add(foodVariations[i].variationValues![j].level);
             }
           }
         }
@@ -26,7 +34,7 @@ class CartHelper {
     return variations;
   }
 
-  static getSelectedAddonIds({required List<AddOn> addOnIdList }) {
+  static getSelectedAddonIds({required List<AddOn> addOnIdList}) {
     List<int?> listOfAddOnId = [];
     for (var addOn in addOnIdList) {
       listOfAddOnId.add(addOn.id);
@@ -34,7 +42,7 @@ class CartHelper {
     return listOfAddOnId;
   }
 
-  static getSelectedAddonQtnList({required List<AddOn> addOnIdList }) {
+  static getSelectedAddonQtnList({required List<AddOn> addOnIdList}) {
     List<int?> listOfAddOnQty = [];
     for (var addOn in addOnIdList) {
       listOfAddOnQty.add(addOn.quantity);
@@ -42,15 +50,19 @@ class CartHelper {
     return listOfAddOnQty;
   }
 
-  static List<CartModel> formatOnlineCartToLocalCart({required List<OnlineCartModel> onlineCartModel}) {
-
+  static List<CartModel> formatOnlineCartToLocalCart(
+      {required List<OnlineCartModel> onlineCartModel}) {
     List<CartModel> cartList = [];
     for (OnlineCartModel cart in onlineCartModel) {
       // print('=======caart module type : ${cart.item!.moduleType}');
       double price = cart.item!.price!;
-      double? discount = cart.item!.storeDiscount == 0 ? cart.item!.discount! : cart.item!.storeDiscount!;
-      String? discountType = (cart.item!.storeDiscount == 0) ? cart.item!.discountType : 'percent';
-      double discountedPrice = PriceConverter.convertWithDiscount(price, discount, discountType)!;
+      double? discount = cart.item!.storeDiscount == 0
+          ? cart.item!.discount!
+          : cart.item!.storeDiscount!;
+      String? discountType =
+          (cart.item!.storeDiscount == 0) ? cart.item!.discountType : 'percent';
+      double discountedPrice =
+          PriceConverter.convertWithDiscount(price, discount, discountType)!;
 
       double? discountAmount = price - discountedPrice;
       int? quantity = cart.quantity;
@@ -59,12 +71,19 @@ class CartHelper {
       List<List<bool?>> selectedFoodVariations = [];
       List<bool> collapsVariation = [];
 
-      if(cart.item!.moduleType == 'food'/*Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation ?? false*/) {
-        for(int index=0; index<cart.item!.foodVariations!.length; index++) {
+      if (cart.item!.moduleType ==
+          'food' /*Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation ?? false*/) {
+        for (int index = 0;
+            index < cart.item!.foodVariations!.length;
+            index++) {
           selectedFoodVariations.add([]);
           collapsVariation.add(true);
-          for(int i=0; i < cart.item!.foodVariations![index].variationValues!.length; i++) {
-            if(cart.item!.foodVariations![index].variationValues![i].isSelected ?? false){
+          for (int i = 0;
+              i < cart.item!.foodVariations![index].variationValues!.length;
+              i++) {
+            if (cart.item!.foodVariations![index].variationValues![i]
+                    .isSelected ??
+                false) {
               selectedFoodVariations[index].add(true);
             } else {
               selectedFoodVariations[index].add(false);
@@ -72,10 +91,15 @@ class CartHelper {
           }
         }
       } else {
-        String variationType = cart.productVariation != null && cart.productVariation!.isNotEmpty ? cart.productVariation![0].type! : '';
+        String variationType =
+            cart.productVariation != null && cart.productVariation!.isNotEmpty
+                ? cart.productVariation![0].type!
+                : '';
         for (other_variation.Variation variation in cart.item!.variations!) {
           if (variation.type == variationType) {
-            discountedPrice = (PriceConverter.convertWithDiscount(variation.price!, discount, discountType)! * cart.quantity!);
+            discountedPrice = (PriceConverter.convertWithDiscount(
+                    variation.price!, discount, discountType)! *
+                cart.quantity!);
             break;
           }
         }
@@ -84,10 +108,14 @@ class CartHelper {
       List<AddOn> addOnIdList = [];
       List<AddOns> addOnsList = [];
       for (int index = 0; index < cart.addOnIds!.length; index++) {
-        addOnIdList.add(AddOn(id: cart.addOnIds![index], quantity: cart.addOnQtys![index]));
-        for (int i=0; i< cart.item!.addOns!.length; i++) {
-          if(cart.addOnIds![index] == cart.item!.addOns![i].id) {
-            addOnsList.add(AddOns(id: cart.item!.addOns![i].id, name: cart.item!.addOns![i].name, price: cart.item!.addOns![i].price));
+        addOnIdList.add(
+            AddOn(id: cart.addOnIds![index], quantity: cart.addOnQtys![index]));
+        for (int i = 0; i < cart.item!.addOns!.length; i++) {
+          if (cart.addOnIds![index] == cart.item!.addOns![i].id) {
+            addOnsList.add(AddOns(
+                id: cart.item!.addOns![i].id,
+                name: cart.item!.addOns![i].name,
+                price: cart.item!.addOns![i].price));
           }
         }
       }
@@ -96,8 +124,19 @@ class CartHelper {
 
       cartList.add(
         CartModel(
-          cart.id, price, discountedPrice, cart.productVariation?? [], selectedFoodVariations, discountAmount, quantity,
-          addOnIdList, addOnsList, false, stock, cart.item, quantityLimit,
+          cart.id,
+          price,
+          discountedPrice,
+          cart.productVariation ?? [],
+          selectedFoodVariations,
+          discountAmount,
+          quantity,
+          addOnIdList,
+          addOnsList,
+          false,
+          stock,
+          cart.item,
+          quantityLimit,
         ),
       );
     }
@@ -105,24 +144,25 @@ class CartHelper {
     return cartList;
   }
 
-  static double? calculatePriceWithVariation({required Item? item, bool isStartingPrice = true}) {
+  static double? calculatePriceWithVariation(
+      {required Item? item, bool isStartingPrice = true}) {
     double? startingPrice;
     double? endingPrice;
 
-    if(item!.variations!.isNotEmpty) {
+    if (item!.variations!.isNotEmpty) {
       List<double?> priceList = [];
       for (var variation in item.variations!) {
         priceList.add(variation.price);
       }
       priceList.sort((a, b) => a!.compareTo(b!));
       startingPrice = priceList[0];
-      if(priceList[0]! < priceList[priceList.length-1]!) {
-        endingPrice = priceList[priceList.length-1];
+      if (priceList[0]! < priceList[priceList.length - 1]!) {
+        endingPrice = priceList[priceList.length - 1];
       }
-    }else {
+    } else {
       startingPrice = item.price;
     }
-    if(isStartingPrice) {
+    if (isStartingPrice) {
       return startingPrice;
     } else {
       return endingPrice;
@@ -132,30 +172,35 @@ class CartHelper {
   static String? setupVariationText({required CartModel cart}) {
     String? variationText = '';
 
-    if(Get.find<SplashController>().getModuleConfig(cart.item!.moduleType).newVariation!) {
-      if(cart.foodVariations!.isNotEmpty) {
-        for(int index=0; index<cart.foodVariations!.length; index++) {
-          if(cart.foodVariations![index].contains(true)) {
-            variationText = '${variationText!}${variationText.isNotEmpty ? ', ' : ''}${cart.item!.foodVariations![index].name} (';
-            for(int i=0; i<cart.foodVariations![index].length; i++) {
-              if(cart.foodVariations![index][i]!) {
-                variationText = '${variationText!}${variationText.endsWith('(') ? '' : ', '}${cart.item!.foodVariations![index].variationValues![i].level}';
+    if (Get.find<SplashController>()
+        .getModuleConfig(cart.item!.moduleType)
+        .newVariation!) {
+      if (cart.foodVariations!.isNotEmpty) {
+        for (int index = 0; index < cart.foodVariations!.length; index++) {
+          if (cart.foodVariations![index].contains(true)) {
+            variationText =
+                '${variationText!}${variationText.isNotEmpty ? ', ' : ''}${cart.item!.foodVariations![index].name} (';
+            for (int i = 0; i < cart.foodVariations![index].length; i++) {
+              if (cart.foodVariations![index][i]!) {
+                variationText =
+                    '${variationText!}${variationText.endsWith('(') ? '' : ', '}${cart.item!.foodVariations![index].variationValues![i].level}';
               }
             }
             variationText = '${variationText!})';
           }
         }
       }
-    }else {
-      if(cart.variation!.isNotEmpty) {
+    } else {
+      if (cart.variation!.isNotEmpty) {
         List<String> variationTypes = cart.variation![0].type!.split('-');
-        if(variationTypes.length == cart.item!.choiceOptions!.length) {
+        if (variationTypes.length == cart.item!.choiceOptions!.length) {
           int index0 = 0;
           for (var choice in cart.item!.choiceOptions!) {
-            variationText = '${variationText!}${(index0 == 0) ? '' : ',  '}${choice.title} - ${variationTypes[index0]}';
+            variationText =
+                '${variationText!}${(index0 == 0) ? '' : ',  '}${choice.title} - ${variationTypes[index0]}';
             index0 = index0 + 1;
           }
-        }else {
+        } else {
           variationText = cart.item!.variations![0].type;
         }
       }
@@ -174,7 +219,8 @@ class CartHelper {
     }
     for (var addOn in cart.item!.addOns!) {
       if (ids.contains(addOn.id)) {
-        addOnText = '$addOnText${(index0 == 0) ? '' : ',  '}${addOn.name} (${qtys[index0]})';
+        addOnText =
+            '$addOnText${(index0 == 0) ? '' : ',  '}${addOn.name} (${qtys[index0]})';
         index0 = index0 + 1;
       }
     }
@@ -184,22 +230,62 @@ class CartHelper {
   static double getItemDetailsDiscountPrice({required CartModel cart}) {
     double discountedPrice = 0;
 
-    double? discount = cart.item!.storeDiscount == 0 ? cart.item!.discount! : cart.item!.storeDiscount!;
-    String? discountType = (cart.item!.storeDiscount == 0) ? cart.item!.discountType : 'percent';
-    String variationType = cart.variation != null && cart.variation!.isNotEmpty ? cart.variation![0].type! : '';
+    double? discount = cart.item!.storeDiscount == 0
+        ? cart.item!.discount!
+        : cart.item!.storeDiscount!;
+    String? discountType =
+        (cart.item!.storeDiscount == 0) ? cart.item!.discountType : 'percent';
+    String variationType = cart.variation != null && cart.variation!.isNotEmpty
+        ? cart.variation![0].type!
+        : '';
 
-    if(cart.variation != null && cart.variation!.isNotEmpty){
+    if (cart.variation != null && cart.variation!.isNotEmpty) {
       for (other_variation.Variation variation in cart.item!.variations!) {
         if (variation.type == variationType) {
-          discountedPrice = (PriceConverter.convertWithDiscount(variation.price!, discount, discountType)! * cart.quantity!);
+          discountedPrice = (PriceConverter.convertWithDiscount(
+                  variation.price!, discount, discountType)! *
+              cart.quantity!);
           break;
         }
       }
     } else {
-      discountedPrice = (PriceConverter.convertWithDiscount(cart.item!.price!, discount, discountType)! * cart.quantity!);
+      discountedPrice = (PriceConverter.convertWithDiscount(
+              cart.item!.price!, discount, discountType)! *
+          cart.quantity!);
     }
 
     return discountedPrice;
   }
 
+  static double getItemDetailsDiscountBruttoPrice({required CartModel cart}) {
+    double discountedBruttoPrice = 0;
+
+    double? discount = cart.item!.storeDiscount == 0
+        ? cart.item!.discount!
+        : cart.item!.storeDiscount!;
+    String? discountType =
+        (cart.item!.storeDiscount == 0) ? cart.item!.discountType : 'percent';
+    String variationType = cart.variation != null && cart.variation!.isNotEmpty
+        ? cart.variation![0].type!
+        : '';
+
+    if (cart.variation != null && cart.variation!.isNotEmpty) {
+      for (other_variation.Variation variation in cart.item!.variations!) {
+        if (variation.type == variationType) {
+          // Calculate brutto price with discount
+          discountedBruttoPrice = (PriceConverter.convertWithDiscount(
+                  variation.brutto_price!, discount, discountType)! *
+              cart.quantity!);
+          break;
+        }
+      }
+    } else {
+      // Calculate brutto price with discount
+      discountedBruttoPrice = (PriceConverter.convertWithDiscount(
+              cart.item!.brutto_price!, discount, discountType)! *
+          cart.quantity!);
+    }
+
+    return discountedBruttoPrice;
+  }
 }

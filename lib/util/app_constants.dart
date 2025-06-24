@@ -5,7 +5,7 @@ import 'package:sixam_mart/util/images.dart';
 
 class AppConstants {
   static const String appName = 'Sloop';
-  static const double appVersion = 2.5;
+  static const double appVersion = 2.6;
 
   static const String fontFamily = 'Roboto';
   static const bool payInWevView = false;
@@ -13,8 +13,8 @@ class AppConstants {
   static const String webHostedUrl = 'https://sloop-app.de/';
 
   // static const String baseUrl = 'https://6ammart-admin.6amtech.com';
-  static const String baseUrl = 'https://sloop.shop-template.de';
-  // static const String baseUrl = 'https://sloop-app.de';
+  // static const String baseUrl = 'https://sloop.shop-template.de';
+  static const String baseUrl = 'https://sloop-app.de';
   static const String categoryUri = '/api/v1/categories';
   static const String bannerUri = '/api/v1/banners';
   static const String storeItemUri = '/api/v1/items/latest';
@@ -257,12 +257,12 @@ class AppConstants {
   static List<LanguageModel> languages = [
     LanguageModel(
         imageUrl: Images.german,
-        languageName: 'German ',
+        languageName: 'Deutsch ',
         countryCode: 'DE',
         languageCode: 'de'),
     LanguageModel(
         imageUrl: Images.english,
-        languageName: 'English',
+        languageName: 'Englisch',
         countryCode: 'US',
         languageCode: 'en'),
     // LanguageModel(
@@ -276,7 +276,7 @@ class AppConstants {
     // LanguageModel(imageUrl: Images.bengali, languageName: 'Bengali', countryCode: 'BN', languageCode: 'bn'),
     LanguageModel(
         imageUrl: Images.turkey,
-        languageName: 'Turkish',
+        languageName: 'Türkisch',
         countryCode: 'TR',
         languageCode: 'tr'),
   ];

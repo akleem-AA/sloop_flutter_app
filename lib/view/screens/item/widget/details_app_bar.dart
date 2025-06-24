@@ -6,6 +6,8 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
+import '../../../../myCustomController.dart';
+
 class DetailsAppBar extends StatefulWidget implements PreferredSizeWidget {
   const DetailsAppBar({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class DetailsAppBarState extends State<DetailsAppBar>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
-  bool is_brotto = false;
+  // bool is_brotto = false;
   @override
   void initState() {
     super.initState();
@@ -39,6 +41,9 @@ class DetailsAppBarState extends State<DetailsAppBar>
     controller.forward(from: 0.0);
   }
 
+  final MyClassController myClassController = Get.find<MyClassController>();
+
+  final myCustomController = Get.put(MyClassController());
   @override
   Widget build(BuildContext context) {
     final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 15.0)
@@ -66,27 +71,31 @@ class DetailsAppBarState extends State<DetailsAppBar>
       ),
       centerTitle: true,
       actions: [
-        Container(
-          height: 5,
-          // width: 0,
-          child: LiteRollingSwitch(
-              value: is_brotto,
-              width: 100,
+        SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: LiteRollingSwitch(
+              value: myClassController.detailsPage.value,
+              width: 85,
               colorOff: Theme.of(context).primaryColor,
-              iconOn: Icons.circle,
+              colorOn: Theme.of(context).primaryColor,
+              iconOn: Icons.circle_outlined,
               iconOff: Icons.circle_outlined,
-              textOn: "Brutto",
-              textOff: "Netto",
-              // textSize: 10,
+              textOn: "brutto".tr,
+              textOff: "netto".tr,
+              textOnColor: Colors.white,
+              textOffColor: Colors.white,
+              textSize: Dimensions.fontSizeSmall,
               onTap: () {},
               onDoubleTap: () {},
               onSwipe: () {},
               onChanged: (bool postion) {
-                print("toggle buton detial screen$postion");
-                setState(() {
-                  is_brotto = postion;
-                });
-              }),
+                // Get.find<MyClassController>().showBrutto.value = postion;
+                myClassController.detailsPage.value =
+                    !myClassController.detailsPage.value;
+              },
+            ),
+          ),
         ),
         AnimatedBuilder(
           animation: offsetAnimation,

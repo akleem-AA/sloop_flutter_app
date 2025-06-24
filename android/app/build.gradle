@@ -63,9 +63,21 @@ android {
     }
 
     buildTypes {
+        // release {
+        //      signingConfig signingConfigs.release
+        // }
+    //      release {
+    //     // No manual signing - Google Play will sign the AAB
+    //     shrinkResources true
+    //     minifyEnabled true
+    //     proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    // }
         release {
-             signingConfig signingConfigs.release
-        }
+            signingConfig signingConfigs.release
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      }
     }
     
 }

@@ -43,5 +43,24 @@ make debug apk use below command
 flutter clean 
 	flutter build apk –split-per-abi
 
+creating the .aab file for android 
+
+fvm flutter clean
+fvm flutter pub get
+fvm flutter build appbundle --release
+
+we are using the Google Play App singin key for updating the android app
+if you don't have keystore.jsk file it will auto manage with GPAS
+
+
+here is keystore details:- 
+password: listandsell
+
+
+
+Is CN=sloop, OU=listandsell, O=listandsell, L=berlin, ST=berlin, C=de correct?
+
+
+
 
 

@@ -11,7 +11,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>7.1</string>
+	<string>7.2</string>
 	<key>CFBundleName</key>
 	<string>Sloop</string>
 	<key>CFBundlePackageType</key>
@@ -33,7 +33,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7.1</string>
+	<string>7.2</string>
 	<key>FacebookAppID</key>
 	<string>380903914182154</string>
 	<key>FacebookClientToken</key>
